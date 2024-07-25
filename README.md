@@ -1,2 +1,2 @@
-# Uptx
-Proyecto Tesis
+# Universidad Politécnica de Tlaxcala - TI
+SGTP

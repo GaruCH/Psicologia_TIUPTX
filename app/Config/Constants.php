@@ -155,29 +155,50 @@ define("SEXO_MASCULINO", 2); //In JS = S_M
 //ROLES
 define("ROL_SUPERADMIN",  array('nombre' => 'Superadmin',           'clave' => '749'));
 define("ROL_ADMIN",       array('nombre' => 'Admininistrador',      'clave' => '846'));
-define("ROL_PSICOLOGO",   array('nombre' => 'Psicologo',      'clave' => '521'));
-define("ROL_PACIENTE",    array('nombre' => 'Paciente',      'clave' => '496'));
+define("ROL_PSICOLOGO",   array('nombre' => 'Psicologo',            'clave' => '521'));
+define("ROL_PACIENTE",    array('nombre' => 'Paciente',             'clave' => '496'));
 
 define(
     "ROLES",
     array(
         ROL_SUPERADMIN["clave"] => ROL_SUPERADMIN["nombre"],
-        ROL_ADMIN["clave"] => ROL_ADMIN["nombre"],
-        ROL_PSICOLOGO["clave"] => ROL_PSICOLOGO["nombre"],
-        ROL_PACIENTE["clave"] => ROL_PACIENTE["nombre"]
+        ROL_ADMIN["clave"] =>      ROL_ADMIN["nombre"],
+        ROL_PSICOLOGO["clave"] =>  ROL_PSICOLOGO["nombre"],
+        ROL_PACIENTE["clave"] =>   ROL_PACIENTE["nombre"]
     )
 );
 
+//DIAS
+
+define("DIA_LUNES",     array('nombre' => 'Lunes',      'clave' => '1'));
+define("DIA_MARTES",    array('nombre' => 'Martes',     'clave' => '2'));
+define("DIA_MIERCOLES", array('nombre' => 'Miércoles',  'clave' => '3'));
+define("DIA_JUEVES",    array('nombre' => 'Jueves',     'clave' => '4'));
+define("DIA_VIERNES",   array('nombre' => 'Viernes',    'clave' => '5'));
+define("DIA_SABADO",    array('nombre' => 'Sábado',     'clave' => '6'));
+
+
+define(
+    "DIAS",
+    array(
+        DIA_LUNES["clave"] =>   DIA_LUNES["nombre"],
+        DIA_MARTES["clave"] =>  DIA_MARTES["nombre"],
+        DIA_MIERCOLES["clave"] => DIA_MIERCOLES["nombre"],
+        DIA_JUEVES["clave"] =>   DIA_JUEVES["nombre"],
+        DIA_VIERNES["clave"] =>  DIA_VIERNES["nombre"],
+        DIA_SABADO["clave"] =>   DIA_SABADO["nombre"]
+    )
+);
 
 //SUBCATEGORIA
-define("SUBCATEGORIA_ALUMNO",  array('nombre' => 'Alumno',        'clave' => '439'));
+define("SUBCATEGORIA_ALUMNO",    array('nombre' => 'Alumno',          'clave' => '439'));
 define("SUBCATEGORIA_EMPLEADO",  array('nombre' => 'Empleado',        'clave' => '426'));
 define("SUBCATEGORIA_INVITADO",  array('nombre' => 'Invitado',        'clave' => '411'));
 
 define(
     "SUBCATEGORIAS",
     array(
-        SUBCATEGORIA_ALUMNO["clave"] => SUBCATEGORIA_ALUMNO["nombre"],
+        SUBCATEGORIA_ALUMNO["clave"] =>   SUBCATEGORIA_ALUMNO["nombre"],
         SUBCATEGORIA_EMPLEADO["clave"] => SUBCATEGORIA_EMPLEADO["nombre"],
         SUBCATEGORIA_INVITADO["clave"] => SUBCATEGORIA_INVITADO["nombre"]
     )
@@ -196,10 +217,10 @@ define(
 );
 
 //TIPO REFERENCIA
-define("TIPO_REFERENCIA_SERVICIO_MEDICO", array('nombre' => 'Servicio Médico', 'clave' => '211'));
-define("TIPO_REFERENCIA_TUTOR", array('nombre' => 'Tutor', 'clave' => '222')); 
+define("TIPO_REFERENCIA_SERVICIO_MEDICO", array('nombre' => 'Servicio Médico',   'clave' => '211'));
+define("TIPO_REFERENCIA_TUTOR", array('nombre' => 'Tutor',                       'clave' => '222'));
 define("TIPO_REFERENCIA_DIRECTOR_CARRERA", array('nombre' => 'Director Carrera', 'clave' => '233'));
-define("TIPO_REFERENCIA_OTRO", array('nombre' => 'Otro', 'clave' => '244'));  
+define("TIPO_REFERENCIA_OTRO", array('nombre' => 'Otro',                         'clave' => '244'));
 
 define(
     "TIPOS_REFERENCIA_",
@@ -231,12 +252,10 @@ define("TAREA_EJEMPLO", "tarea_ejemplo");
 define("TAREA_PACIENTE_DASHBOARD", "tarea_paciente_dashboard");
 //TAREAS PARA EL ADMIN
 define("TAREA_ADMIN_DASHBOARD", "tarea_admin_dashboard");
-define("TAREA_ADMIN_HORARIOS", "tarea_admin_horarios");
 define("TAREA_ADMIN_PSICOLOGOS", "tarea_admin_psicologos");
-define("TAREA_ADMIN_PSICOLOGOS_NUEVO", "tarea_admin_psicologos_nuevo");
-define("TAREA_ADMIN_PSICOLOGOS_DETALLES", "tarea_admin_psicologos_detalles");
 //TAREAS PARA EL PSICOLOGO
 define("TAREA_PSICOLOGO_DASHBOARD", "tarea_psicologo_dashboard");
+define("TAREA_PSICOLOGO_HORARIOS", "tarea_psicologo_horarios");
 
 //******************************************************************************
 //***************************** PERMISOS DE LOS ROLES **************************
@@ -252,10 +271,7 @@ define(
         TAREA_USUARIO_NUEVO,
         TAREA_USUARIO_DETALLES,
         TAREA_EJEMPLO,
-        TAREA_ADMIN_PSICOLOGOS,
-        TAREA_ADMIN_PSICOLOGOS_NUEVO,
-        TAREA_ADMIN_PSICOLOGOS_DETALLES,
-        TAREA_ADMIN_HORARIOS
+        TAREA_ADMIN_PSICOLOGOS
     )
 );
 
@@ -268,7 +284,8 @@ define(
 define(
     "PERMISOS_PSICOLOGO",
     array(
-        TAREA_PSICOLOGO_DASHBOARD
+        TAREA_PSICOLOGO_DASHBOARD,
+        TAREA_PSICOLOGO_HORARIOS
     )
 );
 define(
@@ -276,8 +293,5 @@ define(
     array(
         TAREA_DASHBOARD,
         TAREA_ADMIN_PSICOLOGOS,
-        TAREA_ADMIN_HORARIOS,
-        TAREA_ADMIN_PSICOLOGOS_NUEVO,
-        TAREA_ADMIN_PSICOLOGOS_DETALLES
     )
 );

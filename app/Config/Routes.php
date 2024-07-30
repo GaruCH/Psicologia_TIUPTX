@@ -85,9 +85,12 @@ $routes->post('/editar_psicologo', 'Panel\Psicologos::editar_psicologo', ['as' =
 
 //Paciente
 
-
-
-
+//Horarios_Psicologos
+$routes->get('/administracion_horarios', 'Panel\Horarios::index', ['as' => 'administracion_horarios']);
+$routes->get('/obtener_horario', 'Panel\Horarios::generar_datatable_horario', ['as' => 'obtener_horario']);
+$routes->post('/estatus_horario', 'Panel\Horarios::estatus_horario', ['as' => 'estatus_horario']);
+$routes->post('/registrar_horario', 'Panel\Horarios::registrar_horario', ['as' => 'registrar_horario']);
+$routes->post('/editar_horario', 'Panel\Horarios::actualizar_horas', ['as' => 'editar_horario']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

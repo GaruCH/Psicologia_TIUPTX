@@ -173,14 +173,14 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu_item['submenu'] = array();
         $menu['dashboard'] = $menu_item;
 
-         //Sección Psicologos
-         $menu_item = array();
-         $menu_item['is_active'] = false;
-         $menu_item['href'] = route_to('administracion_psicologos');
-         $menu_item['icon'] = 'fas fa-user-md';
-         $menu_item['text'] = ' Psicólogos';
-         $menu_item['submenu'] = array();
-         $menu['psicologos'] = $menu_item;
+        //Sección Psicologos
+        $menu_item = array();
+        $menu_item['is_active'] = false;
+        $menu_item['href'] = route_to('administracion_psicologos');
+        $menu_item['icon'] = 'fas fa-user-md';
+        $menu_item['text'] = ' Psicólogos';
+        $menu_item['submenu'] = array();
+        $menu['psicologos'] = $menu_item;
     } elseif ($rol_actual == ROL_PSICOLOGO['clave']) {
 
         //Sección Dashboard
@@ -190,6 +190,14 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu_item['text'] = ' Dashboard';
         $menu_item['submenu'] = array();
         $menu['dashboard_psicologo'] = $menu_item;
+
+        //Sección Horario
+        $menu_item['is_active'] = false;
+        $menu_item['href'] = route_to('administracion_horarios');
+        $menu_item['icon'] = 'fas fa-calendar';
+        $menu_item['text'] = ' Horario';
+        $menu_item['submenu'] = array();
+        $menu['administracion_horarios'] = $menu_item;
     } elseif ($rol_actual == ROL_PACIENTE['clave']) {
 
         //Sección Dashboard
@@ -263,10 +271,6 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
             case TAREA_DASHBOARD:
                 $menu['dashboard']['is_active'] = TRUE;
                 break;
-                //SECCIÓN ADMINISTRACIÓN HORARIOS
-            case TAREA_ADMIN_HORARIOS:
-                $menu['horarios']['is_active'] = TRUE;
-                break;
                 //SECCIÓN USUARIOS
             case TAREA_USUARIOS:
             case TAREA_USUARIO_NUEVO:
@@ -275,8 +279,6 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
                 break;
                 //SECCIÓN ADMINISTRACIÓN PSICOLOGOS
             case TAREA_ADMIN_PSICOLOGOS:
-            case TAREA_ADMIN_PSICOLOGOS_NUEVO:
-            case TAREA_ADMIN_PSICOLOGOS_DETALLES:
                 $menu['psicologos']['is_active'] = TRUE;
                 break;
                 //EJEMPLO
@@ -294,8 +296,6 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
                 break;
                 //SECCIÓN ADMINISTRACIÓN PSICOLOGOS
             case TAREA_ADMIN_PSICOLOGOS:
-            case TAREA_ADMIN_PSICOLOGOS_NUEVO:
-            case TAREA_ADMIN_PSICOLOGOS_DETALLES:
                 $menu['psicologos']['is_active'] = TRUE;
                 break;
             default:
@@ -306,6 +306,10 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
                 //SECCIÓN DASHBOARD
             case TAREA_PSICOLOGO_DASHBOARD:
                 $menu['dashboard_psicologo']['is_active'] = TRUE;
+                break;
+                //SECCIÓN HORARIO
+            case TAREA_PSICOLOGO_HORARIOS:
+                $menu['administracion_horarios']['is_active'] = TRUE;
                 break;
             default:
                 break;

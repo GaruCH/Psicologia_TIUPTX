@@ -37,9 +37,9 @@ class Cargar_db extends Model{
 
     public function importar($dbname = NULL){
         $query = '';
-        $path = FCPATH.'../recursos/bd/'.$dbname.'_original.sql';
+        $path = FCPATH.'../recursos/bd/base_datos_actualizada_gabo/'.$dbname.'_gabo.sql';
         if(file_exists($path)) {
-		    $sqlScript = file( FCPATH.'../recursos/bd/'.$dbname.'_original.sql');
+		    $sqlScript = file( FCPATH.'../recursos/bd/base_datos_actualizada_gabo/'.$dbname.'_gabo.sql');
             foreach($sqlScript as $line){
                 $startWith = substr(trim($line), 0 ,2);
     	        $endWith = substr(trim($line), -1 ,1);

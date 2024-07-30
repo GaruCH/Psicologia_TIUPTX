@@ -5,7 +5,7 @@
 // *****************************************************************************
 
 //Funcion para establecer el horario en México
-date_default_timezone_set("America/Mexico_City");
+date_default_timezone_set('Etc/GMT+6');
 
 //Establece el idioma en español méxicano
 setlocale(LC_ALL, 'es_MX.UTF-8', "es_MX", 'esp');

@@ -10,30 +10,31 @@ let loader = new Loader('loader');
 const create_horarios_table = () => {
     columns_elements = [
         {
-            "targets": [0,1,2,3],
+            "targets": [0,1,2,3,4],
             "createdCell": function(td, cellData, rowData, row, col) {
                 $(td).addClass("special-cell text-center ");
-                
-                // Agregar el atributo data-id en la fila
-                if (col === 0) {
-                    $(td).closest('tr').attr('data-id', rowData.id_h);
+
+                // Agregar los atributos data-hora-entrada y data-hora-salida
+                if (col === 3) {
+                    $(td).closest('tr').attr('data-hora-entrada', cellData);
+                    $(td).html(`<input type="time" class="form-control" value="${cellData}">`);
                 }
-                
-                // Convertir columnas de hora en campos de entrada
-                if (col === 2 || col === 3) {
+                if (col === 4) {
+                    $(td).closest('tr').attr('data-hora-salida', cellData);
                     $(td).html(`<input type="time" class="form-control" value="${cellData}">`);
                 }
             },
         }
     ];
     columns_order = [
+        {"data": "id_h"},
         {"data": "dia"},
         {"data": "estado"},
         {"data": "hora_entrada"},
         {"data": "hora_salida"}
     ];
     return instantiateAjaxDatatable('table-horario','./obtener_horario','GET', null, columns_elements, columns_order);
-}; //end create_psicologos_table
+}; //end create_horarios_table
 
 let table_horarios = create_horarios_table();
 
@@ -163,19 +164,32 @@ document.getElementById('formulario-horario').addEventListener('submit', event =
 // Botón para guardar cambios
 $(document).on('click', '#save-changes', function() {
     const updates = [];
+    const cambios = [];
 
     $('#table-horario').DataTable().rows().nodes().to$().each(function() {
         const row = $(this);
-        const id = row.attr('data-id'); // Obtener el ID del atributo data-id
-        const horaEntrada = row.find('td').eq(2).find('input').val();
-        const horaSalida = row.find('td').eq(3).find('input').val();
+        const id = row.find('td').eq(0).text(); // Obtener el ID desde la primera columna
+        const horaEntrada = row.find('td').eq(3).find('input').val();
+        const horaSalida = row.find('td').eq(4).find('input').val();
+
+        
 
         if (id) {
-            updates.push({
-                id: id,
-                horaEntrada: horaEntrada,
-                horaSalida: horaSalida
-            });
+            // Obtener valores actuales del servidor
+            const currentHoraEntrada = row.attr('data-hora-entrada');
+            const currentHoraSalida = row.attr('data-hora-salida');
+
+            // Verificar si los valores han cambiado
+            if (horaEntrada !== currentHoraEntrada || horaSalida !== currentHoraSalida) {
+
+
+                cambios.push(id); // Registrar IDs de filas con cambios
+                updates.push({
+                    id: id,
+                    horaEntrada: horaEntrada,
+                    horaSalida: horaSalida
+                });
+            }
         }
     });
 

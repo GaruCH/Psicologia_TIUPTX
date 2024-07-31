@@ -13,7 +13,7 @@
 
 <?= $this->section("contenido") ?>
 
-<div class="container mt-5">
+
     <div class="row mb-3">
         <div class="col">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevo-horario">
@@ -35,6 +35,7 @@
                 <table id="table-horario" class="table table-striped table-bordered" style="width:100%" cellspacing="0">
                     <thead class="text-center">
                         <tr>
+                            <th class="special-cell">#</th>
                             <th class="special-cell">Día</th>
                             <th class="special-cell">Estado</th>
                             <th class="special-cell">Hora entrada</th>
@@ -45,7 +46,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <!-- Modal nuevo-horario -->
 <div class="modal fade" id="nuevo-horario" tabindex="-1" aria-labelledby="nuevo-horario-title" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">

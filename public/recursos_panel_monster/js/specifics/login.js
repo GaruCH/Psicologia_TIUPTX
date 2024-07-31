@@ -16,8 +16,7 @@ $("#form-login").validate({
             rangelength: [5, 70]
         },
         password:{
-            required: true,
-            rangelength: [8, 16],
+            required: true
         }
     },//end rules
     messages: {

@@ -271,10 +271,10 @@ class Horarios extends BaseController
         if ($this->permitido) {
             $request = \Config\Services::request();
             $datos_actualizacion = $request->getJSON();
-
+    
             // Inicializar el mensaje de respuesta
             $mensaje = array();
-
+    
             // Validar los datos recibidos
             if (empty($datos_actualizacion->updates)) {
                 $mensaje['mensaje'] = 'No se recibieron datos para actualizar.';
@@ -284,33 +284,56 @@ class Horarios extends BaseController
                 $mensaje['timer_message'] = 3500;
                 return $this->response->setJSON($mensaje);
             }
-
+    
             $tabla_horarios = new \App\Models\Tabla_horarios();
             $db = \Config\Database::connect();
             $db->transBegin();
-
+    
             try {
+                $actualizaciones_realizadas = false;
+    
                 foreach ($datos_actualizacion->updates as $update) {
                     $id_horario = $update->id;
                     $hora_entrada = $update->horaEntrada;
                     $hora_salida = $update->horaSalida;
-
-                    $horario_data = [
-                        'turno_entrada' => $hora_entrada,
-                        'turno_salida' => $hora_salida
-                    ];
-
-                    // Actualizar horario
-                    $updateHorario = $tabla_horarios->update($id_horario, $horario_data);
-
-                    if (!$updateHorario) {
-                        throw new \Exception('Error al actualizar el horario con ID: ' . $id_horario);
+    
+                    // Obtener el horario actual
+                    $horarioActual = $tabla_horarios->find($id_horario);
+    
+                    if (!$horarioActual) {
+                        throw new \Exception('El horario con ID: ' . $id_horario . ' no existe.');
+                    }
+    
+                    // Comparar los valores actuales con los nuevos valores
+                    if ($horarioActual->turno_entrada != $hora_entrada || $horarioActual->turno_salida != $hora_salida) {
+                        $horario_data = [
+                            'turno_entrada' => $hora_entrada,
+                            'turno_salida' => $hora_salida
+                        ];
+    
+                        // Actualizar horario
+                        $updateHorario = $tabla_horarios->update($id_horario, $horario_data);
+    
+                        if (!$updateHorario) {
+                            throw new \Exception('Error al actualizar el horario con ID: ' . $id_horario);
+                        }
+    
+                        $actualizaciones_realizadas = true;
                     }
                 }
-
+    
+                if (!$actualizaciones_realizadas) {
+                    $mensaje['mensaje'] = 'No se realizaron cambios en las horas.';
+                    $mensaje['titulo'] = '¡Sin cambios!';
+                    $mensaje['error'] = 0;
+                    $mensaje['tipo_mensaje'] = INFO_ALERT;
+                    $mensaje['timer_message'] = 3500;
+                    return $this->response->setJSON($mensaje);
+                }
+    
                 // Confirmar transacción
                 $db->transCommit();
-
+    
                 $mensaje['mensaje'] = 'Las horas se han actualizado correctamente.';
                 $mensaje['titulo'] = '¡Actualización exitosa!';
                 $mensaje['error'] = 0;
@@ -320,7 +343,7 @@ class Horarios extends BaseController
             } catch (\Exception $e) {
                 // Revertir transacción en caso de error
                 $db->transRollback();
-
+    
                 $mensaje['mensaje'] = 'Error al actualizar las horas. ' . $e->getMessage();
                 $mensaje['titulo'] = '¡Error al actualizar!';
                 $mensaje['error'] = -1;
@@ -337,4 +360,6 @@ class Horarios extends BaseController
             return $this->response->setJSON($mensaje);
         }
     }
+    
+
 } //end 

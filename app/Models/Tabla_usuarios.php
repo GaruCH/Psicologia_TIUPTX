@@ -12,7 +12,7 @@ class Tabla_usuarios extends Model
     protected $returnType = 'object';
     protected $allowedFields = [
         'estatus_usuario', 'id_usuario', 'nombre_usuario', 'ap_paterno_usuario',
-        'ap_materno_usuario', 'sexo_usuario','edad_usuario', 'email_usuario', 'password_usuario',
+        'ap_materno_usuario', 'sexo_usuario','fecha_nacimiento_usuario', 'email_usuario', 'password_usuario',
         'imagen_usuario', 'reset_token', 'reset_expires', 'id_rol', 'eliminacion'
     ];
     protected $useTimestamps = true;
@@ -27,17 +27,13 @@ class Tabla_usuarios extends Model
     $resultado = $this
         ->select('estatus_usuario, id_usuario, nombre_usuario, ap_paterno_usuario,
                     ap_materno_usuario, sexo_usuario, email_usuario, imagen_usuario,
-                    usuarios.id_rol AS clave_rol, roles.rol AS nombre_rol, estatus_psicologo')
+                    usuarios.id_rol AS clave_rol, roles.rol AS nombre_rol')
         ->join('roles', 'usuarios.id_rol = roles.id_rol')
-        ->join('psicologos', 'usuarios.id_usuario = psicologos.id_psicologo', 'left')
         ->where('email_usuario', $email)
         ->where('password_usuario', $password)  // Asegúrate de estar usando una función hash para la contraseña
         ->first();
     return $resultado;
 } //end login
-
-
-    
 
     public function datatable_usuarios($id_usuario_actual = 0, $rol_actual = 0)
     {
@@ -168,4 +164,16 @@ class Tabla_usuarios extends Model
         }
         return false;
     }
+
+    public function obtener_psicologos_activos()
+{
+    $resultado = $this
+        ->select('id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario')
+        ->join('psicologos p', 'id_usuario = p.id_psicologo')
+        ->where('estatus_usuario', ESTATUS_HABILITADO) 
+        ->findAll();
+
+    return $resultado;
+}
+
 }//End Model usuarios

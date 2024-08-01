@@ -50,7 +50,7 @@ $routes->get('/restaurar_contrasena/(:any)', 'Usuario\Forgot::reset_password/$1'
 $routes->post('/actualizar_contrasena', 'Usuario\Forgot::update_password', ['as' => 'actualizar_contrasena']);
 //Register
 $routes->get('/registro_paciente', 'Usuario\Register::index', ['as' => 'registro_paciente']);
-$routes->post('/registrar_paciente', 'Usuario\Register::registrar', ['as' => 'registrar_paciente']);
+$routes->post('/registrar_paciente', 'Usuario\Register::registrar_alumno', ['as' => 'registrar_paciente']);
 //Propios del perfil
 $routes->get('/mi_perfil', 'Panel\Perfil::index', ['as' => 'mi_perfil']);
 $routes->post('/editar_mi_perfil', 'Panel\Perfil::actualizar', ['as' => 'editar_mi_perfil']);

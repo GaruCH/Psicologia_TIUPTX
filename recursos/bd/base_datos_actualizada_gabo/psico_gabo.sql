@@ -122,7 +122,7 @@ INSERT INTO dias (creacion, actualizacion, eliminacion, estatus_dia, id_dia, nom
 
 -- PROGRAMA EDUCATIVO
 
-CREATE TABLE programa_educativo (
+CREATE TABLE programas_educativos (
   creacion TIMESTAMP NULL DEFAULT NULL,
   actualizacion TIMESTAMP NULL DEFAULT NULL,
   eliminacion DATETIME DEFAULT NULL,
@@ -131,19 +131,20 @@ CREATE TABLE programa_educativo (
   nombre_programa VARCHAR(100) NOT NULL
 ) ENGINE=InnoDB;
 
+
 -- Insertar programas educativos
-INSERT INTO programa_educativo (creacion, actualizacion, eliminacion, estatus_programa, id_programa, nombre_programa) VALUES
+INSERT INTO programas_educativos (creacion, actualizacion, eliminacion, estatus_programa, id_programa, nombre_programa) VALUES
 ('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 10, 'Ingeniería en Biotecnología'),
 ('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 20, 'Ingeniería Mecatrónica'),
 ('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 30, 'Ingeniería Industrial'),
 ('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 40, 'Ingeniería en Tecnologías de la Información'),
-('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 50, 'Ingeniería Financiera');
-('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 60, 'Ingeniería Química');
+('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 50, 'Ingeniería Financiera'),
+('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 60, 'Ingeniería Química'),
 ('2024-07-30 03:00:00', '2024-07-30 03:00:00', NULL, 2, 70, 'Ingeniería en Sitemas Automotrices');
 
 -- ÁREA
 
-CREATE TABLE area (
+CREATE TABLE areas (
   creacion TIMESTAMP NULL DEFAULT NULL,
   actualizacion TIMESTAMP NULL DEFAULT NULL,
   eliminacion DATETIME DEFAULT NULL,
@@ -153,7 +154,7 @@ CREATE TABLE area (
 ) ENGINE=InnoDB;
 
 -- Insertar áreas
-INSERT INTO area (creacion, actualizacion, eliminacion, estatus_area, id_area, nombre_area) VALUES
+INSERT INTO areas (creacion, actualizacion, eliminacion, estatus_area, id_area, nombre_area) VALUES
 ('2024-07-30 03:15:00', '2024-07-30 03:15:00', NULL, 2, 1, 'Administrativo'),
 ('2024-07-30 03:15:00', '2024-07-30 03:15:00', NULL, 2, 2, 'Docente');
 
@@ -175,7 +176,7 @@ CREATE TABLE usuarios (
   ap_paterno_usuario varchar(50) NOT NULL,
   ap_materno_usuario varchar(50) NOT NULL,
   sexo_usuario tinyint(1) NOT NULL,
-  edad_usuario tinyint(2) NOT NULL,
+  fecha_nacimiento_usuario date NOT NULL,
   email_usuario varchar(70) NOT NULL,
   password_usuario varchar(64) NOT NULL,
   imagen_usuario varchar(100) DEFAULT NULL,
@@ -185,11 +186,11 @@ CREATE TABLE usuarios (
   FOREIGN KEY (id_rol) REFERENCES `roles` (id_rol) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-INSERT INTO usuarios (creacion, actualizacion, eliminacion, estatus_usuario, id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario, sexo_usuario, edad_usuario, email_usuario, password_usuario, imagen_usuario, reset_token, reset_expires, id_rol) VALUES
-('2024-06-25 07:36:10', '2024-06-25 07:36:10', NULL, 2, 1, 'Superadmin', 'Paterno', 'Materno', 2, 24, 'superadmin@psico.com', 'e34f92a20532a873cb3184398070b4b82a8fa29cf48572c203dc5f0fa6158231', NULL, NULL, NULL, 749),
-('2024-06-25 07:36:10', '2024-07-25 04:45:27', NULL, 2, 2, 'Juan Briyan', 'Rios', 'Avila', 2, 23, 'admin@psico.com', '43595c4e96b33bb446c3756b992c1004ed6aa51c2b9ab99ea9b91ae44f0f967a', 'b2bbc7a8b728e201a00fc02246e2aaf08c8cb8adfb2dbefc566fb6681147b9ba.jpg', NULL, NULL, 521),
-('2024-07-18 06:07:13', '2024-07-23 00:33:29', NULL, 2, 3, 'Gabriel', 'Cervantes', 'Hernández', 2, 18, 'gabrielch1805@gmail.com', '711aad8351b4679c58994c7dd004378804d88a036c0f6e28b2ae9888163a84e9', NULL, NULL, NULL, 496),
-('2024-07-22 03:24:52', '2024-07-22 03:24:52', NULL, 2, 4, 'Uriel', 'Cervantes', 'Hernández', 2, 0, 'gabux81@gmail.com', '711aad8351b4679c58994c7dd004378804d88a036c0f6e28b2ae9888163a84e9', '5533c7173c306c70a6980c1808c091ea817f5314a7c2fc975c4db89d397814ec.png', NULL, NULL, 846);
+INSERT INTO usuarios (creacion, actualizacion, eliminacion, estatus_usuario, id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario, sexo_usuario, fecha_nacimiento_usuario, email_usuario, password_usuario, imagen_usuario, reset_token, reset_expires, id_rol) VALUES
+('2024-06-25 07:36:10', '2024-06-25 07:36:10', NULL, 2, 1, 'Superadmin', 'Paterno', 'Materno', 2, '2000-01-01', 'superadmin@psico.com', 'e34f92a20532a873cb3184398070b4b82a8fa29cf48572c203dc5f0fa6158231', NULL, NULL, NULL, 749),
+('2024-06-25 07:36:10', '2024-07-25 04:45:27', NULL, 2, 2, 'Juan Briyan', 'Rios', 'Avila', 2, '2001-01-01', 'admin@psico.com', '43595c4e96b33bb446c3756b992c1004ed6aa51c2b9ab99ea9b91ae44f0f967a', 'b2bbc7a8b728e201a00fc02246e2aaf08c8cb8adfb2dbefc566fb6681147b9ba.jpg', NULL, NULL, 521),
+('2024-07-18 06:07:13', '2024-07-23 00:33:29', NULL, 2, 3, 'Gabriel', 'Cervantes', 'Hernández', 2, '2006-01-01', 'gabrielch1805@gmail.com', '711aad8351b4679c58994c7dd004378804d88a036c0f6e28b2ae9888163a84e9', NULL, NULL, NULL, 496),
+('2024-07-22 03:24:52', '2024-07-22 03:24:52', NULL, 2, 4, 'Uriel', 'Cervantes', 'Hernández', 2, '2024-01-01', 'gabux81@gmail.com', '711aad8351b4679c58994c7dd004378804d88a036c0f6e28b2ae9888163a84e9', '5533c7173c306c70a6980c1808c091ea817f5314a7c2fc975c4db89d397814ec.png', NULL, NULL, 846);
 
 CREATE TABLE psicologos (
   creacion timestamp NULL DEFAULT NULL,
@@ -200,18 +201,18 @@ CREATE TABLE psicologos (
   FOREIGN KEY (id_psicologo) REFERENCES usuarios (id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-INSERT INTO psicologos (creacion, actualizacion, eliminacion, estatus_psicologo, id_psicologo, numero_trabajador_psicologo) VALUES
-('2024-07-25 06:37:30', '2024-07-25 10:08:47', NULL, 2, 2, 230);
+INSERT INTO psicologos (creacion, actualizacion, eliminacion, id_psicologo, numero_trabajador_psicologo) VALUES
+('2024-07-25 06:37:30', '2024-07-25 10:08:47', NULL, 2, 230);
 
-CREATE TABLE paciente (
+CREATE TABLE pacientes (
   creacion timestamp NULL DEFAULT NULL,
   actualizacion timestamp NULL DEFAULT NULL,
   eliminacion datetime DEFAULT NULL,
   id_paciente int(11) NOT NULL PRIMARY KEY,
   observaciones text DEFAULT NULL,
-  numero_expediente int(11) DEFAULT NULL,
-  id_tipo_referencia int(3) DEFAULT NULL,
-  id_tipo_atencion int(3) NOT NULL DEFAULT 111 COMMENT '111 -> Primera vez, -122 -> Subsecuente',
+  numero_expediente varchar(50) DEFAULT NULL,
+  id_tipo_referencia int(3) NOT NULL,
+  id_tipo_atencion int(3) NOT NULL DEFAULT 111 COMMENT '111-> Primera vez, 122-> Subsecuente',
   id_subcate int(3) NOT NULL,
   FOREIGN KEY (id_paciente) REFERENCES usuarios (id_usuario) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_tipo_referencia) REFERENCES tipos_referencias (id_tipo_referencia) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -219,8 +220,8 @@ CREATE TABLE paciente (
   FOREIGN KEY (id_subcate) REFERENCES subcategorias (id_subcate) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-INSERT INTO paciente (creacion, actualizacion, eliminacion, estatus_paciente, id_paciente, referencia, tipo_atencion, observaciones, numero_expediente, id_subcate) VALUES
-('2024-07-18 06:07:13', '2024-07-18 06:07:13', NULL, 2, 3, NULL, NULL, NULL, NULL, 439);
+INSERT INTO pacientes (creacion, actualizacion, eliminacion, id_paciente, observaciones, numero_expediente, id_tipo_referencia, id_tipo_atencion, id_subcate) VALUES
+('2024-07-18 06:07:13', '2024-07-18 06:07:13', NULL, 3, NULL, NULL, 244, 111, 439);
 
 
 
@@ -249,39 +250,46 @@ INSERT INTO horarios_psicologos (creacion, actualizacion, eliminacion, estatus_h
 ('2024-07-30 02:43:27', '2024-07-30 02:43:27', NULL, 2, 1, 2, 1, '07:00:00', '19:00:00');
 
 
-CREATE TABLE alumno (
+CREATE TABLE alumnos (
   creacion TIMESTAMP NULL DEFAULT NULL,
   actualizacion TIMESTAMP NULL DEFAULT NULL,
   eliminacion DATETIME DEFAULT NULL,
   id_paciente INT(11) NOT NULL PRIMARY KEY,
   matricula INT(10) NOT NULL,
   id_programa INT(3) NOT NULL,
-  id_subcate INT(3) NOT NULL,
-  FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_programa) REFERENCES programa_educativo (id_programa) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_subcate) REFERENCES subcategorias (id_subcate) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_programa) REFERENCES programas_educativos (id_programa) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE administrativo (
+INSERT INTO alumnos (creacion, actualizacion, eliminacion, id_paciente, matricula, id_programa) VALUES 
+('2024-07-30 02:43:27', '2024-07-30 02:43:27', NULL, 3, 2464595569, 40);
+
+CREATE TABLE administrativos (
   creacion TIMESTAMP NULL DEFAULT NULL,
   actualizacion TIMESTAMP NULL DEFAULT NULL,
   eliminacion DATETIME DEFAULT NULL,
   id_paciente INT(11) NOT NULL PRIMARY KEY,
   numero_trabajador_administrativo INT(3) NOT NULL,
   id_area INT(3) NOT NULL,
-  id_subcate INT(3) NOT NULL,
-  FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_area) REFERENCES area (id_area) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_subcate) REFERENCES subcategorias (id_subcate) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_area) REFERENCES areas (id_area) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE invitado (
+CREATE TABLE invitados (
   creacion timestamp NULL DEFAULT NULL,
   actualizacion timestamp NULL DEFAULT NULL,
   eliminacion datetime DEFAULT NULL,
   id_paciente int(11) NOT NULL PRIMARY KEY,
   identificador varchar(50) NOT NULL,
-  id_subcate int(3) NOT NULL,
-  FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_subcate) REFERENCES subcategorias (id_subcate) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE historial_asignaciones (
+  id_historial INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_paciente INT(11) NOT NULL,
+  id_psicologo INT(11) NOT NULL,
+  fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  descripcion TEXT,
+  FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_psicologo) REFERENCES psicologos (id_psicologo) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;

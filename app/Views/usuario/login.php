@@ -2,25 +2,25 @@
 <html lang="es>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, monster admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, ">
-    <meta name="description" content="monster is powerful and clean admin dashboard template">
-    <meta name="robots" content="noindex,nofollow">
-    <title><?= ACRONIMO_SISTEMA ?> - Acceso</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url(IMG_DIR_SISTEMA . '/' . FAV_ICON_SISTEMA) ?>">
-    <link href="<?= base_url(RECURSOS_PANEL_CSS . '/style.min.css') ?>" rel="stylesheet">
-    <link href="<?= base_url(RECURSOS_PANEL_PLUGINS . '/toastr/dist/build/toastr.min.css'); ?>" rel="stylesheet">
-    <link href="<?= base_url(RECURSOS_PANEL_PLUGINS . '/toastr/dist/build/toastr_manager.css'); ?>" rel="stylesheet">
-    <!-- Favicon icon -->
-    <!-- <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png"> -->
-    <!-- Custom CSS -->
-    <!-- <link href="../../dist/css/style.min.css" rel="stylesheet"> -->
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+    <meta charset=" utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, monster admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, ">
+<meta name="description" content="monster is powerful and clean admin dashboard template">
+<meta name="robots" content="noindex,nofollow">
+<title><?= ACRONIMO_SISTEMA ?> - Acceso</title>
+<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url(IMG_DIR_SISTEMA . '/' . FAV_ICON_SISTEMA) ?>">
+<link href="<?= base_url(RECURSOS_PANEL_CSS . '/style.min.css') ?>" rel="stylesheet">
+<link href="<?= base_url(RECURSOS_PANEL_PLUGINS . '/toastr/dist/build/toastr.min.css'); ?>" rel="stylesheet">
+<link href="<?= base_url(RECURSOS_PANEL_PLUGINS . '/toastr/dist/build/toastr_manager.css'); ?>" rel="stylesheet">
+<!-- Favicon icon -->
+<!-- <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png"> -->
+<!-- Custom CSS -->
+<!-- <link href="../../dist/css/style.min.css" rel="stylesheet"> -->
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -108,7 +108,7 @@
                                             ?>
                                             <div class="invalid-feedback"></div>
                                             <label for="text-password" style="color: #FFFFFF;"><i data-feather="lock" class="feather-sm text-white fill-white me-2"></i>Contraseña</label>
-                                            
+
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3">
@@ -123,7 +123,18 @@
                                                 <button class="btn btn-info d-block w-100 waves-effect waves-light" type="submit" style="background: #A7250D; border-color: #CC9933; color:#ffff">Iniciar sesión</button>
                                                 <br>
                                                 <h4 class="text-center">¿Eres un paciente?</h4>
-                                                <a href="<?= route_to('registro_paciente') ?>" class="fw-bold" style="color: #808080">Registrate</a>
+                                                <!-- Menú desplegable para seleccionar el tipo de paciente -->
+                                                <div class="dropdown text-center">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" style="background: #A7250D; border-color: #CC9933; color:#ffff" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Registrate como
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <li><a class="dropdown-item" href="<?= route_to('registro_paciente') ?>?tipo=alumno">Alumno (a)</a></li>
+                                                        <li><a class="dropdown-item" href="<?= route_to('registro_paciente') ?>?tipo=administrativo">Administrativo (a)</a></li>
+                                                        <li><a class="dropdown-item" href="<?= route_to('registro_paciente') ?>?tipo=invitado">Invitado (a)</a></li>
+                                                        <!-- Agrega más tipos de pacientes según sea necesario -->
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                         <?= form_close() ?>

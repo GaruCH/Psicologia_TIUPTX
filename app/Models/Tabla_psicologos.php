@@ -11,7 +11,7 @@ class Tabla_psicologos extends Model
     protected $primaryKey = 'id_psicologo';
     protected $returnType = 'object';
     protected $allowedFields = [
-        'estatus_psicologo', 'id_psicologo', 'numero_trabajador_psicologo', 'eliminacion'
+         'id_psicologo', 'numero_trabajador_psicologo', 'eliminacion'
     ];
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
@@ -24,7 +24,7 @@ class Tabla_psicologos extends Model
     {
         if ($rol_actual == ROL_SUPERADMIN['clave']) {
             $resultado = $this
-                ->select('id_psicologo, estatus_psicologo, numero_trabajador_psicologo, psicologos.eliminacion,
+                ->select('id_psicologo, numero_trabajador_psicologo, psicologos.eliminacion,
                           nombre_usuario,ap_paterno_usuario, ap_materno_usuario,
                           sexo_usuario, email_usuario, edad_usuario, imagen_usuario')
                 ->join('usuarios', 'psicologos.id_psicologo = usuarios.id_usuario')
@@ -39,7 +39,7 @@ class Tabla_psicologos extends Model
         } //end if el rol actual es superadmin
         elseif ($rol_actual == ROL_ADMIN['clave']) {
             $resultado = $this
-                ->select('id_psicologo, estatus_psicologo, numero_trabajador_psicologo,
+                ->select('id_psicologo, numero_trabajador_psicologo,
                           nombre_usuario, ap_paterno_usuario, ap_materno_usuario,
                           sexo_usuario, email_usuario, edad_usuario, imagen_usuario')
                 ->join('usuarios', 'psicologos.id_psicologo = usuarios.id_usuario')

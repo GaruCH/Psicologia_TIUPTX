@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
             width: 100%;
             max-width: 600px;
@@ -21,20 +23,24 @@
             padding: 30px;
             text-align: center;
         }
+
         .title {
             color: #A7250D;
             font-weight: bold;
             margin-bottom: 20px;
         }
+
         .text {
             color: #808080;
             line-height: 1.6;
             margin-bottom: 15px;
         }
+
         .list-group {
             list-style: none;
             padding: 0;
         }
+
         .list-group-item {
             background-color: #CC9933;
             color: #FFFFFF;
@@ -42,6 +48,7 @@
             padding: 10px;
             margin-bottom: 5px;
         }
+
         .btn {
             background-color: #A7250D;
             border: none;
@@ -52,9 +59,11 @@
             display: inline-block;
             margin-top: 20px;
         }
+
         .btn:hover {
             background-color: #CC9933;
         }
+
         .footer {
             margin-top: 30px;
             background-color: #CCCCCC;
@@ -63,12 +72,14 @@
             border-radius: 0 0 10px 10px;
             color: #808080;
         }
+
         .footer p {
             margin: 5px 0;
             font-size: 14px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2 class="title">✔ Confirmación de Registro</h2>
@@ -79,6 +90,7 @@
             <li class="list-group-item">📧 Correo Electrónico: <?= esc($email_usuario) ?></li>
             <li class="list-group-item">👤 Rol: <?= esc($rol_usuario) ?></li>
             <li class="list-group-item">📅 Fecha de Registro: <?= esc($fecha_registro) ?></li>
+            <li class="list-group-item">🧑 Psicólogo Asignado: <?= esc($nombre_psicologo) ?></li>
         </ul>
         <p class="text">Te recordamos guardar este correo para futuras referencias. Aún falta completar información en tu perfil para finalizar el proceso de registro.</p>
         <p class="text">Si necesitas apoyo psicológico o tienes alguna pregunta, no dudes en contactarnos a través de este correo electrónico.</p>
@@ -92,4 +104,5 @@
         <p>Todos los derechos reservados TIAMLab.</p>
     </div>
 </body>
+
 </html>

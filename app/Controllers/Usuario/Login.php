@@ -57,7 +57,7 @@ class Login extends BaseController
         if ($usuario != null) {
             log_message('info', 'Usuario encontrado: ' . $usuario->nombre_usuario);
 
-            if ($usuario->estatus_usuario == ESTATUS_DESHABILITADO || $usuario->estatus_psicologo == ESTATUS_DESHABILITADO) {
+            if ($usuario->estatus_usuario == ESTATUS_DESHABILITADO ) {
                 mensaje('El usuario no está habilitado, por favor contacte al administrador.', WARNING_ALERT, '¡Usuario inhabilitado!');
                 log_message('info', 'Usuario deshabilitado: ' . $email);
                 return redirect()->to(route_to('login'));

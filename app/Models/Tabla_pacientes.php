@@ -6,12 +6,11 @@ use CodeIgniter\Model;
 
 class Tabla_pacientes extends Model
 {
-    protected $table      = 'paciente';
+    protected $table      = 'pacientes';
     protected $primaryKey = 'id_paciente';
     protected $returnType = 'object';
     protected $allowedFields = [
-        'estatus_paciente', 'id_paciente', 'referencia',
-        'tipo_atencion', 'observaciones', 'numero_expediente', 'id_subcate'
+        'id_paciente','id_tipo_referencia', 'id_tipo_atencion', 'observaciones', 'numero_expediente', 'id_subcate'
     ];
 
     protected $useTimestamps = true;
@@ -21,4 +20,20 @@ class Tabla_pacientes extends Model
     protected $updatedField  = 'actualizacion';
     protected $deletedField  = 'eliminacion';
 
-    }//End Model usuarios
+    public function obtener_ultimo_expediente()
+    {
+        $añoActual = date('Y');
+        $builder = $this->builder();
+        $builder->select('*');
+        $builder->like('numero_expediente', "EXP-$añoActual%");
+        $builder->where('eliminacion', null);
+        $builder->orderBy('numero_expediente', 'DESC');
+        $builder->limit(1);
+        
+        $sql = $builder->getCompiledSelect();
+        log_message('debug', 'SQL: ' . $sql); // Añadir esta línea para registrar la consulta SQL
+        
+        return $builder->get()->getRow();
+    }
+
+}//End Model usuarios

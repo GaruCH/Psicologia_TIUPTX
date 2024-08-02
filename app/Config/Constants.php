@@ -141,6 +141,10 @@ define("RECURSOS_PANEL_PLUGINS", "recursos_panel_monster/plugins"); //In JS = R_
 define("ESTATUS_HABILITADO", 2);     //In JS = E_H
 define("ESTATUS_DESHABILITADO", -1); //In JS = E_D
 
+//Notificaciones
+define("ESTATUS_LEIDA", 1);
+define("ESTATUS_NO_LEIDA", 0);
+
 //DIRECTORIOS
 define("IMG_DIR_USUARIOS", "recursos_panel_monster/images/profile-images"); //In JS = I_D_O
 define("IMG_DIR_SISTEMA", "images/sistema/"); //In JS = I_D_S

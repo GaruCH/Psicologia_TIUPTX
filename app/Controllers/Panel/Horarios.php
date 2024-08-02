@@ -68,6 +68,9 @@ class Horarios extends BaseController
         );
         $datos['breadcrumb'] = breadcrumb_panel($navegacion, 'Administrar Horario');
 
+        // Cargar notificaciones utilizando el helper
+        $datos['notificaciones'] = cargar_notificaciones(); // Utiliza la función del helper
+
         return $datos;
     } //end cargar_datos
 

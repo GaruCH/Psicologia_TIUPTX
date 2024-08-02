@@ -78,6 +78,9 @@ class Usuario_detalles extends BaseController{
 															 $usuario->ap_paterno_usuario.' '.
 															 $usuario->ap_materno_usuario.'</b>');
 
+															 // Cargar notificaciones utilizando el helper
+        $datos['notificaciones'] = cargar_notificaciones(); // Utiliza la función del helper
+
 		return $datos;
 	}//end cargar_datos
 

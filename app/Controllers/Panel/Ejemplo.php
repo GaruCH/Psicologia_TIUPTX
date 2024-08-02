@@ -44,6 +44,9 @@ class Ejemplo extends BaseController{
 		//Breadcrumb
     	$datos['breadcrumb'] = '';
 
+		// Cargar notificaciones utilizando el helper
+        $datos['notificaciones'] = cargar_notificaciones(); // Utiliza la función del helper
+
 		return $datos;
 	}//end cargar_datos
 

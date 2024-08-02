@@ -72,21 +72,20 @@ INSERT INTO tipos_referencias (creacion, actualizacion, eliminacion, estatus_tip
 ('2024-07-23 01:50:15', '2024-07-23 01:50:15', NULL, 2, 233, 'Director Carrera'),
 ('2024-07-23 01:50:15', '2024-07-23 01:50:15', NULL, 2, 244, 'Otro');
 
-
-DROP TABLE IF EXISTS subcategorias;
-CREATE TABLE subcategorias (
-  creacion timestamp NULL DEFAULT NULL,
-  actualizacion timestamp NULL DEFAULT NULL,
-  eliminacion datetime DEFAULT NULL,
-  estatus_subcate tinyint(1) NOT NULL DEFAULT 2,
-  id_subcate int(3) NOT NULL PRIMARY KEY,
-  subcategoria varchar(30) NOT NULL
-) ENGINE=InnoDB;
-
 -- SUBCATEGORIAS 
 -- -- 439 : ALUMNO
 -- -- 426 : EMPLEADO
 -- -- 411 : INVITADO
+
+CREATE TABLE subcategorias (
+  creacion timestamp NULL DEFAULT NULL,
+  actualizacion timestamp NULL DEFAULT NULL,
+  eliminacion datetime DEFAULT NULL,
+  estatus_subcate tinyint(1) NOT NULL DEFAULT 2 COMMENT '1-> Habilitado, -1-> Deshabilitado',
+  id_subcate int(3) NOT NULL PRIMARY KEY,
+  subcategoria varchar(30) NOT NULL
+) ENGINE=InnoDB;
+
 
 INSERT INTO subcategorias (creacion, actualizacion, eliminacion, estatus_subcate, id_subcate, subcategoria) VALUES
 ('2024-06-25 07:36:10', '2024-06-25 07:36:10', NULL, 2, 411, 'Invitado'),
@@ -192,6 +191,21 @@ INSERT INTO usuarios (creacion, actualizacion, eliminacion, estatus_usuario, id_
 ('2024-07-18 06:07:13', '2024-07-23 00:33:29', NULL, 2, 3, 'Gabriel', 'Cervantes', 'Hernández', 2, '2006-01-01', 'gabrielch1805@gmail.com', '711aad8351b4679c58994c7dd004378804d88a036c0f6e28b2ae9888163a84e9', NULL, NULL, NULL, 496),
 ('2024-07-22 03:24:52', '2024-07-22 03:24:52', NULL, 2, 4, 'Uriel', 'Cervantes', 'Hernández', 2, '2024-01-01', 'gabux81@gmail.com', '711aad8351b4679c58994c7dd004378804d88a036c0f6e28b2ae9888163a84e9', '5533c7173c306c70a6980c1808c091ea817f5314a7c2fc975c4db89d397814ec.png', NULL, NULL, 846);
 
+
+CREATE TABLE notificaciones (
+  creacion TIMESTAMP NULL DEFAULT NULL,
+  actualizacion TIMESTAMP NULL DEFAULT NULL,
+  eliminacion DATETIME DEFAULT NULL,
+  id_notificacion INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_usuario INT(11) NOT NULL,
+  titulo_notificacion VARCHAR(70) NOT NULL,
+  tipo_notificacion VARCHAR(10) NOT NULL,
+  mensaje TEXT NOT NULL,
+  confirmacion_notificacion TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0-> No leída, 1-> Leída',
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
 CREATE TABLE psicologos (
   creacion timestamp NULL DEFAULT NULL,
   actualizacion timestamp NULL DEFAULT NULL,
@@ -293,3 +307,4 @@ CREATE TABLE historial_asignaciones (
   FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_psicologo) REFERENCES psicologos (id_psicologo) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+

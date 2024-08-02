@@ -59,6 +59,9 @@ class Usuario_nuevo extends BaseController{
                       );
     	$datos['breadcrumb'] = breadcrumb_panel($navegacion, 'Nuevo usuario');
 
+		// Cargar notificaciones utilizando el helper
+        $datos['notificaciones'] = cargar_notificaciones(); // Utiliza la función del helper
+
 		return $datos;
 	}//end cargar_datos
 

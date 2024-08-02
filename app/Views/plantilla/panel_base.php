@@ -23,6 +23,7 @@
 		<link href="<?= base_url(RECURSOS_PANEL_CSS.'/font-awesome.min.css') ?>" rel="stylesheet">
 	    <link href="<?= base_url(RECURSOS_PANEL_CSS.'/style.min.css') ?>" rel="stylesheet">
 		
+		
 		<!-- Notification css (Toastr) -->
     	<link href="<?= base_url(RECURSOS_PANEL_PLUGINS.'/toastr/dist/build/toastr.min.css'); ?>" rel="stylesheet">
     	<link href="<?= base_url(RECURSOS_PANEL_PLUGINS.'/toastr/dist/build/toastr_manager.css'); ?>" rel="stylesheet">

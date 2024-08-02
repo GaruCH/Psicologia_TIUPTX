@@ -58,12 +58,12 @@
             <div class="modal-body">
                 <h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>
                 <center>
-                    <img src="<?php echo base_url(IMG_DIR_USUARIOS."/no-image-m.png");?>" alt="imagen_usuario" class="avatar-img rounded-circle" width="150px" id="img" style="margin-bottom: 15px;" data-default-src="<?php echo base_url(IMG_DIR_USUARIOS . '/no-image-m.png'); ?>">
+                    <img src="<?php echo base_url(IMG_DIR_USUARIOS . "/no-image-m.png"); ?>" alt="imagen_usuario" class="avatar-img rounded-circle" width="150px" id="img" style="margin-bottom: 15px;" data-default-src="<?php echo base_url(IMG_DIR_USUARIOS . '/no-image-m.png'); ?>">
                 </center>
                 <br>
                 <div class="row">
-    
-                <div class="col-md-12 mb-3">
+
+                    <div class="col-md-12 mb-3">
                         <label class="form-control-label">Numero de trabajador: (<font color="red">*</font>)</label>
                         <div class="form-floating mb-3">
                             <?php
@@ -187,24 +187,22 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12 mb-2">
-                        <label class="form-control-label">Edad: (<font color="red">*</font>)</label>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-control-label">Fecha de Nacimiento: (<font color="red">*</font>)</label>
                         <div class="form-floating mb-3">
                             <?php
                             $parametros = array(
-                                'type' => 'number',
+                                'type' => 'date',
                                 'class' => 'form-control',
-                                'id' => 'edad',
-                                'name' => 'edad',
-                                'placeholder' => 'Edad',
-                                'min' => '15', // Puedes ajustar el valor mínimo si es necesario
-                                'max' => '99', // Puedes ajustar el valor máximo si es necesario
-                                'maxlength' => '2'
+                                'id' => 'fecha_nacimiento',
+                                'name' => 'fecha_nacimiento',
+                                'placeholder' => 'Fecha de Nacimiento',
+                                'required' => '',
                             );
                             echo form_input($parametros);
                             ?>
                             <div class="invalid-feedback"></div>
-                            <label for="edad"><i data-feather="user" class="feather-sm text-dark fill-white me-2"></i>Edad</label>
+                            <label for="fecha_nacimiento" ><i data-feather="calendar" class="feather-sm text-dark fill-white me-2"></i>Fecha de Nacimiento</label>
                         </div>
                     </div>
 
@@ -219,7 +217,7 @@
                                 'type' => 'password',
                                 'class' => 'form-control',
                                 'id' => 'password',
-                                'autocomplete' =>'new-password',
+                                'autocomplete' => 'new-password',
                                 'name' => 'password',
                                 'placeholder' => '**********',
                                 'value' => ''
@@ -239,7 +237,7 @@
                                 'class' => 'form-control',
                                 'id' => 'confirm_password',
                                 'name' => 'confirm_password',
-                                'autocomplete' =>'new-password',
+                                'autocomplete' => 'new-password',
                                 'placeholder' => '**********',
                                 'value' => ''
                             );
@@ -258,7 +256,7 @@
                                 'class' => 'form-control',
                                 'name' => 'imagen_perfil',
                                 'id' => 'imagen_perfil',
-                                'autocomplete' =>'new-password',
+                                'autocomplete' => 'new-password',
                                 'onchange' => "validate_image(this, 'img', 'btn-guardar', '../recursos_panel_monster/images/profile-images/no-image-m.png', 512, 512);",
                                 'accept' => '.png, .jpeg, .jpg'
                             );
@@ -288,65 +286,68 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <?php
-                $parametros = array('id' => 'formulario-cambiar-password-psicologo');
-                echo form_open('actualizar_password_psicologo', $parametros);
+            $parametros = array('id' => 'formulario-cambiar-password-psicologo');
+            echo form_open('actualizar_password_psicologo', $parametros);
             ?>
-                <div class="modal-body">
-                    <h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-control-label">Nueva contraseña (<font color="red">*</font>)</label>
-                            <div class="form-floating mb-3">
-                                <?php
-                                    $parametros = array('type' => 'password',
-                                                        'class' => 'form-control',
-                                                        'id' => 'password_psicologo',
-                                                        'name' => 'password_psicologo',
-                                                        'autocomplete' =>'new-password',
-                                                        'placeholder' => '**********',
-                                                        'value' => ''
-                                                        );
-                                    echo form_input($parametros);
-                                ?>
-                                <div class="invalid-feedback"></div>
-                                <?php
-                                    $parametros = array('type' => 'hidden',
-                                                        'id' => 'id_psicologo_pass',
-                                                        'name' => 'id_psicologo_pass',
-                                                        'value' => ''
-                                                        );
-                                    echo form_input($parametros);
-                                ?>
-                                <label><i data-feather="unlock" class="feather-sm text-dark fill-white me-2"></i>Nueva contraseña</label>
-                            </div>
+            <div class="modal-body">
+                <h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-control-label">Nueva contraseña (<font color="red">*</font>)</label>
+                        <div class="form-floating mb-3">
+                            <?php
+                            $parametros = array(
+                                'type' => 'password',
+                                'class' => 'form-control',
+                                'id' => 'password_psicologo',
+                                'name' => 'password_psicologo',
+                                'autocomplete' => 'new-password',
+                                'placeholder' => '**********',
+                                'value' => ''
+                            );
+                            echo form_input($parametros);
+                            ?>
+                            <div class="invalid-feedback"></div>
+                            <?php
+                            $parametros = array(
+                                'type' => 'hidden',
+                                'id' => 'id_psicologo_pass',
+                                'name' => 'id_psicologo_pass',
+                                'value' => ''
+                            );
+                            echo form_input($parametros);
+                            ?>
+                            <label><i data-feather="unlock" class="feather-sm text-dark fill-white me-2"></i>Nueva contraseña</label>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-control-label">Confirmar contraseña (<font color="red">*</font>)</label>
-                            <div class="form-floating mb-3">
-                                <?php
-                                    $parametros = array('type' => 'password',
-                                                        'class' => 'form-control',
-                                                        'id' => 'confirm_password_psicologo',
-                                                        'autocomplete' =>'new-password',
-                                                        'name' => 'confirm_password_psicologo',
-                                                        'placeholder' => '**********',
-                                                        'value' => ''
-                                                        );
-                                    echo form_input($parametros);
-                                ?>
-                                <div class="invalid-feedback"></div>
-                                <label><i data-feather="lock" class="feather-sm text-dark fill-white me-2"> 
-                                    </i>Confirmar contraseña</label>
-                            </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-control-label">Confirmar contraseña (<font color="red">*</font>)</label>
+                        <div class="form-floating mb-3">
+                            <?php
+                            $parametros = array(
+                                'type' => 'password',
+                                'class' => 'form-control',
+                                'id' => 'confirm_password_psicologo',
+                                'autocomplete' => 'new-password',
+                                'name' => 'confirm_password_psicologo',
+                                'placeholder' => '**********',
+                                'value' => ''
+                            );
+                            echo form_input($parametros);
+                            ?>
+                            <div class="invalid-feedback"></div>
+                            <label><i data-feather="lock" class="feather-sm text-dark fill-white me-2">
+                                </i>Confirmar contraseña</label>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel-form-change-password-psicologo"><i class="fa fa-times"></i> Cancelar</button>
-                    &nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-primary" type="submit" id="btn-guardar"><i class="fa fa-lg fa-save"></i> Actualizar contraseña</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel-form-change-password-psicologo"><i class="fa fa-times"></i> Cancelar</button>
+                &nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary" type="submit" id="btn-guardar"><i class="fa fa-lg fa-save"></i> Actualizar contraseña</button>
+            </div>
             <?= form_close() ?>
         </div>
     </div>
@@ -367,12 +368,12 @@
             <div class="modal-body">
                 <h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>
                 <center>
-                    <img src="<?php echo base_url(IMG_DIR_USUARIOS."/no-image-m.png");?>" alt="imagen_usuario" class="avatar-img rounded-circle" width="150px" id="img_editar" style="margin-bottom: 15px;" data-default-src="<?php echo base_url(IMG_DIR_USUARIOS . '/no-image-m.png'); ?>">
+                    <img src="<?php echo base_url(IMG_DIR_USUARIOS . "/no-image-m.png"); ?>" alt="imagen_usuario" class="avatar-img rounded-circle" width="150px" id="img_editar" style="margin-bottom: 15px;" data-default-src="<?php echo base_url(IMG_DIR_USUARIOS . '/no-image-m.png'); ?>">
                 </center>
                 <br>
                 <div class="row">
 
-                <div class="col-md-12 mb-3">
+                    <div class="col-md-12 mb-3">
                         <label class="form-control-label">Numero de trabajador: (<font color="red">*</font>)</label>
                         <div class="form-floating mb-3">
                             <?php
@@ -385,7 +386,7 @@
                                 'min' => '0',
                                 'maxlength' => '3',
                                 'minlength' => '1'
-                                
+
                             );
                             echo form_input($parametros);
                             ?>
@@ -497,24 +498,22 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12 mb-2">
-                        <label class="form-control-label">Edad: (<font color="red">*</font>)</label>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-control-label">Fecha de Nacimiento: (<font color="red">*</font>)</label>
                         <div class="form-floating mb-3">
                             <?php
                             $parametros = array(
-                                'type' => 'number',
+                                'type' => 'date',
                                 'class' => 'form-control',
-                                'id' => 'edad_editar',
-                                'name' => 'edad_editar',
-                                'placeholder' => 'Edad',
-                                'min' => '15', // Puedes ajustar el valor mínimo si es necesario
-                                'max' => '99', // Puedes ajustar el valor máximo si es necesario
-                                'maxlength' => '2'
+                                'id' => 'fecha_nacimiento_editar',
+                                'name' => 'fecha_nacimiento_editar',
+                                'placeholder' => 'Fecha de Nacimiento',
+                                'required' => '',
                             );
                             echo form_input($parametros);
                             ?>
                             <div class="invalid-feedback"></div>
-                            <label for="edad"><i data-feather="user" class="feather-sm text-dark fill-white me-2"></i>Edad</label>
+                            <label for="fecha_nacimiento_editar"><i data-feather="calendar" class="feather-sm text-dark fill-white me-2"></i>Fecha de Nacimiento</label>
                         </div>
                     </div>
                 </div>
@@ -542,14 +541,16 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel-form-edit-psicologo"><i class="fa fa-times"></i> Cancelar</button>
                 &nbsp;&nbsp;&nbsp;
-                <button class="btn btn-primary" id="btn-editar-psicologo" type="submit"><i class="fa fa-lg fa-save"><?php
-                                    $parametros = array('type' => 'hidden',
-                                                        'id' => 'id_psicologo_editar',
-                                                        'name' => 'id_psicologo_editar',
-                                                        'value' => ''
-                                                        );
-                                    echo form_input($parametros);
-                                ?></i> Guardar cambios</button>
+                <button class="btn btn-primary" id="btn-editar-psicologo" type="submit"><i class="fa fa-lg fa-save">
+                        <?php
+                        $parametros = array(
+                            'type' => 'hidden',
+                            'id' => 'id_psicologo_editar',
+                            'name' => 'id_psicologo_editar',
+                            'value' => ''
+                        );
+                        echo form_input($parametros);
+                        ?></i> Guardar cambios</button>
             </div>
             <?= form_close() ?>
         </div>
@@ -567,7 +568,7 @@
 <script src="<?php echo base_url(RECURSOS_PANEL_PLUGINS . "/datatables/media/js/custom-datatable.js") ?>"></script>
 <script src="<?php echo base_url(RECURSOS_PANEL_PLUGINS . "/datatables/media/js/managerDataTables.js") ?>"></script>
 <!-- Preview Image -->
-<script src="<?php echo base_url(RECURSOS_PANEL_JS."/owns/preview-image.js") ?>"></script>
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/preview-image.js") ?>"></script>
 
 <!-- SweetAlert 2 -->
 <script src="<?php echo base_url(RECURSOS_PANEL_PLUGINS . "/sweetalert2/dist/sweetalert2.all.min.js") ?>"></script>
@@ -579,11 +580,11 @@
 <!-- Form-options JS -->
 <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/form-options.js") ?>"></script>
 
- <!-- Message Notification -->
- <script src="<?php echo base_url(RECURSOS_PANEL_JS."/owns/message-notification.js") ?>"></script>
+<!-- Message Notification -->
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/message-notification.js") ?>"></script>
 
- <!-- Loader Generator -->
-  <script src="<?php echo base_url(RECURSOS_PANEL_JS."/owns/loader-generator.js") ?>"></script>
+<!-- Loader Generator -->
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/loader-generator.js") ?>"></script>
 
 <!-- JS específico -->
 <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/psicologos.js") ?>"></script>

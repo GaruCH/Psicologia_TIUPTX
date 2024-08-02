@@ -217,12 +217,11 @@ $("#formulario-psicologo-nuevo").validate({
             email: true,
             rangelength: [5, 70]
         },
-        edad: {
+        fecha_nacimiento: {
             required: true,
-            min: 15,
-            max: 99,
-            rangelength: [1, 2],
-            numeric: true
+            validDate: true,
+            ageMin18: true,
+            date: true
         },
         password:{
             required: true,
@@ -261,12 +260,11 @@ $("#formulario-psicologo-nuevo").validate({
             email: 'El correo electrónico debe tener el siguiente formato: ejemplo@dominio.com',
             rangelength: 'El correo electrónico no debe exceder los 70 caracteres.'
         },
-        edad: {
-            required: 'Se requiere la edad del psicólogo.',
-            min: "La edad mínima es 15",
-            max: "La edad máxima es 99",
-            rangelength: 'La edad no debe exceder los 2 caracteres.',
-            numeric: "Solo se permiten números"
+        fecha_nacimiento: {
+            required: 'Se requiere la fecha de nacimiento del psicólogo.',
+            validDate: 'Ingrese una fecha de nacimiento válida y que indique al menos 18 años de edad.',
+            ageMin18: 'Debes tener al menos 18 años.',
+            date: 'Ingrese una fecha válida.'
         },
         password: {
             required: 'Se requiere la contraseña para la cuenta del psicólogo.',
@@ -451,7 +449,7 @@ $(document).on('click', '.editar-psicologo', function(){
                 'masculino_editar': respuesta.data.sexo_usuario,
                 'femenino_editar': respuesta.data.sexo_usuario,
                 'email_editar': respuesta.data.email_usuario,
-                'edad_editar': respuesta.data.edad_usuario,
+                'fecha_nacimiento_editar': respuesta.data.fecha_nacimiento_usuario,
                 'id_psicologo_editar': respuesta.data.id_psicologo
             };
             
@@ -489,6 +487,53 @@ $(document).on('click', '#femenino_editar', function() {
 	}//end if no hay imagen cargada
 });//end onclick sexo femenino
 
+
+$.validator.addMethod("validDate", function(value, element) {
+    var today = new Date();
+    var dob = new Date(value);
+    var minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate()); // 18 años atrás
+
+    // Validar si la fecha de nacimiento es válida
+    if (isNaN(dob.getTime())) {
+        return false;
+    }
+
+    // Validar que la fecha de nacimiento no sea en el futuro
+    if (dob > today) {
+        return false;
+    }
+
+    // Validar que la fecha de nacimiento sea al menos 15 años atrás
+    if (dob < minDate) {
+        return false;
+    }
+
+    return true;
+}, "Ingrese una fecha de nacimiento válida y que indique al menos 18 años de edad.");
+
+// Validación Personalizada para Mayores de 18 Años
+$.validator.addMethod("ageMin18", function(value, element) {
+    var today = new Date();
+    var dob = new Date(value);
+    var minAge = 18;
+
+    // Validar si la fecha de nacimiento es válida
+    if (isNaN(dob.getTime())) {
+        return false;
+    }
+
+    // Calcular la edad
+    var age = today.getFullYear() - dob.getFullYear();
+    var monthDiff = today.getMonth() - dob.getMonth();
+
+    // Ajustar la edad si el mes de nacimiento aún no ha llegado
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+
+    return age >= minAge;
+}, "Debes tener al menos 18 años.");
+
 $("#formulario-psicologo-editar").validate({
     rules:{
         numero_trabajador_editar: {
@@ -515,12 +560,11 @@ $("#formulario-psicologo-editar").validate({
             email: true,
             rangelength: [5, 70]
         },
-        edad_editar: {
+        fecha_nacimiento_editar: {
             required: true,
-            min: 15,
-            max: 99,
-            rangelength: [1, 2],
-            numeric: true
+            validDate: true,
+            ageMin18: true,
+            date: true
         }
     },//end rules
     messages: {
@@ -549,12 +593,11 @@ $("#formulario-psicologo-editar").validate({
             email: 'El correo electrónico debe tener el siguiente formato: ejemplo@dominio.com',
             rangelength: 'El correo electrónico no debe exceder los 70 caracteres.'
         },
-        edad_editar: {
-            required: 'Se requiere la edad del psicólogo.',
-            min: "La edad mínima es 15",
-            max: "La edad máxima es 99",
-            rangelength: 'La edad no debe exceder los 2 caracteres.',
-            numeric: "Solo se permiten números"
+        fecha_nacimiento_editar: {
+            required: 'Se requiere la fecha de nacimiento del psicólogo.',
+            validDate: 'Ingrese una fecha de nacimiento válida y que indique al menos 18 años de edad.',
+            ageMin18: 'Debes tener al menos 18 años.',
+            date: 'Ingrese una fecha válida.'
         }
     },//end messages
     highlight: function (input) {

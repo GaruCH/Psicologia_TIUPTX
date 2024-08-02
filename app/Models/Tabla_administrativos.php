@@ -4,15 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Tabla_pacientes extends Model
+class Tabla_administrativos extends Model
 {
-    protected $table      = 'pacientes';
+    protected $table      = 'administrativos';
     protected $primaryKey = 'id_paciente';
     protected $returnType = 'object';
-    protected $allowedFields = [
-        'id_paciente','id_tipo_referencia', 'id_tipo_atencion', 'observaciones', 'numero_expediente', 'id_subcate'
-    ];
-
+    protected $allowedFields = ['id_paciente','numero_trabajador_administrativo', 'id_area'];
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
 
@@ -21,4 +18,5 @@ class Tabla_pacientes extends Model
     protected $deletedField  = 'eliminacion';
 
     
-}//End Model usuarios
+
+}//End Model dias

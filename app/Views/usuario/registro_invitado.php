@@ -68,11 +68,11 @@
                             <div class="col-12">
                                 <div class="card" id="loginform">
                                     <div class="card-body">
-                                        <h4 class="card-title">Registro Paciente - Alumno (a)</h4>
+                                        <h4 class="card-title">Registro Paciente - Invitado (a)</h4>
                                         <h5 class="card-subtitle mb-3 pb-3 border-bottom">Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>
                                         <?php
                                         $parametros = array('id' => 'formulario-paciente-nuevo');
-                                        echo form_open_multipart('registrar_paciente_alumno', $parametros);
+                                        echo form_open_multipart('registrar_paciente_invitado', $parametros);
                                         ?>
                                         <!-- Sección 1: Datos Generales -->
                                         <div id="section1">
@@ -185,25 +185,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4 mb-3">
-                                                    <label class="form-control-label">Matrícula: (<font color="red">*</font>)</label>
-                                                    <div class="form-floating mb-3">
-                                                        <?php
-                                                        $parametros = array(
-                                                            'type' => 'text',
-                                                            'class' => 'form-control',
-                                                            'id' => 'matricula',
-                                                            'name' => 'matricula',
-                                                            'placeholder' => 'Matrícula',
-                                                            'style' => 'background-color: #CC9933; color: #FFFFFF;',
-                                                            'required' => ''
-                                                        );
-                                                        echo form_input($parametros);
-                                                        ?>
-                                                        <div class="invalid-feedback"></div>
-                                                        <label for="matricula" style="color: #FFFFFF;"><i data-feather="hash" class="feather-sm text-white fill-white me-2"></i>Matrícula</label>
-                                                    </div>
-                                                </div>
+
 
                                             </div>
 
@@ -227,25 +209,26 @@
                                                     </div>
                                                 </div>
 
-
-                                                <div class="col-md-5 mb-3">
-                                                    <label class="form-control-label">Carrera: (<font color="red">*</font>)</label>
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-control-label">Identificador: (<font color="red">*</font>)</label>
                                                     <div class="form-floating mb-3">
                                                         <?php
-                                                        $parametros = [
-                                                            'class' => 'form-select',
-                                                            'id' => 'carrera',
+                                                        $parametros = array(
+                                                            'type' => 'text',
+                                                            'class' => 'form-control',
+                                                            'id' => 'identificador',
+                                                            'name' => 'identificador',
+                                                            'placeholder' => 'Matrícula',
                                                             'style' => 'background-color: #CC9933; color: #FFFFFF;',
-                                                            'required' => '',
-                                                        ];
-                                                        echo form_dropdown('carrera', $carreras, '', $parametros);
+                                                            'required' => ''
+                                                        );
+                                                        echo form_input($parametros);
                                                         ?>
                                                         <div class="invalid-feedback"></div>
-                                                        <label for="carrera" style="color: #FFFFFF;">
-                                                            <i class="fas fa-lg fa-graduation-cap text-white fill-white me-2"></i>Carrera
-                                                        </label>
+                                                        <label for="identificador" style="color: #FFFFFF;"><i data-feather="hash" class="feather-sm text-white fill-white me-2"></i>Identificador</label>
                                                     </div>
                                                 </div>
+
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <a href="<?= route_to('login') ?>" class="btn btn-secondary" style="background: #808080; color: #FFFFFF; border-color: #CCCCCC;">Cancelar</a>
@@ -358,7 +341,7 @@
         <script src="<?= base_url(RECURSOS_PANEL_PLUGINS . '/toastr/dist/build/toastr.min.js'); ?>"></script>
         <!-- Message Notification -->
         <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/message-notification.js") ?>"></script>
-        <script src="<?= base_url(RECURSOS_PANEL_JS . "/specifics/register_alumno.js") ?>"></script>
+        <script src="<?= base_url(RECURSOS_PANEL_JS . "/specifics/register_invitado.js") ?>"></script>
         <!-- Constants Js -->
         <script src="<?= base_url(RECURSOS_PANEL_JS . '/constants.js'); ?>"></script>
 

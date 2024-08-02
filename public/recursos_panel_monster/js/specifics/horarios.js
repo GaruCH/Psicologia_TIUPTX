@@ -57,7 +57,14 @@ $(document).on('click', '.estatus-horario', function() {
 $.validator.addMethod("timeLessThan", function(value, element, param) {
     let startTime = $(param).val();
     let endTime = value;
-    return this.optional(element) || startTime < endTime;
+
+    // Convertir las horas a minutos desde el inicio del día
+    function convertToMinutes(time) {
+        let [hours, minutes] = time.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
+
+    return this.optional(element) || convertToMinutes(startTime) < convertToMinutes(endTime);
 }, "La hora de entrada debe ser anterior a la hora de salida");
 
 // Método de validación para formato de hora (HH:MM)
@@ -72,14 +79,14 @@ $("#formulario-horario").validate({
         },
         hora_entrada: {
             required: true,
-            timeFormat: true, // Asegura que la entrada sea un tiempo válido en formato HH:MM
+            timeFormat: true // Asegura que la entrada sea un tiempo válido en formato HH:MM
         },
         hora_salida: {
             required: true,
             timeFormat: true, // Asegura que la salida sea un tiempo válido en formato HH:MM
             timeLessThan: '#hora_entrada' // Verifica que la hora de salida sea mayor que la hora de entrada
         }
-    }, //end rules
+    },
     messages: {
         dia: {
             required: 'Se requiere seleccionar un día.'
@@ -93,20 +100,19 @@ $("#formulario-horario").validate({
             timeFormat: 'Ingrese una hora válida en formato HH:MM',
             timeLessThan: 'La hora de salida debe ser posterior a la hora de entrada'
         }
-    }, //end messages
+    },
     highlight: function(input) {
         $(input).addClass('is-invalid');
         $(input).removeClass('is-valid');
-    }, //end highlight
+    },
     unhighlight: function(input) {
         $(input).removeClass('is-invalid');
         $(input).addClass('is-valid');
-    }, //end unhighlight
+    },
     errorPlacement: function(error, element) {
         $(element).next().append(error);
-    } //end errorPlacement
-}); //end validation
-
+    }
+});
 //INSERTAR HORARIO
 //================================================================
 document.getElementById('formulario-horario').addEventListener('submit', event => {
@@ -162,17 +168,23 @@ document.getElementById('formulario-horario').addEventListener('submit', event =
 //==============================================================================
 
 // Botón para guardar cambios
+// Función para convertir el tiempo a minutos
+const timeToMinutes = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+};
+
+// Botón para guardar cambios
 $(document).on('click', '#save-changes', function() {
     const updates = [];
     const cambios = [];
+    let valid = true;
 
     $('#table-horario').DataTable().rows().nodes().to$().each(function() {
         const row = $(this);
         const id = row.find('td').eq(0).text(); // Obtener el ID desde la primera columna
         const horaEntrada = row.find('td').eq(3).find('input').val();
         const horaSalida = row.find('td').eq(4).find('input').val();
-
-        
 
         if (id) {
             // Obtener valores actuales del servidor
@@ -181,7 +193,12 @@ $(document).on('click', '#save-changes', function() {
 
             // Verificar si los valores han cambiado
             if (horaEntrada !== currentHoraEntrada || horaSalida !== currentHoraSalida) {
-
+                // Validar que la hora de entrada no sea mayor que la de salida
+                if (timeToMinutes(horaEntrada) >= timeToMinutes(horaSalida)) {
+                    valid = false;
+                    mensaje_notificacion(`La hora de entrada (${horaEntrada}) no puede ser mayor o igual a la hora de salida (${horaSalida})`, 'danger', '¡Error de Validación!', 4000);
+                    return false; // Salir del each loop
+                }
 
                 cambios.push(id); // Registrar IDs de filas con cambios
                 updates.push({
@@ -193,7 +210,7 @@ $(document).on('click', '#save-changes', function() {
         }
     });
 
-    if (updates.length > 0) {
+    if (valid && updates.length > 0) {
         loader.setLoaderTitle('Actualizando horarios, por favor espere...');
         loader.setLoaderBody('Estamos actualizando los horarios. Esto puede tomar un momento.');
         loader.openLoader();

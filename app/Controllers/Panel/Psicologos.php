@@ -105,7 +105,7 @@ class Psicologos extends BaseController
                     $sub_array['sexo_psicologo'] = 'Mujer';
                 }
 
-                $sub_array['edad_psicologo'] = $psicologo->edad_usuario;
+                $sub_array['edad_psicologo'] = calcular_edad_persona($psicologo->fecha_nacimiento_usuario);
                 $sub_array['correo_psicologo'] = $psicologo->email_usuario;
                 if (isset($psicologo->eliminacion)) {
                     $acciones .= '<button type="button" class="btn btn-light-danger text-danger recover-psicologo btn-circle" id="recover-psicologo_' . $psicologo->id_psicologo . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Recuperar el psicólogo">
@@ -113,12 +113,12 @@ class Psicologos extends BaseController
                     						  </button>';
                 } //end if es un psicologo eliminado
                 else {
-                    if (($psicologo->estatus_psicologo) == ESTATUS_HABILITADO)
-                        $acciones .= '<button type="button" class="btn btn-success estatus-psicologo btn-circle" id="' . $psicologo->id_psicologo . '_' . $psicologo->estatus_psicologo . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Deshabilitar al psicólogo">
+                    if (($psicologo->estatus_usuario) == ESTATUS_HABILITADO)
+                        $acciones .= '<button type="button" class="btn btn-success estatus-psicologo btn-circle" id="' . $psicologo->id_psicologo . '_' . $psicologo->estatus_usuario . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Deshabilitar al psicólogo">
                                                         <i data-feather="toggle-right" class="feather fill-white"></i>
                                                   </button>';
                     else
-                        $acciones .= '<button type="button" class="btn btn-secondary estatus-psicologo btn-circle" id="' . $psicologo->id_psicologo . '_' . $psicologo->estatus_psicologo . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Habilitar al psicólogo">
+                        $acciones .= '<button type="button" class="btn btn-secondary estatus-psicologo btn-circle" id="' . $psicologo->id_psicologo . '_' . $psicologo->estatus_usuario. '" data-bs-toggle="tooltip" data-bs-placement="top" title="Habilitar al psicólogo">
                                                         <i data-feather="toggle-left" class="feather fill-white"></i>
                                                   </button>';
                     $acciones .= '&nbsp;&nbsp;&nbsp;';
@@ -130,7 +130,7 @@ class Psicologos extends BaseController
                                                     <i data-feather="unlock" class="feather feather-sm fill-white"></i><i data-feather="rotate-ccw" class="feather feather-sm fill-white" style="width: 12px; height: 12px;"></i>
                                               </button>';
                     $acciones .=  '&nbsp;&nbsp;&nbsp;';
-                    $acciones .=  '<button type="button" class="btn btn-danger eliminar-psicologo btn-circle" id="cambiarC_' . $psicologo->id_psicologo . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar al psicólogo">
+                    $acciones .=  '<button type="button" class="btn btn-danger eliminar-psicologo btn-circle" id="' . $psicologo->id_psicologo . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar al psicólogo">
                                                     <i data-feather="trash-2" class="feather fill-white"></i>
                                               </button>';
                 } //end else es un psicologo eliminado
@@ -147,8 +147,8 @@ class Psicologos extends BaseController
     public function estatus_psicologo()
     {
         if ($this->permitido) {
-            $tabla_psicologos = new \App\Models\Tabla_psicologos;
-            if ($tabla_psicologos->update($this->request->getPost('id'), array('estatus_psicologo' => $this->request->getPost('estatus')))) {
+            $tabla_usuarios = new \App\Models\Tabla_usuarios;
+            if ($tabla_usuarios->update($this->request->getPost('id'), array('estatus_usuario' => $this->request->getPost('estatus')))) {
                 return $this->response->setJSON(['error' => 0]);
             } //end if se actualiza estatus
             else {
@@ -409,7 +409,7 @@ class Psicologos extends BaseController
                 'ap_paterno_usuario' => $this->request->getPost('ap_paterno'),
                 'ap_materno_usuario' => $this->request->getPost('ap_materno'),
                 'sexo_usuario' => $this->request->getPost('sexo'),
-                'edad_usuario' => $this->request->getPost('edad'),
+                'fecha_nacimiento_usuario' => $this->request->getPost('fecha_nacimiento'),
                 'email_usuario' => $this->request->getPost('email'),
                 'id_rol' => ROL_PSICOLOGO['clave'],
                 'password_usuario' => hash('sha256', $this->request->getPost('confirm_password')),
@@ -548,7 +548,7 @@ class Psicologos extends BaseController
                 'ap_paterno_usuario' => $this->request->getPost('ap_paterno_editar'),
                 'ap_materno_usuario' => $this->request->getPost('ap_materno_editar'),
                 'sexo_usuario' => $this->request->getPost('sexo_editar'),
-                'edad_usuario' => $this->request->getPost('edad_editar'),
+                'fecha_nacimiento_usuario' => $this->request->getPost('fecha_nacimiento_editar'),
                 'email_usuario' => $this->request->getPost('email_editar'),
             ];
 

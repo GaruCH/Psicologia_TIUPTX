@@ -25,8 +25,8 @@ class Tabla_psicologos extends Model
         if ($rol_actual == ROL_SUPERADMIN['clave']) {
             $resultado = $this
                 ->select('id_psicologo, numero_trabajador_psicologo, psicologos.eliminacion,
-                          nombre_usuario,ap_paterno_usuario, ap_materno_usuario,
-                          sexo_usuario, email_usuario, edad_usuario, imagen_usuario')
+                          estatus_usuario ,nombre_usuario,ap_paterno_usuario, ap_materno_usuario,
+                          sexo_usuario, email_usuario, fecha_nacimiento_usuario, imagen_usuario')
                 ->join('usuarios', 'psicologos.id_psicologo = usuarios.id_usuario')
                 ->join('roles', 'usuarios.id_rol = roles.id_rol')
                 ->where('roles.id_rol', ROL_PSICOLOGO['clave'])
@@ -39,9 +39,9 @@ class Tabla_psicologos extends Model
         } //end if el rol actual es superadmin
         elseif ($rol_actual == ROL_ADMIN['clave']) {
             $resultado = $this
-                ->select('id_psicologo, numero_trabajador_psicologo,
+                ->select('id_psicologo, numero_trabajador_psicologo, estatus_usuario,
                           nombre_usuario, ap_paterno_usuario, ap_materno_usuario,
-                          sexo_usuario, email_usuario, edad_usuario, imagen_usuario')
+                          sexo_usuario, email_usuario, fecha_nacimiento_usuario, imagen_usuario')
                 ->join('usuarios', 'psicologos.id_psicologo = usuarios.id_usuario')
                 ->join('roles', 'usuarios.id_rol = roles.id_rol')
                 ->where('roles.id_rol', ROL_PSICOLOGO['clave'])  // Asegúrate de que esta constante exista y sea correcta
@@ -80,7 +80,7 @@ class Tabla_psicologos extends Model
         $resultado = $this
             ->select('id_psicologo, numero_trabajador_psicologo, 
                  nombre_usuario, ap_paterno_usuario, ap_materno_usuario,
-                  sexo_usuario, email_usuario, edad_usuario, imagen_usuario
+                  sexo_usuario, email_usuario, fecha_nacimiento_usuario, imagen_usuario
                   ')
             ->join('usuarios', 'psicologos.id_psicologo = usuarios.id_usuario')
             ->join('roles', 'usuarios.id_rol = roles.id_rol')

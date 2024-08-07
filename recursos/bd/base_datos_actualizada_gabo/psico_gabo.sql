@@ -22,7 +22,7 @@ CREATE TABLE roles (
 -- -- 749 : SUPERADMIN
 -- -- 846 : ADMIN
 -- -- 521 : PSICOLOGO
--- -- 496 : PACIENTE
+-- -- 496 : PACIENTE -
 
 
 INSERT INTO roles (creacion, actualizacion, eliminacion, estatus_rol, id_rol, rol) VALUES

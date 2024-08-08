@@ -26,6 +26,7 @@ class Horarios extends BaseController
             return $this->crear_vista("panel/horarios_psicologos", $this->cargar_datos());
         } //end if rol permitido
         else {
+            mensaje('No tienes permisos para acceder a esta sección.', DANGER_ALERT, '¡Acceso No Autorizado!');
             return redirect()->to(route_to('login'));
         } //end else rol no permitido
     } //end index

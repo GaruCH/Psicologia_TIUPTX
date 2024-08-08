@@ -250,8 +250,7 @@ class Register extends BaseController
                 'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
                 'tipo_notificacion' => 'info', // Tipo de notificación
                 'mensaje' => 'Se te ha asignado un nuevo paciente: ' . $usuario['nombre_usuario'] . ' ' . $usuario['ap_paterno_usuario'],
-                'leida' => 0, // 0 indica que la notificación no ha sido leída
-                'ruta' => route_to('administracion_horarios'), // URL a la que redirigirá la notificación
+                'leida' => 0 // 0 indica que la notificación no ha sido leída
             ];
 
             // Llamar a la función para crear la notificación
@@ -389,6 +388,17 @@ class Register extends BaseController
             // Insertar en la tabla historial_asignaciones
             $tabla_asignaciones->insert($asignacionData);
 
+            $notificacionData = [
+                'id_usuario' => $psicologoAsignado->id_usuario,
+                'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
+                'tipo_notificacion' => 'info', // Tipo de notificación
+                'mensaje' => 'Se te ha asignado un nuevo paciente: ' . $usuario['nombre_usuario'] . ' ' . $usuario['ap_paterno_usuario'],
+                'leida' => 0 // 0 indica que la notificación no ha sido leída
+            ];
+
+            // Llamar a la función para crear la notificación
+            crear_notificacion($notificacionData);
+
             // Obtener el usuario con la fecha de registro
             $usuarioConFecha = $tabla_usuarios->find($insertedUserId);
 
@@ -520,7 +530,7 @@ class Register extends BaseController
             // Insertar en la tabla historial_asignaciones
             $tabla_asignaciones->insert($asignacionData);
 
-            
+
             // Crear notificación para el psicólogo asignado
             // Datos de la notificación
             $notificacionData = [
@@ -528,8 +538,7 @@ class Register extends BaseController
                 'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
                 'tipo_notificacion' => 'info', // Tipo de notificación
                 'mensaje' => 'Se te ha asignado un nuevo paciente: ' . $usuario['nombre_usuario'] . ' ' . $usuario['ap_paterno_usuario'],
-                'leida' => 0, // 0 indica que la notificación no ha sido leída
-                'ruta' => route_to('administracion_horarios'), // URL a la que redirigirá la notificación
+                'leida' => 0 // 0 indica que la notificación no ha sido leída
             ];
 
             // Llamar a la función para crear la notificación

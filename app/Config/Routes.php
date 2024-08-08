@@ -64,14 +64,14 @@ $routes->get('/dashboard_paciente', 'Panel\Dashboard_paciente::index', ['as' => 
 $routes->get('/dashboard_psicologo', 'Panel\Dashboard_psicologo::index', ['as' => 'dashboard_psicologo']);
 //Usuarios
 $routes->get('/administracion_usuarios', 'Panel\Usuarios::index', ['as' => 'administracion_usuarios']);
-$routes->post('/estatus_usuario', 'Panel\Usuarios::estatus', ['as' => 'estatus_usuario']);
-$routes->post('/eliminar_usuario', 'Panel\Usuarios::eliminar', ['as' => 'eliminar_usuario']);
+$routes->get('/obtener_usuarios', 'Panel\Usuarios::generar_datatable_usuarios', ['as' => 'obtener_usuarios']);
+$routes->post('/estatus_usuario', 'Panel\Usuarios::estatus_usuario', ['as' => 'estatus_usuario']);
+$routes->post('/eliminar_usuario', 'Panel\Usuarios::eliminar_usuario', ['as' => 'eliminar_usuario']);
 $routes->post('/restaurar_usuario', 'Panel\Usuarios::recuperar_usuario', ['as' => 'restaurar_usuario']);
-$routes->post('/actualizar_password', 'Panel\Usuarios::actualizar_password', ['as' => 'actualizar_password']);
-$routes->get('/nuevo_usuario', 'Panel\Usuario_nuevo::index', ['as' => 'nuevo_usuario']);
-$routes->post('/registrar_usuario', 'Panel\Usuario_nuevo::registrar', ['as' => 'registrar_usuario']);
-$routes->get('/detalles_usuario/(:num)', 'Panel\Usuario_detalles::index/$1', ['as' => 'detalles_usuario']);
-$routes->post('/editar_usuario', 'Panel\Usuario_detalles::editar', ['as' => 'editar_usuario']);
+$routes->post('/actualizar_password_usuario', 'Panel\Usuarios::actualizar_password_usuario', ['as' => 'actualizar_password_usuario']);
+$routes->post('/registrar_usuario', 'Panel\Usuarios::registrar_usuario', ['as' => 'registrar_usuario']);
+$routes->get('/obtener_usuario/(:num)', 'Panel\Usuarios::obtener_datos_usuario/$1', ['as' => 'obtener_usuario']);
+$routes->post('/editar_usuario', 'Panel\Usuarios::editar_usuario', ['as' => 'editar_usuario']);
 //ejemplo
 $routes->get('/ejemplo', 'Panel\Ejemplo::index', ['as' => 'ejemplo']);
 //Psicologos

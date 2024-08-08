@@ -12,7 +12,7 @@ class Tabla_usuarios extends Model
     protected $returnType = 'object';
     protected $allowedFields = [
         'estatus_usuario', 'id_usuario', 'nombre_usuario', 'ap_paterno_usuario',
-        'ap_materno_usuario', 'sexo_usuario','fecha_nacimiento_usuario', 'email_usuario', 'password_usuario',
+        'ap_materno_usuario', 'sexo_usuario', 'fecha_nacimiento_usuario', 'email_usuario', 'password_usuario',
         'imagen_usuario', 'reset_token', 'reset_expires', 'id_rol', 'eliminacion'
     ];
     protected $useTimestamps = true;
@@ -23,17 +23,17 @@ class Tabla_usuarios extends Model
     protected $deletedField  = 'eliminacion';
 
     public function login($email = NULL, $password = NULL)
-{
-    $resultado = $this
-        ->select('estatus_usuario, id_usuario, nombre_usuario, ap_paterno_usuario,
+    {
+        $resultado = $this
+            ->select('estatus_usuario, id_usuario, nombre_usuario, ap_paterno_usuario,
                     ap_materno_usuario, sexo_usuario, email_usuario, imagen_usuario,
                     usuarios.id_rol AS clave_rol, roles.rol AS nombre_rol')
-        ->join('roles', 'usuarios.id_rol = roles.id_rol')
-        ->where('email_usuario', $email)
-        ->where('password_usuario', $password)  // Asegúrate de estar usando una función hash para la contraseña
-        ->first();
-    return $resultado;
-} //end login
+            ->join('roles', 'usuarios.id_rol = roles.id_rol')
+            ->where('email_usuario', $email)
+            ->where('password_usuario', $password)  // Asegúrate de estar usando una función hash para la contraseña
+            ->first();
+        return $resultado;
+    } //end login
 
     public function datatable_usuarios($id_usuario_actual = 0, $rol_actual = 0)
     {
@@ -46,6 +46,8 @@ class Tabla_usuarios extends Model
                 ->orderBy('nombre_usuario', 'ASC')
                 ->withDeleted()
                 ->findAll();
+
+            return $resultado;
         } //end if el rol actual es superadmin
         else {
             $resultado = $this
@@ -57,8 +59,10 @@ class Tabla_usuarios extends Model
                 ->where('roles.id_rol !=', ROL_ADMIN['clave'])
                 ->orderBy('nombre_usuario', 'ASC')
                 ->findAll();
+
+            return $resultado;
         } //end else el rol actual es superadmin
-        return $resultado;
+
     } //end datatable_usuarios
 
     public function existe_email($email = NULL)
@@ -85,7 +89,7 @@ class Tabla_usuarios extends Model
     {
         $resultado = $this
             ->select('id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario,
-                            sexo_usuario, email_usuario, imagen_usuario, id_rol')
+                            sexo_usuario, email_usuario, fecha_nacimiento_usuario, imagen_usuario, id_rol')
             ->where('id_usuario', $id_usuario)
             ->first();
         return $resultado;
@@ -116,7 +120,8 @@ class Tabla_usuarios extends Model
         return $opcion;
     } //end existe_email_excepto_actual
 
-    public function obtener_contraseña($email = NULL) {
+    public function obtener_contraseña($email = NULL)
+    {
 
         $resultado = $this
             ->select('password_usuario, estatus_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario, email_usuario')
@@ -124,9 +129,8 @@ class Tabla_usuarios extends Model
             ->first();
 
         return $resultado;
-        
     }
-    
+
     // Función para generar un token de restablecimiento
     public function generateResetToken($email)
     {
@@ -146,8 +150,8 @@ class Tabla_usuarios extends Model
     public function getUserByResetToken($token)
     {
         return $this->where('reset_token', $token)
-                    ->where('reset_expires >=', Time::now())
-                    ->first();
+            ->where('reset_expires >=', Time::now())
+            ->first();
     }
 
     // Función para restablecer la contraseña
@@ -166,14 +170,13 @@ class Tabla_usuarios extends Model
     }
 
     public function obtener_psicologos_activos()
-{
-    $resultado = $this
-        ->select('id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario')
-        ->join('psicologos p', 'id_usuario = p.id_psicologo')
-        ->where('estatus_usuario', ESTATUS_HABILITADO) 
-        ->findAll();
+    {
+        $resultado = $this
+            ->select('id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario')
+            ->join('psicologos p', 'id_usuario = p.id_psicologo')
+            ->where('estatus_usuario', ESTATUS_HABILITADO)
+            ->findAll();
 
-    return $resultado;
-}
-
+        return $resultado;
+    }
 }//End Model usuarios

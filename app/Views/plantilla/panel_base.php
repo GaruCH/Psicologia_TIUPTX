@@ -158,7 +158,7 @@
 															break;
 													}
 													?>
-													<a href="#" class="message-item d-flex align-items-center border-bottom px-3 py-2" data-bs-toggle="modal" data-bs-target="#notificacionModal" data-id="<?= $notificacion['id_notificacion'] ?>" data-titulo="<?= $notificacion['titulo_notificacion'] ?>" data-mensaje="<?= $notificacion['mensaje'] ?>" data-url="<?= $notificacion['ruta'] ?>" data-estado="<?= $notificacion['leida'] ?>" data-tipo="<?= $notificacion['tipo_notificacion'] ?>">
+													<a href="#" class="message-item d-flex align-items-center border-bottom px-3 py-2" data-bs-toggle="modal" data-bs-target="#notificacionModal" data-id="<?= $notificacion['id_notificacion'] ?>" data-titulo="<?= $notificacion['titulo_notificacion'] ?>" data-mensaje="<?= $notificacion['mensaje'] ?>" data-estado="<?= $notificacion['leida'] ?>" data-tipo="<?= $notificacion['tipo_notificacion'] ?>">
 														<span class="btn <?= $btnClass ?> text-white btn-circle">
 															<i data-feather="<?= $icon ?>" class="feather-sm fill-white"></i>
 														</span>

@@ -9,7 +9,7 @@ class Tabla_notificaciones extends Model
     protected $table = 'notificaciones';
     protected $primaryKey = 'id_notificacion';
 
-    protected $allowedFields = ['id_usuario', 'tipo_notificacion', 'titulo_notificacion', 'mensaje','ruta', 'leida'];
+    protected $allowedFields = ['id_usuario', 'tipo_notificacion', 'titulo_notificacion', 'mensaje', 'leida'];
 
     protected $useTimestamps = true;
     protected $createdField = 'creacion';
@@ -18,7 +18,7 @@ class Tabla_notificaciones extends Model
 
     public function obtener_notificacion_usuario($userId)
     {
-        return $this->select('id_notificacion, titulo_notificacion, tipo_notificacion, mensaje, leida, creacion as fecha, ruta')
+        return $this->select('id_notificacion, titulo_notificacion, tipo_notificacion, mensaje, leida, creacion as fecha')
             ->where('id_usuario', $userId)
             ->where('leida', ESTATUS_NO_LEIDA) // Añadido para filtrar notificaciones no leídas
             ->findAll();

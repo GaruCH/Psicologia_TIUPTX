@@ -22,7 +22,7 @@ CREATE TABLE roles (
 -- -- 749 : SUPERADMIN
 -- -- 846 : ADMIN
 -- -- 521 : PSICOLOGO
--- -- 496 : PACIENTE -
+-- -- 496 : PACIENTE
 
 
 INSERT INTO roles (creacion, actualizacion, eliminacion, estatus_rol, id_rol, rol) VALUES
@@ -201,7 +201,7 @@ CREATE TABLE notificaciones (
   titulo_notificacion VARCHAR(70) NOT NULL,
   tipo_notificacion VARCHAR(10) NOT NULL,
   mensaje TEXT NOT NULL,
-  confirmacion_notificacion TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0-> No leída, 1-> Leída',
+  leida TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0-> No leída, 1-> Leída',
   FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 

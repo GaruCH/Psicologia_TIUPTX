@@ -207,7 +207,8 @@ class Register extends BaseController
                 'id_paciente' => $insertedUserId,
                 'id_subcate' => SUBCATEGORIA_ALUMNO['clave'],
                 'id_tipo_referencia' => $this->request->getPost('referencia'),
-                'id_tipo_atencion' => TIPO_ATENCION_PRIMERA_VEZ['clave']
+                'id_tipo_atencion' => TIPO_ATENCION_PRIMERA_VEZ['clave'],
+                'numero_expediente' => $tabla_pacientes->generar_expediente()
             ];
 
             // Insertar en la tabla paciente
@@ -353,7 +354,8 @@ class Register extends BaseController
                 'id_paciente' => $insertedUserId,
                 'id_subcate' => SUBCATEGORIA_INVITADO['clave'],
                 'id_tipo_referencia' => $this->request->getPost('referencia'),
-                'id_tipo_atencion' => TIPO_ATENCION_PRIMERA_VEZ['clave']
+                'id_tipo_atencion' => TIPO_ATENCION_PRIMERA_VEZ['clave'],
+                'numero_expediente' => $tabla_pacientes->generar_expediente()
             ];
 
             // Insertar en la tabla paciente
@@ -494,7 +496,8 @@ class Register extends BaseController
                 'id_paciente' => $insertedUserId,
                 'id_subcate' => SUBCATEGORIA_EMPLEADO['clave'],
                 'id_tipo_referencia' => $this->request->getPost('referencia'),
-                'id_tipo_atencion' => TIPO_ATENCION_PRIMERA_VEZ['clave']
+                'id_tipo_atencion' => TIPO_ATENCION_PRIMERA_VEZ['clave'],
+                'numero_expediente' => $tabla_pacientes->generar_expediente()
             ];
 
             // Insertar en la tabla paciente

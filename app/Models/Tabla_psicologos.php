@@ -34,7 +34,6 @@ class Tabla_psicologos extends Model
                 ->orderBy('nombre_usuario', 'ASC')
                 ->withDeleted()  // Si necesitas incluir registros eliminados
                 ->findAll();
-
             return $resultado;
         } //end if el rol actual es superadmin
         elseif ($rol_actual == ROL_ADMIN['clave']) {
@@ -48,7 +47,6 @@ class Tabla_psicologos extends Model
                 ->where('usuarios.id_usuario !=', $id_usuario_actual)
                 ->orderBy('nombre_usuario', 'ASC')
                 ->findAll();
-
             return $resultado;
         }
     } //end datatable_psicologos

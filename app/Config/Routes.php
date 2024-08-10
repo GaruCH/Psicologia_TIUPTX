@@ -96,6 +96,11 @@ $routes->post('/editar_horario', 'Panel\Horarios::actualizar_horas', ['as' => 'e
 
 //Notificaciones
 $routes->post('/confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion']);
+
+//Pacientes_Psicologos
+$routes->get('/ver_asignaciones', 'Panel\Asignaciones::index', ['as' => 'ver_asignaciones']);
+$routes->get('/obtener_asignaciones', 'Panel\Asignaciones::generar_datatable_asignaciones', ['as' => 'obtener_asignaciones']);
+$routes->get('/obtener_paciente/(:num)', 'Panel\Asignaciones::obtener_datos_paciente/$1', ['as' => 'obtener_paciente']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

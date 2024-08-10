@@ -302,6 +302,7 @@ CREATE TABLE historial_asignaciones (
   id_historial INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   id_paciente INT(11) NOT NULL,
   id_psicologo INT(11) NOT NULL,
+  estatus_asignacion tinyint(1) NOT NULL DEFAULT 1 COMMENT '1-> Activo, -1-> Inactivo',
   fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   descripcion TEXT,
   FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,

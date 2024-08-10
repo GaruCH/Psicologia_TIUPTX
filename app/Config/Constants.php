@@ -196,7 +196,7 @@ define(
 
 //SUBCATEGORIA
 define("SUBCATEGORIA_ALUMNO",    array('nombre' => 'Alumno',          'clave' => '439'));
-define("SUBCATEGORIA_EMPLEADO",  array('nombre' => 'Empleado',        'clave' => '426'));
+define("SUBCATEGORIA_EMPLEADO",  array('nombre' => 'Administrativo',        'clave' => '426'));
 define("SUBCATEGORIA_INVITADO",  array('nombre' => 'Invitado',        'clave' => '411'));
 
 define(
@@ -260,6 +260,7 @@ define("TAREA_ADMIN_PSICOLOGOS", "tarea_admin_psicologos");
 //TAREAS PARA EL PSICOLOGO
 define("TAREA_PSICOLOGO_DASHBOARD", "tarea_psicologo_dashboard");
 define("TAREA_PSICOLOGO_HORARIOS", "tarea_psicologo_horarios");
+define("TAREA_PSICOLOGO_ASIGNACIONES", "tarea_psicologo_asignaciones");
 
 //******************************************************************************
 //***************************** PERMISOS DE LOS ROLES **************************
@@ -289,7 +290,8 @@ define(
     "PERMISOS_PSICOLOGO",
     array(
         TAREA_PSICOLOGO_DASHBOARD,
-        TAREA_PSICOLOGO_HORARIOS
+        TAREA_PSICOLOGO_HORARIOS,
+        TAREA_PSICOLOGO_ASIGNACIONES
     )
 );
 define(

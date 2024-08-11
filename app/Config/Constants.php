@@ -257,10 +257,11 @@ define("TAREA_PACIENTE_DASHBOARD", "tarea_paciente_dashboard");
 //TAREAS PARA EL ADMIN
 define("TAREA_ADMIN_DASHBOARD", "tarea_admin_dashboard");
 define("TAREA_ADMIN_PSICOLOGOS", "tarea_admin_psicologos");
+define("TAREA_ADMIN_ASIGNACIONES", "tarea_admin_asignaciones");
 //TAREAS PARA EL PSICOLOGO
 define("TAREA_PSICOLOGO_DASHBOARD", "tarea_psicologo_dashboard");
 define("TAREA_PSICOLOGO_HORARIOS", "tarea_psicologo_horarios");
-define("TAREA_PSICOLOGO_ASIGNACIONES", "tarea_psicologo_asignaciones");
+define("TAREA_PSICOLOGO_PACIENTES", "tarea_psicologo_pacientes");
 
 //******************************************************************************
 //***************************** PERMISOS DE LOS ROLES **************************
@@ -291,7 +292,7 @@ define(
     array(
         TAREA_PSICOLOGO_DASHBOARD,
         TAREA_PSICOLOGO_HORARIOS,
-        TAREA_PSICOLOGO_ASIGNACIONES
+        TAREA_PSICOLOGO_PACIENTES
     )
 );
 define(
@@ -299,5 +300,6 @@ define(
     array(
         TAREA_DASHBOARD,
         TAREA_ADMIN_PSICOLOGOS,
+        TAREA_ADMIN_ASIGNACIONES
     )
 );

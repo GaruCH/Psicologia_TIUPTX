@@ -21,7 +21,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="table-asignaciones" class="table table-striped table-bordered" style="width:100%" cellspacing="0">
+                    <table id="table-psicologo-pacientes" class="table table-striped table-bordered" style="width:100%" cellspacing="0">
                         <thead class="text-center">
                             <tr>
                                 <th class="special-cell">#</th>
@@ -238,5 +238,5 @@
 <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/loader-generator.js") ?>"></script>
 
 <!-- JS específico -->
-<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/asignaciones.js") ?>"></script>
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/psicologos_paciente.js") ?>"></script>
 <?= $this->endSection(); ?>

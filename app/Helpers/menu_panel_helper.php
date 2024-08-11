@@ -181,6 +181,15 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu_item['text'] = ' Psicólogos';
         $menu_item['submenu'] = array();
         $menu['psicologos'] = $menu_item;
+
+        //Sección Asignaciones
+        $menu_item = array();
+        $menu_item['is_active'] = false;
+        $menu_item['href'] = route_to('administracion_asignaciones');
+        $menu_item['icon'] = 'fas fa-list-alt';
+        $menu_item['text'] = ' Asignaciones';
+        $menu_item['submenu'] = array();
+        $menu['administracion_asignaciones'] = $menu_item;
     } elseif ($rol_actual == ROL_PSICOLOGO['clave']) {
 
         //Sección Dashboard
@@ -202,11 +211,11 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         
         //Sección Asignaciones
         $menu_item['is_active'] = false;
-        $menu_item['href'] = route_to('ver_asignaciones');
+        $menu_item['href'] = route_to('administracion_psicologo_pacientes');
         $menu_item['icon'] = 'fas fa-users';
         $menu_item['text'] = ' Pacientes';
         $menu_item['submenu'] = array();
-        $menu['ver_asignaciones'] = $menu_item;
+        $menu['administracion_psicologo_pacientes'] = $menu_item;
     } elseif ($rol_actual == ROL_PACIENTE['clave']) {
 
         //Sección Dashboard
@@ -307,6 +316,10 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
             case TAREA_ADMIN_PSICOLOGOS:
                 $menu['psicologos']['is_active'] = TRUE;
                 break;
+                //SECCIÓN ASIGNACIONES PSICOLOGOS
+            case TAREA_ADMIN_ASIGNACIONES:
+                $menu['administracion_asignaciones']['is_active'] = TRUE;
+                break;
             default:
                 break;
         } //end switch tarea actual
@@ -321,8 +334,8 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
                 $menu['administracion_horarios']['is_active'] = TRUE;
                 break;
                 //SECCIÓN HORARIO
-            case TAREA_PSICOLOGO_ASIGNACIONES:
-                $menu['ver_asignaciones']['is_active'] = TRUE;
+            case TAREA_PSICOLOGO_PACIENTES:
+                $menu['administracion_psicologo_pacientes']['is_active'] = TRUE;
                 break;
             default:
                 break;

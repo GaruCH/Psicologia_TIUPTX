@@ -62,7 +62,7 @@ $routes->post('/editar_password', 'Panel\Password::actualizar', ['as' => 'editar
 $routes->get('/dashboard', 'Panel\Dashboard::index', ['as' => 'dashboard']);
 $routes->get('/dashboard_paciente', 'Panel\Dashboard_paciente::index', ['as' => 'dashboard_paciente']);
 $routes->get('/dashboard_psicologo', 'Panel\Dashboard_psicologo::index', ['as' => 'dashboard_psicologo']);
-//Usuarios
+//Usuarios - Superadmin
 $routes->get('/administracion_usuarios', 'Panel\Usuarios::index', ['as' => 'administracion_usuarios']);
 $routes->get('/obtener_usuarios', 'Panel\Usuarios::generar_datatable_usuarios', ['as' => 'obtener_usuarios']);
 $routes->post('/estatus_usuario', 'Panel\Usuarios::estatus_usuario', ['as' => 'estatus_usuario']);
@@ -74,7 +74,7 @@ $routes->get('/obtener_usuario/(:num)', 'Panel\Usuarios::obtener_datos_usuario/$
 $routes->post('/editar_usuario', 'Panel\Usuarios::editar_usuario', ['as' => 'editar_usuario']);
 //ejemplo
 $routes->get('/ejemplo', 'Panel\Ejemplo::index', ['as' => 'ejemplo']);
-//Psicologos
+//Psicologos - Admin
 $routes->get('/administracion_psicologos', 'Panel\Psicologos::index', ['as' => 'administracion_psicologos']);
 $routes->get('/obtener_psicologos', 'Panel\Psicologos::generar_datatable_psicologos', ['as' => 'obtener_psicologos']);
 $routes->post('/estatus_psicologo', 'Panel\Psicologos::estatus_psicologo', ['as' => 'estatus_psicologo']);
@@ -85,9 +85,13 @@ $routes->post('/registrar_psicologo', 'Panel\Psicologos::registrar_psicologo', [
 $routes->get('/obtener_psicologo/(:num)', 'Panel\Psicologos::obtener_datos_psicologo/$1', ['as' => 'obtener_psicologo']);
 $routes->post('/editar_psicologo', 'Panel\Psicologos::editar_psicologo', ['as' => 'editar_psicologo']);
 
+//Cambiar asignacion de pacientes - Admin
+$routes->get('/administracion_asignaciones', 'Panel\Asignaciones::index', ['as' => 'administracion_asignaciones']);
+$routes->get('/obtener_asignaciones', 'Panel\Asignaciones::generar_datatable_asignaciones', ['as' => 'obtener_asignaciones']);
+
 //Paciente
 
-//Horarios_Psicologos
+//Horarios de Psicologos - Psicólogo
 $routes->get('/administracion_horarios', 'Panel\Horarios::index', ['as' => 'administracion_horarios']);
 $routes->get('/obtener_horario', 'Panel\Horarios::generar_datatable_horario', ['as' => 'obtener_horario']);
 $routes->post('/estatus_horario', 'Panel\Horarios::estatus_horario', ['as' => 'estatus_horario']);
@@ -98,9 +102,9 @@ $routes->post('/editar_horario', 'Panel\Horarios::actualizar_horas', ['as' => 'e
 $routes->post('/confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion']);
 
 //Pacientes_Psicologos
-$routes->get('/ver_asignaciones', 'Panel\Asignaciones::index', ['as' => 'ver_asignaciones']);
-$routes->get('/obtener_asignaciones', 'Panel\Asignaciones::generar_datatable_asignaciones', ['as' => 'obtener_asignaciones']);
-$routes->get('/obtener_paciente/(:num)', 'Panel\Asignaciones::obtener_datos_paciente/$1', ['as' => 'obtener_paciente']);
+$routes->get('/administracion_psicologo_pacientes', 'Panel\Psicologos_paciente::index', ['as' => 'administracion_psicologo_pacientes']);
+$routes->get('/obtener_psicologo_pacientes', 'Panel\Psicologos_paciente::generar_datatable_psicologo_pacientes', ['as' => 'obtener_psicologo_pacientes']);
+$routes->get('/obtener_psicologo_paciente/(:num)', 'Panel\Psicologos_paciente::obtener_datos_paciente/$1', ['as' => 'obtener_psicologo_paciente']);
 /*
  * --------------------------------------------------------------------
  * Additional Routing

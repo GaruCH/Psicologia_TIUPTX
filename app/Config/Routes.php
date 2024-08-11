@@ -88,7 +88,8 @@ $routes->post('/editar_psicologo', 'Panel\Psicologos::editar_psicologo', ['as' =
 //Cambiar asignacion de pacientes - Admin
 $routes->get('/administracion_asignaciones', 'Panel\Asignaciones::index', ['as' => 'administracion_asignaciones']);
 $routes->get('/obtener_asignaciones', 'Panel\Asignaciones::generar_datatable_asignaciones', ['as' => 'obtener_asignaciones']);
-
+$routes->get('/obtener_asignacion/(:num)', 'Panel\Asignaciones::obtener_datos_asignacion/$1', ['as' => 'obtener_asignacion']);
+$routes->post('/editar_asignacion', 'Panel\Asignaciones::actualizar_asignacion', ['as' => 'editar_asignacion']);
 //Paciente
 
 //Horarios de Psicologos - Psicólogo

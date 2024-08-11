@@ -54,15 +54,13 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>
-
-                    <br>
                     <div class="row">
 
                         <!-- Numero de trabajador -->
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-control-label">Numero de trabajador:</label>
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="numero_trabajador" name="numero_trabajador" placeholder="Numero de trabajador" readonly>
+                                <input type="text" class="form-control" id="numero_trabajador" name="numero_trabajador" placeholder="Numero de trabajador" readonly >
                                 <label><i data-feather="user" class="feather-sm text-dark fill-white me-2"></i>Numero de trabajador</label>
                             </div>
                         </div>
@@ -72,17 +70,16 @@
                             <div class="form-floating mb-3">
                                 <?php
                                 $parametros = [
-
                                     'class' => 'form-select',
-                                    'id' => 'id_psicologo',
-                                    'name' => 'id_psicologo',
+                                    'id' => 'psicologo',
+                                    'name' => 'psicologo',
                                 ];
-                                echo form_dropdown('id_psicologo', $psicologos, '', $parametros);
+                                echo form_dropdown('psicologo', $psicologos, '', $parametros);
                                 ?>
 
                                 <div class="invalid-feedback"></div>
-                                <label for="id_psicologo">
-                                    <i class="fas fa-lg fa-calendar-o text-dark fill-white me-2"></i>
+                                <label for="psicologo">
+                                    <i class="fas fa-lg fa-user-md text-dark fill-white me-2"></i>
                                     Psicólogo
                                 </label>
                             </div>
@@ -98,13 +95,13 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                        <label class="form-control-label">Nombre del paciente:</label>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="nombre_paciente" name="nombre_paciente" placeholder="Nombre del Paciente" readonly>
-                            <label><i data-feather="user" class="feather-sm text-dark fill-white me-2"></i>Nombre del Paciente</label>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-control-label">Nombre del paciente:</label>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="nombre_paciente" name="nombre_paciente" placeholder="Nombre del Paciente" readonly>
+                                <label><i data-feather="user" class="feather-sm text-dark fill-white me-2"></i>Nombre del Paciente</label>
+                            </div>
                         </div>
-                    </div>
 
                     </div>
                 </div>
@@ -116,12 +113,22 @@
                         <?php
                         $parametros = array(
                             'type' => 'hidden',
-                            'id' => 'id_asignacion_editar',
-                            'name' => 'id_asignacion_editar',
+                            'id' => 'id_historial',
+                            'name' => 'id_historial',
                             'value' => ''
                         );
                         echo form_input($parametros);
-                        ?></i> Guardar cambios</button>
+                        ?>
+                        <?php
+                        $parametros = array(
+                            'type' => 'hidden',
+                            'id' => 'id_paciente',
+                            'name' => 'id_paciente',
+                            'value' => ''
+                        );
+                        echo form_input($parametros);
+                        ?>
+                        </i> Guardar cambios</button>
             </div>
             <?= form_close() ?>
         </div>

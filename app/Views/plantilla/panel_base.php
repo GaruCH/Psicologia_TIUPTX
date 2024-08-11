@@ -140,20 +140,20 @@
 												<?php foreach ($notificaciones as $notificacion) : ?>
 													<?php
 													// Define styles based on type of notification
-													$btnClass = 'btn-light-info'; // Default
+													$btnClass = 'btn-info'; // Default
 													$icon = 'info'; // Default icon
 
 													switch ($notificacion['tipo_notificacion']) {
 														case 'success':
-															$btnClass = 'btn-light-success';
+															$btnClass = 'btn-success';
 															$icon = 'check';
 															break;
 														case 'warning':
-															$btnClass = 'btn-light-warning';
+															$btnClass = 'btn-warning';
 															$icon = 'alert-triangle';
 															break;
 														case 'danger':
-															$btnClass = 'btn-light-danger';
+															$btnClass = 'btn-danger';
 															$icon = 'alert-octagon';
 															break;
 													}
@@ -306,20 +306,20 @@
 									<?php
 									// Usar el último elemento de notificaciones para mostrar en el modal
 									$notificacion = end($notificaciones);
-									$btnClass = 'btn-light-info'; // Default
+									$btnClass = 'btn-info'; // Default
 									$icon = 'info'; // Default icon
 
 									switch ($notificacion['tipo_notificacion']) {
 										case 'success':
-											$btnClass = 'btn-light-success';
+											$btnClass = 'btn-success';
 											$icon = 'check';
 											break;
 										case 'warning':
-											$btnClass = 'btn-light-warning';
+											$btnClass = 'btn btn-warning';
 											$icon = 'alert-triangle';
 											break;
 										case 'danger':
-											$btnClass = 'btn-light-danger';
+											$btnClass = 'btn-danger';
 											$icon = 'alert-octagon';
 											break;
 									}

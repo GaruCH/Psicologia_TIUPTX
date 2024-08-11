@@ -74,7 +74,7 @@ INSERT INTO tipos_referencias (creacion, actualizacion, eliminacion, estatus_tip
 
 -- SUBCATEGORIAS 
 -- -- 439 : ALUMNO
--- -- 426 : EMPLEADO
+-- -- 426 : ADMINISTRATIVO
 -- -- 411 : INVITADO
 
 CREATE TABLE subcategorias (

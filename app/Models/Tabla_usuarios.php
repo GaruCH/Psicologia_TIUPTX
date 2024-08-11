@@ -172,7 +172,7 @@ class Tabla_usuarios extends Model
     public function obtener_psicologos_activos()
     {
         $resultado = $this
-            ->select('id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario')
+            ->select('id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario, numero_trabajador_psicologo')
             ->join('psicologos p', 'id_usuario = p.id_psicologo')
             ->where('estatus_usuario', ESTATUS_HABILITADO)
             ->findAll();

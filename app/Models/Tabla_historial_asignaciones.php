@@ -18,11 +18,11 @@ class Tabla_historial_asignaciones extends Model
     protected $deletedField  = 'eliminacion';
 
     public function datatable_asignaciones($rol_actual = 0)
-{
-    if ($rol_actual == ROL_ADMIN['clave']) {
-        $resultado = $this
-            ->select(
-                '
+    {
+        if ($rol_actual == ROL_ADMIN['clave']) {
+            $resultado = $this
+                ->select(
+                    '
                 historial_asignaciones.id_historial,
                 historial_asignaciones.id_paciente,
                 historial_asignaciones.id_psicologo,
@@ -39,21 +39,21 @@ class Tabla_historial_asignaciones extends Model
                 administrativos.numero_trabajador_administrativo,
                 invitados.identificador
                 '
-            )
-            ->join('alumnos', 'alumnos.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
-            ->join('invitados', 'invitados.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
-            ->join('administrativos', 'administrativos.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
-            ->join('psicologos', 'psicologos.id_psicologo = historial_asignaciones.id_psicologo')
-            ->join('pacientes', 'pacientes.id_paciente = historial_asignaciones.id_paciente')
-            ->join('usuarios as paciente', 'paciente.id_usuario = historial_asignaciones.id_paciente')
-            ->join('usuarios as psicologo', 'psicologo.id_usuario = historial_asignaciones.id_psicologo')
-            ->where('historial_asignaciones.estatus_asignacion', 1) // Solo asignaciones activas
-            ->orderBy('paciente.nombre_usuario', 'ASC')
-            ->findAll();
+                )
+                ->join('alumnos', 'alumnos.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
+                ->join('invitados', 'invitados.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
+                ->join('administrativos', 'administrativos.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
+                ->join('psicologos', 'psicologos.id_psicologo = historial_asignaciones.id_psicologo')
+                ->join('pacientes', 'pacientes.id_paciente = historial_asignaciones.id_paciente')
+                ->join('usuarios as paciente', 'paciente.id_usuario = historial_asignaciones.id_paciente')
+                ->join('usuarios as psicologo', 'psicologo.id_usuario = historial_asignaciones.id_psicologo')
+                ->where('historial_asignaciones.estatus_asignacion', 1) // Solo asignaciones activas
+                ->orderBy('paciente.nombre_usuario', 'ASC')
+                ->findAll();
 
-        return $resultado;
-    }
-} //end obtener_historial_asignaciones
+            return $resultado;
+        }
+    } //end obtener_historial_asignaciones
 
 
     public function datatable_pacientes_asignados($id_psicologo)
@@ -122,4 +122,34 @@ class Tabla_historial_asignaciones extends Model
         return $resultado;
     }
 
+    public function obtener_asignacion($id_asignacion = 0)
+    {
+
+        $resultado = $this
+            ->select('
+            historial_asignaciones.id_historial,
+            historial_asignaciones.id_paciente,
+            paciente.nombre_usuario as nombre_paciente,
+            paciente.ap_paterno_usuario as ap_paterno_paciente,
+            paciente.ap_materno_usuario as ap_materno_paciente,
+            psicologos.numero_trabajador_psicologo,
+            psicologos.id_psicologo,
+            administrativos.numero_trabajador_administrativo,
+            pacientes.id_subcate,
+            alumnos.matricula,
+            administrativos.numero_trabajador_administrativo,
+            invitados.identificador
+        ')
+            ->join('alumnos', 'alumnos.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
+            ->join('invitados', 'invitados.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
+            ->join('administrativos', 'administrativos.id_paciente = historial_asignaciones.id_paciente', 'left') // Usa LEFT JOIN si los datos no siempre están presentes
+            ->join('psicologos', 'psicologos.id_psicologo = historial_asignaciones.id_psicologo')
+            ->join('pacientes', 'pacientes.id_paciente = historial_asignaciones.id_paciente')
+            ->join('usuarios as paciente', 'paciente.id_usuario = historial_asignaciones.id_paciente')
+            ->join('usuarios as psicologo', 'psicologo.id_usuario = historial_asignaciones.id_psicologo')
+            ->where('historial_asignaciones.id_historial', $id_asignacion)
+            ->first();
+
+        return $resultado;
+    }
 }//End Model roles

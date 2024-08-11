@@ -10,7 +10,12 @@ class Tabla_pacientes extends Model
     protected $primaryKey = 'id_paciente';
     protected $returnType = 'object';
     protected $allowedFields = [
-        'id_paciente', 'id_tipo_referencia', 'id_tipo_atencion', 'observaciones', 'numero_expediente', 'id_subcate'
+        'id_paciente',
+        'id_tipo_referencia',
+        'id_tipo_atencion',
+        'observaciones',
+        'numero_expediente',
+        'id_subcate'
     ];
 
     protected $useTimestamps = true;
@@ -50,5 +55,21 @@ class Tabla_pacientes extends Model
 
         // Retornar el nuevo número de expediente
         return "SP{$contador_formateado}-{$anio_actual}";
+    }
+
+    public function obtener_paciente($id_paciente = 0)
+    {
+        $resultado = $this
+            ->select('
+            u.id_usuario,
+            u.nombre_usuario,
+            u.ap_paterno_usuario,
+            u.ap_materno_usuario
+        ')
+            ->join('usuarios u', 'u.id_usuario = pacientes.id_paciente') // Asegúrate de usar un alias para la tabla
+            ->where('pacientes.id_paciente', $id_paciente)
+            ->first();
+
+        return $resultado;
     }
 }//End Model usuarios

@@ -113,8 +113,8 @@
                         <?php
                         $parametros = array(
                             'type' => 'hidden',
-                            'id' => 'id_historial',
-                            'name' => 'id_historial',
+                            'id' => 'id_asignacion',
+                            'name' => 'id_asignacion',
                             'value' => ''
                         );
                         echo form_input($parametros);

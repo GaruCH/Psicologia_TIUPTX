@@ -91,7 +91,7 @@ class Psicologos_paciente extends BaseController
 	{
 		if ($this->permitido) {
 			$session = session();
-			$tabla_asignaciones = new \App\Models\Tabla_historial_asignaciones;
+			$tabla_asignaciones = new \App\Models\Tabla_asignaciones;
 			$pacientes = $tabla_asignaciones->datatable_pacientes_asignados($session->id_usuario);
 			$data = array();
 			$count = 0;
@@ -166,7 +166,7 @@ class Psicologos_paciente extends BaseController
     {
         if ($this->permitido) {
 
-            $tabla_asignaciones = new \App\Models\Tabla_historial_asignaciones;
+            $tabla_asignaciones = new \App\Models\Tabla_asignaciones;
             $paciente = $tabla_asignaciones->obtener_paciente_asignado($id_paciente);
 
             if ($paciente != NULL) {

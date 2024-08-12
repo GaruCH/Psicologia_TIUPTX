@@ -98,7 +98,7 @@ class Asignaciones extends BaseController
     {
         if ($this->permitido) {
             $session = session();
-            $tabla_asignaciones = new \App\Models\Tabla_historial_asignaciones;
+            $tabla_asignaciones = new \App\Models\Tabla_asignaciones;
             $asignaciones = $tabla_asignaciones->datatable_asignaciones($session->rol_actual['clave']);
             $data = array();
             $count = 0;
@@ -123,7 +123,7 @@ class Asignaciones extends BaseController
 
                 $sub_array['fecha_asignacion'] = $asignacion->fecha_asignacion;
 
-                $acciones .=  '<button type="button" class="btn btn-warning editar-asignacion btn-circle" id="editar-asignacion_' . $asignacion->id_historial . '" data-bs-toggle="tooltip" data-bs-target="#editar-asignacion" data-bs-placement="top" title="Editar asignacion">
+                $acciones .=  '<button type="button" class="btn btn-warning editar-asignacion btn-circle" id="editar-asignacion_' . $asignacion->id_asignacion . '" data-bs-toggle="tooltip" data-bs-target="#editar-asignacion" data-bs-placement="top" title="Editar asignacion">
                                                     <i data-feather="edit-3" class="feather fill-white"></i>
                                               </button>';
                 $acciones .= '&nbsp;&nbsp;&nbsp;';
@@ -145,7 +145,7 @@ class Asignaciones extends BaseController
     {
         if ($this->permitido) {
 
-            $tabla_asignaciones = new \App\Models\Tabla_historial_asignaciones;
+            $tabla_asignaciones = new \App\Models\Tabla_asignaciones;
             $asignacion = $tabla_asignaciones->obtener_asignacion($id_asignacion);
 
             if ($asignacion != NULL) {
@@ -164,12 +164,12 @@ class Asignaciones extends BaseController
     {
         if ($this->permitido) {
             $mensaje = array();
-            $id_historial = $this->request->getPost('id_historial');
+            $id_asignacion = $this->request->getPost('id_asignacion');
             $nuevo_psicologo_id = $this->request->getPost('psicologo');
             $id_paciente = $this->request->getPost('id_paciente');
 
             // Verificar que el id_asignacion y nuevo_psicologo_id estén presentes
-            if (!$id_historial || !$nuevo_psicologo_id || !$id_paciente) {
+            if (!$id_asignacion || !$nuevo_psicologo_id || !$id_paciente) {
                 $mensaje['mensaje'] = 'Faltan datos necesarios para realizar la actualización.';
                 $mensaje['titulo'] = '¡Error en la solicitud!';
                 $mensaje['error'] = 4;
@@ -178,6 +178,7 @@ class Asignaciones extends BaseController
                 return $this->response->setJSON($mensaje);
             }
 
+            $tabla_asignacion = new \App\Models\Tabla_asignaciones;
             $tabla_historial = new \App\Models\Tabla_historial_asignaciones;
 
             // Iniciar transacción
@@ -186,7 +187,7 @@ class Asignaciones extends BaseController
 
             try {
                 // Obtener la asignación original para verificar el psicólogo
-                $asignacion_original = $tabla_historial->find($id_historial);
+                $asignacion_original = $tabla_asignacion->find($id_asignacion);
 
                 if (!$asignacion_original) {
                     throw new \Exception('No se encontró la asignación original.');
@@ -202,63 +203,67 @@ class Asignaciones extends BaseController
                     return $this->response->setJSON($mensaje);
                 }
 
-                // 1. Actualizar el estado de la asignación original
-                $result = $tabla_historial->update($id_historial, ['estatus_asignacion' => -1]);
+                // 1. Crear un registro en el historial para la asignación original
+                $historial_data_original = [
+                    'id_asignacion' => $id_asignacion,
+                    'estatus_asignacion' => -1,
+                    'fecha_historial' => date('Y-m-d H:i:s'),
+                    'descripcion' => 'Asignación cambiada desde el sistema.',
+                ];
+
+                $tabla_historial->insert($historial_data_original);
 
                 $tabla_pacientes = new \App\Models\Tabla_pacientes();
                 $paciente = $tabla_pacientes->obtener_paciente($id_paciente);
 
                 $notificacionOriginalData = [
                     'id_usuario' => $asignacion_original->id_psicologo,
-                    'titulo_notificacion' => 'Paciente Desasignado', 
-                    'tipo_notificacion' => 'warning', 
-                    'mensaje' => 'Se te ha desasignado un paciente: ' . 
-                                 $paciente->nombre_usuario . ' ' . 
-                                 $paciente->ap_paterno_usuario . ' ' . 
-                                 $paciente->ap_materno_usuario,
-                    'leida' => 0 
+                    'titulo_notificacion' => 'Paciente Desasignado',
+                    'tipo_notificacion' => 'warning',
+                    'mensaje' => 'Se te ha desasignado un paciente: ' .
+                        $paciente->nombre_usuario . ' ' .
+                        $paciente->ap_paterno_usuario . ' ' .
+                        $paciente->ap_materno_usuario,
+                    'leida' => 0
                 ];
-            
+
                 // Llamar a la función para crear la notificación
                 crear_notificacion($notificacionOriginalData);
 
-                if (!$result) {
-                    throw new \Exception('Error al actualizar la asignación original.');
-                }
-
-                // 2. Crear una nueva asignación
+                // 2. Actualizar la asignación original con el nuevo psicólogo
                 $nueva_asignacion_data = [
-                    'id_paciente' => $id_paciente,
                     'id_psicologo' => $nuevo_psicologo_id,
-                    'estatus_asignacion' => 1, // Estado activo para la nueva asignación
-                    'fecha_asignacion' => date('Y-m-d H:i:s'),
+                ];
+
+                $tabla_asignacion->update($id_asignacion, $nueva_asignacion_data);
+
+                // 1. Crear un registro en el historial para la nueva asignación 
+                $historial_data_nuevo = [
+                    'id_asignacion' => $id_asignacion,
+                    'estatus_asignacion' => 1,
+                    'fecha_historial' => date('Y-m-d H:i:s'),
                     'descripcion' => 'Asignación cambiada desde el sistema.',
                 ];
 
-               
+                $tabla_historial->insert($historial_data_nuevo);
+
+                // Crear notificación para el psicólogo asignado
+                // Datos de la notificación
+                $notificacionData = [
+                    'id_usuario' => $nuevo_psicologo_id,
+                    'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
+                    'tipo_notificacion' => 'info', // Tipo de notificación
+                    'mensaje' => 'Se te ha asignado un nuevo paciente: ' .
+                        $paciente->nombre_usuario . ' ' .
+                        $paciente->ap_paterno_usuario . ' ' .
+                        $paciente->ap_materno_usuario,
+                    'leida' => 0 // 0 indica que la notificación no ha sido leída
+                ];
+
+                // Llamar a la función para crear la notificación
+                crear_notificacion($notificacionData);
+
                 
-                    // Crear notificación para el psicólogo asignado
-                    // Datos de la notificación
-                    $notificacionData = [
-                        'id_usuario' => $nuevo_psicologo_id,
-                        'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
-                        'tipo_notificacion' => 'info', // Tipo de notificación
-                        'mensaje' => 'Se te ha asignado un nuevo paciente: ' . 
-                                     $paciente->nombre_usuario . ' ' . 
-                                     $paciente->ap_paterno_usuario . ' ' . 
-                                     $paciente->ap_materno_usuario,
-                        'leida' => 0 // 0 indica que la notificación no ha sido leída
-                    ];
-                
-                    // Llamar a la función para crear la notificación
-                    crear_notificacion($notificacionData);
-
-                $insertedId = $tabla_historial->insert($nueva_asignacion_data);
-
-                if (!$insertedId) {
-                    throw new \Exception('Error al insertar la nueva asignación.');
-                }
-
                 // Confirmar transacción
                 $db->transCommit();
 

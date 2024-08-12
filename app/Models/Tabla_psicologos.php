@@ -88,6 +88,28 @@ class Tabla_psicologos extends Model
         return $resultado;
     } //end obtener_psicologo
 
+    
+    public function existe_numero_trabajador($numero_trabajador = NULL)
+    {
+        $resultado = $this
+            ->select('numero_trabajador_psicologo, eliminacion')
+            ->where('numero_trabajador_psicologo', $numero_trabajador)
+            ->withDeleted()
+            ->first();
+        $opcion = -1;
+        if ($resultado != NULL) {
+            if ($resultado->eliminacion == null) {
+                $opcion = 2;
+            } //end if email no eliminado
+            else {
+                $opcion = -100;
+            } //end else
+        } //end if existe registro
+
+        return $opcion;
+    } //end existe_email
+
+
 
     public function existe_email_excepto_actual($email = NULL, $id_usuario = 0)
     {

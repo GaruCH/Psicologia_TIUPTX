@@ -418,7 +418,7 @@ class Psicologos extends BaseController
 
             // Verificar si el correo ya existe
             $opcion = $tabla_usuarios->existe_email($usuario['email_usuario']);
-
+            
             if ($opcion == 2 || $opcion == -100) {
                 if ($opcion == 2) {
                     $mensaje['mensaje'] = 'El correo proporcionado ya está siendo usado por otro psicologo.';
@@ -432,6 +432,8 @@ class Psicologos extends BaseController
                 $mensaje['timer_message'] = 3500;
                 return $this->response->setJSON($mensaje);
             }
+            
+            
 
             if (!empty($this->request->getFile('imagen_perfil')) && $this->request->getFile('imagen_perfil')->getSize() > 0) {
                 helper('upload_files');
@@ -457,6 +459,21 @@ class Psicologos extends BaseController
                     'numero_trabajador_psicologo' => $this->request->getPost('numero_trabajador'),
                 ];
 
+                $opcion1 = $tabla_psicologos->existe_numero_trabajador($psicologoData['numero_trabajador_psicologo']);
+                if ($opcion1 == 2 || $opcion1 == -100) {
+                    if ($opcion1 == 2) {
+                        $mensaje['mensaje'] = 'El numero de trabajador proporcionado ya está registrado.';
+                        $mensaje['titulo'] = '¡Numero de trabajador en uso!';
+                    } elseif ($opcion1 == -100) {
+                        $mensaje['mensaje'] = 'El numero de trabajador se encuentra en el histórico de numeros de trabajador eliminados.';
+                        $mensaje['titulo'] = '¡Numero de trabajador en uso!';
+                    }
+                    $mensaje['error'] = 4;
+                    $mensaje['tipo_mensaje'] = WARNING_ALERT;
+                    $mensaje['timer_message'] = 3500;
+                    return $this->response->setJSON($mensaje);
+                }
+                
                 // Insertar en la tabla paciente
                 $tabla_psicologos->insert($psicologoData);
 

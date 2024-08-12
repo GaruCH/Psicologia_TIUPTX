@@ -85,6 +85,7 @@ class Tabla_usuarios extends Model
         return $opcion;
     } //end existe_email
 
+
     public function obtener_usuario($id_usuario = 0)
     {
         $resultado = $this

@@ -134,10 +134,10 @@ $(document).on("click", ".editar-asignacion", function () {
                     psicologo: respuesta.data.id_psicologo + '|' + respuesta.data.numero_trabajador_psicologo,
                     nombre_paciente: nombre_paciente,
                     identificador: identificador,
-                    id_historial: respuesta.data.id_historial,
+                    id_asignacion: respuesta.data.id_asignacion,
                     id_paciente: respuesta.data.id_paciente
                 };
-
+                
                 resetear_formulario(
                     "formulario-asignacion-editar",
                     clean_elements,

@@ -151,4 +151,36 @@ class Tabla_asignaciones extends Model
         return $resultado;
     }
 
+    
+    public function datatable_historial_pacientes($id_psicologo = 0)
+    {
+
+        $resultado = $this
+            ->select(
+                '
+            alumnos.matricula,
+            administrativos.numero_trabajador_administrativo,
+            invitados.identificador,
+            paciente.nombre_usuario as nombre_paciente,
+            paciente.ap_paterno_usuario as ap_paterno_paciente,
+            paciente.ap_materno_usuario as ap_materno_paciente,
+            pacientes.id_subcate,
+            historial_asignaciones.estatus_asignacion,
+            historial_asignaciones.fecha_historial,
+            historial_asignaciones.descripcion
+            '
+            )
+            ->join('alumnos', 'alumnos.id_paciente = asignaciones.id_paciente', 'left') 
+            ->join('invitados', 'invitados.id_paciente = asignaciones.id_paciente', 'left') 
+            ->join('administrativos', 'administrativos.id_paciente = asignaciones.id_paciente', 'left') 
+            ->join('historial_asignaciones', ' historial_asignaciones.id_asignacion = asignaciones.id_asignacion')
+            ->join('psicologos', 'psicologos.id_psicologo = asignaciones.id_psicologo')
+            ->join('pacientes', 'pacientes.id_paciente = asignaciones.id_paciente')
+            ->join('usuarios as paciente', 'paciente.id_usuario = asignaciones.id_paciente')
+            ->where('historial_asignaciones.id_psicologo', $id_psicologo)
+            ->orderBy('paciente.nombre_usuario', 'ASC')
+            ->findAll();
+            return $resultado;
+    }
+
 }

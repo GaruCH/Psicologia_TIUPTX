@@ -263,6 +263,8 @@ class Register extends BaseController
             // Registro en el historial de asignaciones con el id_asignacion generado
             $historial_data_nuevo = [
                 'id_asignacion' => $id_asignacion,
+                'id_psicologo' => $psicologoAsignado->id_usuario,
+                'id_paciente' => $insertedUserId,
                 'estatus_asignacion' => 1,
                 'fecha_historial' => date('Y-m-d H:i:s'),
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.',
@@ -436,6 +438,8 @@ class Register extends BaseController
             // Registro en el historial de asignaciones con el id_asignacion generado
             $historial_data_nuevo = [
                 'id_asignacion' => $id_asignacion,
+                'id_psicologo' => $psicologoAsignado->id_usuario,
+                'id_paciente' => $insertedUserId,
                 'estatus_asignacion' => 1,
                 'fecha_historial' => date('Y-m-d H:i:s'),
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.',
@@ -606,6 +610,8 @@ class Register extends BaseController
             // Registro en el historial de asignaciones con el id_asignacion generado
             $historial_data_nuevo = [
                 'id_asignacion' => $id_asignacion,
+                'id_psicologo' => $psicologoAsignado->id_usuario,
+                'id_paciente' => $insertedUserId,
                 'estatus_asignacion' => 1,
                 'fecha_historial' => date('Y-m-d H:i:s'),
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.',

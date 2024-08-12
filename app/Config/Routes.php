@@ -99,6 +99,10 @@ $routes->post('/estatus_horario', 'Panel\Horarios::estatus_horario', ['as' => 'e
 $routes->post('/registrar_horario', 'Panel\Horarios::registrar_horario', ['as' => 'registrar_horario']);
 $routes->post('/editar_horario', 'Panel\Horarios::actualizar_horas', ['as' => 'editar_horario']);
 
+//Historial de Pacientes - Psicólogo
+$routes->get('/historial_psicologo_pacientes', 'Panel\Historial_psicologo::index', ['as' => 'historial_psicologo_pacientes']);
+$routes->get('/obtener_historial_pacientes', 'Panel\Historial_psicologo::generar_datatable_historial_pacientes', ['as' => 'obtener_historial_pacientes']);
+
 //Notificaciones
 $routes->post('/confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion']);
 

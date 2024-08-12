@@ -209,13 +209,22 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu['administracion_horarios'] = $menu_item;
 
         
-        //Sección Asignaciones
+        //Sección Pacientes asignados
         $menu_item['is_active'] = false;
         $menu_item['href'] = route_to('administracion_psicologo_pacientes');
         $menu_item['icon'] = 'fas fa-users';
         $menu_item['text'] = ' Pacientes';
         $menu_item['submenu'] = array();
         $menu['administracion_psicologo_pacientes'] = $menu_item;
+
+         //Sección Historial Pacientes
+         $menu_item['is_active'] = false;
+         $menu_item['href'] = route_to('historial_psicologo_pacientes');
+         $menu_item['icon'] = 'fas fa-history';
+         $menu_item['text'] = ' Historial Pacientes';
+         $menu_item['submenu'] = array();
+         $menu['historial_psicologo_pacientes'] = $menu_item;
+
     } elseif ($rol_actual == ROL_PACIENTE['clave']) {
 
         //Sección Dashboard
@@ -333,9 +342,13 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
             case TAREA_PSICOLOGO_HORARIOS:
                 $menu['administracion_horarios']['is_active'] = TRUE;
                 break;
-                //SECCIÓN HORARIO
+                //SECCIÓN PACIENTES ASIGNADOS
             case TAREA_PSICOLOGO_PACIENTES:
                 $menu['administracion_psicologo_pacientes']['is_active'] = TRUE;
+                break;
+                   //SECCIÓN HISTORIAL PACIENTES
+            case TAREA_PSICOLOGO_HISTORIAL_PACIENTES:
+                $menu['historial_psicologo_pacientes']['is_active'] = TRUE;
                 break;
             default:
                 break;

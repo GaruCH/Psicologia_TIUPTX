@@ -9,7 +9,7 @@ class Tabla_historial_asignaciones extends Model
     protected $table      = 'historial_asignaciones';
     protected $primaryKey = 'id_historial';
     protected $returnType = 'object';
-    protected $allowedFields = ['id_historial', 'id_asignacion', 'estatus_asignacion', 'fecha_hsitorial', 'descripcion'];
+    protected $allowedFields = ['id_historial', 'id_asignacion', 'id_paciente', 'id_psicologo', 'estatus_asignacion', 'fecha_historial', 'descripcion'];
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
 
@@ -17,10 +17,6 @@ class Tabla_historial_asignaciones extends Model
     protected $updatedField  = 'actualizacion';
     protected $deletedField  = 'eliminacion';
 
-   
 
 
-
-
-   
 }//End Model roles

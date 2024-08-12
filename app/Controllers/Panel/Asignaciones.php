@@ -206,6 +206,8 @@ class Asignaciones extends BaseController
                 // 1. Crear un registro en el historial para la asignación original
                 $historial_data_original = [
                     'id_asignacion' => $id_asignacion,
+                    'id_psicologo' => $asignacion_original->id_psicologo,
+                    'id_paciente' => $id_paciente,
                     'estatus_asignacion' => -1,
                     'fecha_historial' => date('Y-m-d H:i:s'),
                     'descripcion' => 'Asignación cambiada desde el sistema.',
@@ -240,6 +242,8 @@ class Asignaciones extends BaseController
                 // 1. Crear un registro en el historial para la nueva asignación 
                 $historial_data_nuevo = [
                     'id_asignacion' => $id_asignacion,
+                    'id_psicologo' => $nuevo_psicologo_id,
+                    'id_paciente' => $id_paciente,
                     'estatus_asignacion' => 1,
                     'fecha_historial' => date('Y-m-d H:i:s'),
                     'descripcion' => 'Asignación cambiada desde el sistema.',
@@ -263,7 +267,7 @@ class Asignaciones extends BaseController
                 // Llamar a la función para crear la notificación
                 crear_notificacion($notificacionData);
 
-                
+
                 // Confirmar transacción
                 $db->transCommit();
 

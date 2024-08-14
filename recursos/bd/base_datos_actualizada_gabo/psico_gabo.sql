@@ -243,22 +243,26 @@ CREATE TABLE asignaciones (
   id_psicologo INT(11) NOT NULL,
   fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   descripcion TEXT,
+  estatus_asignacion tinyint(1) NOT NULL DEFAULT 1 COMMENT '1-> Activo, -1-> Inactivo',
+  fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_psicologo) REFERENCES psicologos (id_psicologo) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
 
 CREATE TABLE citas (
-  creacion timestamp NULL DEFAULT NULL,
-  id_cita int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  id_paciente int(11) NOT NULL,
-  id_psicologo int(11) NOT NULL,
-  fecha_cita date NOT NULL,
-  hora_cita time NOT NULL,
-  descripcion_cita text NOT NULL,
+  id_cita INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_paciente INT(11) NOT NULL,
+  id_psicologo INT(11) NOT NULL,
+  fecha_cita DATE NOT NULL,
+  hora_cita TIME NOT NULL,
+  descripcion_cita TEXT NOT NULL,
+  estatus_cita TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0-> Pendiente, 1-> Confirmada, -1-> Cancelada, 2-> Concluida',
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_psicologo) REFERENCES psicologos (id_psicologo) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-
 
 /*----------------------------------------------------------------
 ------------------------------------------------------------------
@@ -320,31 +324,22 @@ CREATE TABLE invitados (
 ) ENGINE=InnoDB;
 
 CREATE TABLE historial_asignaciones (
-  creacion timestamp NULL DEFAULT NULL,
-  actualizacion timestamp NULL DEFAULT NULL,
-  eliminacion DATETIME DEFAULT NULL,
   id_historial INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   id_asignacion INT(11) NOT NULL,
-  id_psicologo int(11) NOT NULL,
-  id_paciente int(11) NOT NULL,
-  estatus_asignacion tinyint(1) NOT NULL DEFAULT 1 COMMENT '1-> Activo, -1-> Inactivo',
+  estatus_anterior TINYINT(1) NULL,
+  nuevo_estatus TINYINT(1) NOT NULL,
   fecha_historial TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   descripcion TEXT,
-  FOREIGN KEY (id_asignacion) REFERENCES asignaciones (id_asignacion) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_psicologo) REFERENCES psicologos (id_psicologo) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_asignacion) REFERENCES asignaciones (id_asignacion) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
+
 CREATE TABLE historial_citas (
-  creacion timestamp NULL DEFAULT NULL,
-  actualizacion timestamp NULL DEFAULT NULL,
-  eliminacion DATETIME DEFAULT NULL,
-  estatus_cita tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-> Pendiente, 1-> Confirmada -1-> Cancelada',
-  id_historial_cita int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  id_cita int(11) NOT NULL,
-  id_psicologo int(11) NOT NULL,
-  id_paciente int(11) NOT NULL,
-  FOREIGN KEY (id_cita) REFERENCES citas (id_cita) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_psicologo) REFERENCES psicologos (id_psicologo) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente) ON DELETE CASCADE ON UPDATE CASCADE
+  id_historial_cita INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_cita INT(11) NOT NULL,
+  estatus_anterior TINYINT(1) NULL,
+  nuevo_estatus TINYINT(1) NOT NULL,
+  fecha_historial TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  descripcion TEXT,
+  FOREIGN KEY (id_cita) REFERENCES citas (id_cita) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;

@@ -9,13 +9,9 @@ class Tabla_historial_asignaciones extends Model
     protected $table      = 'historial_asignaciones';
     protected $primaryKey = 'id_historial';
     protected $returnType = 'object';
-    protected $allowedFields = ['id_historial', 'id_asignacion', 'id_paciente', 'id_psicologo', 'estatus_asignacion', 'fecha_historial', 'descripcion'];
-    protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
-
-    protected $createdField  = 'creacion';
-    protected $updatedField  = 'actualizacion';
-    protected $deletedField  = 'eliminacion';
+    protected $allowedFields = ['id_historial', 'id_asignacion', 'estatus_anterior', 'nuevo_estatus','fecha_historial', 'descripcion'];
+    protected $useTimestamps = false;
+    protected $useSoftDeletes = false;
 
 
 

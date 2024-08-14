@@ -77,6 +77,19 @@ function mostrar_mensaje()
 // =======================================================
 function breadcrumb_panel($navegacion = NULL, $titulo = NULL)
 {
+
+    $session = session();
+    $dashboard = '';
+    if($session->rol_actual['clave'] == ROL_SUPERADMIN['clave']) {
+        $dashboard = 'dashboard';
+    } elseif($session->rol_actual['clave'] == ROL_ADMIN['clave']) {
+        $dashboard = 'dashboard';
+    } elseif($session->rol_actual['clave'] == ROL_PSICOLOGO['clave']) {
+        $dashboard = 'dashboard_psicologo';
+    } elseif($session->rol_actual['clave'] == ROL_PACIENTE['clave']) {
+        $dashboard = 'dashboard_paciente';
+    } 
+
     $html = '
     <div class="col-md-6 align-self-center">
         <h3 class="page-title">' . $titulo . '</h3>
@@ -87,7 +100,7 @@ function breadcrumb_panel($navegacion = NULL, $titulo = NULL)
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb border border-primary px-3 rounded">
                         <li class="breadcrumb-item">
-                            <a href="' . route_to('dashboard') . '" class="text-primary">
+                            <a href="'. route_to($dashboard) . '" class="text-primary">
                                 <i data-feather="home" class="feather-sm fill-white"></i>
                             </a>
                         </li>';
@@ -134,7 +147,7 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu_item['is_active'] = false;
         $menu_item['href'] = route_to('dashboard');
         $menu_item['icon'] = 'fas fa-home';
-        $menu_item['text'] = ' Dashboard';
+        $menu_item['text'] = ' Inicio';
         $menu_item['submenu'] = array();
         $menu['dashboard'] = $menu_item;
 
@@ -169,7 +182,7 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu_item['is_active'] = false;
         $menu_item['href'] = route_to('dashboard');
         $menu_item['icon'] = 'fas fa-home';
-        $menu_item['text'] = ' Dashboard';
+        $menu_item['text'] = ' Inicio';
         $menu_item['submenu'] = array();
         $menu['dashboard'] = $menu_item;
 
@@ -196,14 +209,14 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu_item['is_active'] = false;
         $menu_item['href'] = route_to('dashboard_psicologo');
         $menu_item['icon'] = 'fas fa-home';
-        $menu_item['text'] = ' Dashboard';
+        $menu_item['text'] = ' Inicio';
         $menu_item['submenu'] = array();
         $menu['dashboard_psicologo'] = $menu_item;
 
         //Sección Horario
         $menu_item['is_active'] = false;
         $menu_item['href'] = route_to('administracion_horarios');
-        $menu_item['icon'] = 'fas fa-calendar';
+        $menu_item['icon'] = 'fas fa-clock-o';
         $menu_item['text'] = ' Horario';
         $menu_item['submenu'] = array();
         $menu['administracion_horarios'] = $menu_item;
@@ -220,10 +233,18 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
          //Sección Historial Pacientes
          $menu_item['is_active'] = false;
          $menu_item['href'] = route_to('historial_psicologo_pacientes');
-         $menu_item['icon'] = 'fas fa-history';
+         $menu_item['icon'] = 'fas fa-archive';
          $menu_item['text'] = ' Historial Pacientes';
          $menu_item['submenu'] = array();
          $menu['historial_psicologo_pacientes'] = $menu_item;
+
+          //Sección Citas
+          $menu_item['is_active'] = false;
+          $menu_item['href'] = route_to('administracion_psicologo_citas');
+          $menu_item['icon'] = 'fas fa-address-book';
+          $menu_item['text'] = ' Citas';
+          $menu_item['submenu'] = array();
+          $menu['administracion_psicologo_citas'] = $menu_item;
 
     } elseif ($rol_actual == ROL_PACIENTE['clave']) {
 
@@ -231,7 +252,7 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         $menu_item['is_active'] = false;
         $menu_item['href'] = route_to('dashboard_paciente');
         $menu_item['icon'] = 'fas fa-home';
-        $menu_item['text'] = ' Dashboard';
+        $menu_item['text'] = ' Inicio';
         $menu_item['submenu'] = array();
         $menu['dashboard_paciente'] = $menu_item;
     }
@@ -349,6 +370,10 @@ function activar_menu_item_panel($menu = NULL, $tarea_actual = NULL)
                    //SECCIÓN HISTORIAL PACIENTES
             case TAREA_PSICOLOGO_HISTORIAL_PACIENTES:
                 $menu['historial_psicologo_pacientes']['is_active'] = TRUE;
+                break;
+                 //SECCIÓN CITAS - PSICOLOGOS
+            case TAREA_PSICOLOGO_CITAS:
+                $menu['administracion_psicologo_citas']['is_active'] = TRUE;
                 break;
             default:
                 break;

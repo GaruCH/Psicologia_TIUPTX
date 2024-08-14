@@ -103,6 +103,14 @@ $routes->post('/editar_horario', 'Panel\Horarios::actualizar_horas', ['as' => 'e
 $routes->get('/historial_psicologo_pacientes', 'Panel\Historial_psicologo::index', ['as' => 'historial_psicologo_pacientes']);
 $routes->get('/obtener_historial_pacientes', 'Panel\Historial_psicologo::generar_datatable_historial_pacientes', ['as' => 'obtener_historial_pacientes']);
 
+//Citas - Psicólogo
+$routes->get('/administracion_psicologo_citas', 'Panel\Psicologo_citas::index', ['as' => 'administracion_psicologo_citas']);
+$routes->get('/obtener_citas', 'Panel\Psicologo_citas::generar_datatable_citas', ['as' => 'obtener_citas']);
+$routes->post('/cambiar_estatus_cita_aceptar', 'Panel\Psicologo_citas::cambiar_estatus_cita_aceptar', ['as' => 'cambiar_estatus_cita_aceptar']);
+$routes->post('/cambiar_estatus_cita_cancelar', 'Panel\Psicologo_citas::cambiar_estatus_cita_cancelar', ['as' => 'cambiar_estatus_cita_cancelar']);
+$routes->post('/cambiar_estatus_cita_concluir', 'Panel\Psicologo_citas::cambiar_estatus_cita_concluir', ['as' => 'cambiar_estatus_cita_concluir']);
+$routes->get('/obtener_horas_disponibles/(:num)/(:num)/(:num)', 'Panel\Psicologo_citas::obtener_horas_disponibles/$1/$2/$3', ['as' => 'obtener_horas_disponibles']);
+$routes->get('/verificar_fecha_valida/(:num)/(:num)', 'Panel\Psicologo_citas::verificar_fecha_valida/$1/$2', ['as' => 'verificar_fecha_valida']);
 //Notificaciones
 $routes->post('/confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion']);
 

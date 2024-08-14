@@ -11,9 +11,20 @@ class Tabla_usuarios extends Model
     protected $primaryKey = 'id_usuario';
     protected $returnType = 'object';
     protected $allowedFields = [
-        'estatus_usuario', 'id_usuario', 'nombre_usuario', 'ap_paterno_usuario',
-        'ap_materno_usuario', 'sexo_usuario', 'fecha_nacimiento_usuario', 'email_usuario', 'password_usuario',
-        'imagen_usuario', 'reset_token', 'reset_expires', 'id_rol', 'eliminacion'
+        'estatus_usuario',
+        'id_usuario',
+        'nombre_usuario',
+        'ap_paterno_usuario',
+        'ap_materno_usuario',
+        'sexo_usuario',
+        'fecha_nacimiento_usuario',
+        'email_usuario',
+        'password_usuario',
+        'imagen_usuario',
+        'reset_token',
+        'reset_expires',
+        'id_rol',
+        'eliminacion'
     ];
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
@@ -173,9 +184,13 @@ class Tabla_usuarios extends Model
     public function obtener_psicologos_activos()
     {
         $resultado = $this
-            ->select('id_usuario, nombre_usuario, ap_paterno_usuario, ap_materno_usuario, numero_trabajador_psicologo')
-            ->join('psicologos p', 'id_usuario = p.id_psicologo')
-            ->where('estatus_usuario', ESTATUS_HABILITADO)
+            ->select('u.id_usuario, u.nombre_usuario, u.ap_paterno_usuario, u.ap_materno_usuario, p.numero_trabajador_psicologo, COUNT(a.id_asignacion) AS numero_pacientes')
+            ->from('usuarios u')
+            ->join('psicologos p', 'u.id_usuario = p.id_psicologo')
+            ->join('asignaciones a', 'u.id_usuario = a.id_psicologo', 'left')
+            ->where('u.estatus_usuario', ESTATUS_HABILITADO)
+            ->groupBy('u.id_usuario')
+            ->orderBy('numero_pacientes', 'ASC')
             ->findAll();
 
         return $resultado;

@@ -108,7 +108,7 @@ class Historial_psicologo extends BaseController
 
                 $sub_array['nombre_usuario'] = $paciente->nombre_paciente . ' ' . $paciente->ap_paterno_paciente . ' ' . $paciente->ap_materno_paciente;
 
-                if ($paciente->estatus_asignacion == ESTATUS_ACTIVA) {
+                if ($paciente->nuevo_estatus == ESTATUS_ACTIVA) {
                     $sub_array['estado_asignacion'] = 'ACTIVA';
                 }
                 else{

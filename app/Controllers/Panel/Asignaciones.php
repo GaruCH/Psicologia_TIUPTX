@@ -206,9 +206,8 @@ class Asignaciones extends BaseController
                 // 1. Crear un registro en el historial para la asignación original
                 $historial_data_original = [
                     'id_asignacion' => $id_asignacion,
-                    'id_psicologo' => $asignacion_original->id_psicologo,
-                    'id_paciente' => $id_paciente,
-                    'estatus_asignacion' => -1,
+                    'estatus_anterior' => ESTATUS_ACTIVA,
+                    'nuevo_estatus' => ESTATUS_INACTIVA,
                     'fecha_historial' => date('Y-m-d H:i:s'),
                     'descripcion' => 'Asignación cambiada desde el sistema.',
                 ];
@@ -242,9 +241,8 @@ class Asignaciones extends BaseController
                 // 1. Crear un registro en el historial para la nueva asignación 
                 $historial_data_nuevo = [
                     'id_asignacion' => $id_asignacion,
-                    'id_psicologo' => $nuevo_psicologo_id,
-                    'id_paciente' => $id_paciente,
-                    'estatus_asignacion' => 1,
+                    'estatus_anterior' => NULL,
+                    'nuevo_estatus' => ESTATUS_ACTIVA,
                     'fecha_historial' => date('Y-m-d H:i:s'),
                     'descripcion' => 'Asignación cambiada desde el sistema.',
                 ];

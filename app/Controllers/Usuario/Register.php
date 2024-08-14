@@ -157,7 +157,7 @@ class Register extends BaseController
         $tabla_usuarios = new Tabla_usuarios();
         $tabla_pacientes = new Tabla_pacientes();
         $tabla_alumnos = new Tabla_alumnos();
-       
+
         $tabla_historial = new Tabla_historial_asignaciones();
         $tabla_asignaciones = new Tabla_asignaciones();
         // Datos del usuario
@@ -236,20 +236,22 @@ class Register extends BaseController
             // Insertar en la tabla alumno
             $tabla_alumnos->insert($alumnoData);
 
-            // Obtener psicólogos activos
+            // Obtener psicólogos activos con el número de pacientes asignados
             $psicologosActivos = $tabla_usuarios->obtener_psicologos_activos();
 
             if (empty($psicologosActivos)) {
                 throw new \Exception('No hay psicólogos activos disponibles para la asignación.');
             }
 
-            $psicologoAsignado = $psicologosActivos[array_rand($psicologosActivos)];
+            // Asignar el psicólogo con menos pacientes
+            $psicologoAsignado = $psicologosActivos[0];
 
             // Datos de la asignación
             $asignacionData = [
                 'id_paciente' => $insertedUserId,
                 'id_psicologo' => $psicologoAsignado->id_usuario,
                 'fecha_asignacion' => date('Y-m-d H:i:s'),
+                'estatus_asignacion' => ESTATUS_ACTIVA,
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.'
             ];
 
@@ -263,14 +265,14 @@ class Register extends BaseController
             // Registro en el historial de asignaciones con el id_asignacion generado
             $historial_data_nuevo = [
                 'id_asignacion' => $id_asignacion,
-                'id_psicologo' => $psicologoAsignado->id_usuario,
-                'id_paciente' => $insertedUserId,
-                'estatus_asignacion' => 1,
+                'estatus_anterior' => NULL,
+                'nuevo_estatus' => ESTATUS_ACTIVA,
                 'fecha_historial' => date('Y-m-d H:i:s'),
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.',
             ];
 
             $tabla_historial->insert($historial_data_nuevo);
+
 
             // Crear notificación para el psicólogo asignado
             $notificacionData = [
@@ -411,24 +413,26 @@ class Register extends BaseController
             // Insertar en la tabla invitados
             $tabla_invitados->insert($invitadoData);
 
-            // Obtener psicólogos activos
+            // Obtener psicólogos activos con el número de pacientes asignados
             $psicologosActivos = $tabla_usuarios->obtener_psicologos_activos();
 
             if (empty($psicologosActivos)) {
                 throw new \Exception('No hay psicólogos activos disponibles para la asignación.');
             }
 
-            $psicologoAsignado = $psicologosActivos[array_rand($psicologosActivos)];
+            // Asignar el psicólogo con menos pacientes
+            $psicologoAsignado = $psicologosActivos[0];
 
             // Datos de la asignación
             $asignacionData = [
                 'id_paciente' => $insertedUserId,
                 'id_psicologo' => $psicologoAsignado->id_usuario,
                 'fecha_asignacion' => date('Y-m-d H:i:s'),
+                'estatus_asignacion' => ESTATUS_ACTIVA,
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.'
             ];
 
-            // Insertar en la tabla asignaciones y obtener el ID generado
+            // Insertar en la tabla historial_asignaciones y obtener el ID generado
             $id_asignacion = $tabla_asignaciones->insert($asignacionData);
 
             if (!$id_asignacion) {
@@ -438,9 +442,8 @@ class Register extends BaseController
             // Registro en el historial de asignaciones con el id_asignacion generado
             $historial_data_nuevo = [
                 'id_asignacion' => $id_asignacion,
-                'id_psicologo' => $psicologoAsignado->id_usuario,
-                'id_paciente' => $insertedUserId,
-                'estatus_asignacion' => 1,
+                'estatus_anterior' => NULL,
+                'nuevo_estatus' => ESTATUS_ACTIVA,
                 'fecha_historial' => date('Y-m-d H:i:s'),
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.',
             ];
@@ -451,7 +454,7 @@ class Register extends BaseController
                 'id_usuario' => $psicologoAsignado->id_usuario,
                 'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
                 'tipo_notificacion' => 'info', // Tipo de notificación
-                'mensaje' => 'Se te ha asignado un nuevo paciente: ' . $usuario['nombre_usuario'] . ' ' . $usuario['ap_paterno_usuario']. ' ' . $usuario['ap_materno_usuario'],
+                'mensaje' => 'Se te ha asignado un nuevo paciente: ' . $usuario['nombre_usuario'] . ' ' . $usuario['ap_paterno_usuario'] . ' ' . $usuario['ap_materno_usuario'],
                 'leida' => 0 // 0 indica que la notificación no ha sido leída
             ];
 
@@ -567,10 +570,10 @@ class Register extends BaseController
                 'numero_trabajador_administrativo' => $this->request->getPost('numero_trabajador'),
                 'id_area' => $this->request->getPost('area'),
             ];
-            
+
             $opcion4 = $tabla_psicologos->existe_numero_trabajador($administrativoData['numero_trabajador_administrativo']);
             $opcion5 = $tabla_administrativos->existe_numero_trabajador_administrativo($administrativoData['numero_trabajador_administrativo']);
-                
+
             if ($opcion4 == 2 || $opcion4 == -100 || $opcion5 == 2 || $opcion5 == -100) {
                 if ($opcion4 == 2 || $opcion5 == 2) {
                     mensaje("El numero de trabajador proporcionado ya está registrado.", WARNING_ALERT, "¡Numero de trabajador en uso!");
@@ -579,24 +582,25 @@ class Register extends BaseController
                 }
                 return redirect()->to(route_to('login'));
             }
-            
+
             // Insertar en la tabla alumno
             $tabla_administrativos->insert($administrativoData);
-
-            // Obtener psicólogos activos
+            // Obtener psicólogos activos con el número de pacientes asignados
             $psicologosActivos = $tabla_usuarios->obtener_psicologos_activos();
 
             if (empty($psicologosActivos)) {
                 throw new \Exception('No hay psicólogos activos disponibles para la asignación.');
             }
 
-            $psicologoAsignado = $psicologosActivos[array_rand($psicologosActivos)];
+            // Asignar el psicólogo con menos pacientes
+            $psicologoAsignado = $psicologosActivos[0];
 
             // Datos de la asignación
             $asignacionData = [
                 'id_paciente' => $insertedUserId,
                 'id_psicologo' => $psicologoAsignado->id_usuario,
                 'fecha_asignacion' => date('Y-m-d H:i:s'),
+                'estatus_asignacion' => ESTATUS_ACTIVA,
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.'
             ];
 
@@ -610,9 +614,8 @@ class Register extends BaseController
             // Registro en el historial de asignaciones con el id_asignacion generado
             $historial_data_nuevo = [
                 'id_asignacion' => $id_asignacion,
-                'id_psicologo' => $psicologoAsignado->id_usuario,
-                'id_paciente' => $insertedUserId,
-                'estatus_asignacion' => 1,
+                'estatus_anterior' => NULL,
+                'nuevo_estatus' => ESTATUS_ACTIVA,
                 'fecha_historial' => date('Y-m-d H:i:s'),
                 'descripcion' => 'Asignación inicial del paciente al psicólogo.',
             ];
@@ -625,7 +628,7 @@ class Register extends BaseController
                 'id_usuario' => $psicologoAsignado->id_usuario,
                 'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
                 'tipo_notificacion' => 'info', // Tipo de notificación
-                'mensaje' => 'Se te ha asignado un nuevo paciente: ' . $usuario['nombre_usuario'] . ' ' . $usuario['ap_paterno_usuario']. ' ' . $usuario['ap_materno_usuario'],
+                'mensaje' => 'Se te ha asignado un nuevo paciente: ' . $usuario['nombre_usuario'] . ' ' . $usuario['ap_paterno_usuario'] . ' ' . $usuario['ap_materno_usuario'],
                 'leida' => 0 // 0 indica que la notificación no ha sido leída
             ];
 

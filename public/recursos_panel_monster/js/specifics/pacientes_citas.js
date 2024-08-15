@@ -10,7 +10,7 @@ let loader = new Loader('loader');
 const create_citas_table = () => {
     columns_elements = [
         {
-            "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+            "targets": [0, 1, 2, 3, 4, 5, 6],
             "createdCell": function (td, cellData, rowData, row, col) {
                 $(td).addClass("special-cell text-center ");
             },
@@ -18,8 +18,7 @@ const create_citas_table = () => {
     ];
     columns_order = [
         { "data": "total" },
-        { "data": "identificador" },
-        { "data": "nombre_paciente" },
+        { "data": "nombre_psicologo" },
         { "data": "descripcion_cita" },
         { "data": "fecha_cita" },
         { "data": "hora_cita" },
@@ -34,29 +33,10 @@ let table_citas = create_citas_table();
 // BOTONES OPCIONES
 // =================================================================
 
-$(document).on('click', '.confirmar-cita', function () {
-    let elemento = $(this).attr('id');
-    let id = elemento.split('_')[0];
-    let estatus = elemento.split('_')[1];
-    let array = ['./citas/aceptar', id, estatus, 'esta cita', 'se actualizará.'];
-    cambiar_estatus_citas_aceptar_datatable(array, table_citas);
-});//end onclick estatus-psicologos
 
-$(document).on('click', '.cancelar-cita', function () {
-    let elemento = $(this).attr('id');
-    let id = elemento.split('_')[0];
-    let estatus = elemento.split('_')[1];
-    let array = ['./citas/cancelar', id, estatus, 'esta cita', 'se actualizará.'];
-    cambiar_estatus_citas_cancelar_datatable(array, table_citas);
-});//end onclick estatus-psicologos
-
-$(document).on('click', '.concluir-cita', function () {
-    let elemento = $(this).attr('id');
-    let id = elemento.split('_')[0];
-    let estatus = elemento.split('_')[1];
-    let array = ['./citas/concluir', id, estatus, 'esta cita', 'se  actualizará.'];
-    cambiar_estatus_citas_concluir_datatable(array, table_citas);
-});//end onclick estatus-psicologos
+$(document).on('click', '.eliminar-cita', function () {
+    eliminar_datatable("./citas/eliminar", $(this).attr('id'), '¿Estás seguro de cancelar esta cita?', 'Esta acción es permanente', table_citas);
+});//end onclick eliminar-psicologo
 
 
 
@@ -99,9 +79,6 @@ $("#formulario-cita-nueva").validate({
             required: true,
             diaHabilitado: true
         },
-        pacientes: {
-            required: true
-        },
         descripcion: {
             required: true
         },
@@ -117,9 +94,6 @@ $("#formulario-cita-nueva").validate({
         fecha_cita: {
             required: "Por favor, selecciona una fecha.",
             diaHabilitado: "La fecha seleccionada no es válida."
-        },
-        pacientes: {
-            required: "Por favor, selecciona un paciente."
         },
         descripcion: {
             required: "Por favor, proporciona una descripción para la cita."
@@ -153,7 +127,6 @@ $(document).ready(function () {
         if (fecha) {
             var date = new Date(fecha);
             var diaNumero = date.getDay() + 1; // 1 (Lunes) a 7 (Domingo)
-            var currentTime = new Date().getTime(); // Hora actual en milisegundos
 
             // Verificar si la fecha seleccionada es válida (habilitada)
             $.ajax({
@@ -162,50 +135,29 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     if (response.fecha_valida) {
-                        // Verificar si la hora actual está dentro del rango permitido para la fecha seleccionada
+                        // Mostrar el campo de hora si la fecha es válida
+                        $('#hora_cita_container').show();
+
+                        // Solicitar horas disponibles al servidor
                         $.ajax({
-                            url: './citas/horas-rango/' + diaNumero + '/' + psicologoId + '/' + fecha,
+                            url: './citas/horas-disponibles/' + diaNumero + '/' + psicologoId + '/' + fecha,
                             method: 'GET',
                             dataType: 'json',
                             success: function (response) {
-                                var horaInicio = new Date(fecha + ' ' + response.hora_inicio).getTime();
-                                var horaFin = new Date(fecha + ' ' + response.hora_fin).getTime();
+                                if (response.horas_disponibles) {
+                                    var selectHora = $('#hora_cita');
+                                    selectHora.empty();
+                                    selectHora.append('<option value="">Selecciona una hora</option>');
 
-                                if (currentTime >= horaInicio && currentTime <= horaFin) {
-                                    // Mostrar el campo de hora si la fecha es válida y la hora está en el rango
-                                    $('#hora_cita_container').show();
-
-                                    // Solicitar horas disponibles al servidor
-                                    $.ajax({
-                                        url: './citas/horas-disponibles/' + diaNumero + '/' + psicologoId + '/' + fecha,
-                                        method: 'GET',
-                                        dataType: 'json',
-                                        success: function (response) {
-                                            if (response.horas_disponibles) {
-                                                var selectHora = $('#hora_cita');
-                                                selectHora.empty();
-                                                selectHora.append('<option value="">Selecciona una hora</option>');
-
-                                                $.each(response.horas_disponibles, function (index, hora) {
-                                                    selectHora.append('<option value="' + hora.value + '">' + hora.text + '</option>');
-                                                });
-                                            } else {
-                                                alert(response.error);
-                                            }
-                                        },
-                                        error: function (xhr, status, error) {
-                                            mensaje_notificacion('Hubo un error con nuestro servidor. Intente nuevamente, por favor.', 'danger', '¡Error al obtener las horas disponibles!', 4000);
-                                        }
+                                    $.each(response.horas_disponibles, function (index, hora) {
+                                        selectHora.append('<option value="' + hora.value + '">' + hora.text + '</option>');
                                     });
                                 } else {
-                                    // Ocultar el campo de hora si la hora actual no está dentro del rango
-                                    $('#hora_cita_container').hide();
-                                    mensaje_notificacion('No puedes seleccionar este día porque la hora actual ya no está dentro del rango permitido.', 'warning', '¡Advertencia!', 4000);
-                                    $(this).val(''); // Limpiar la selección de fecha
+                                    alert(response.error);
                                 }
                             },
                             error: function (xhr, status, error) {
-                                mensaje_notificacion('Hubo un error al verificar el rango de horas del psicólogo. Intente nuevamente, por favor.', 'danger', '¡Error!', 4000);
+                                mensaje_notificacion('Hubo un error con nuestro servidor. Intente nuevamente, por favor.', 'danger', '¡Error al obtener las horas disponibles!', 4000);
                             }
                         });
                     } else {
@@ -224,7 +176,6 @@ $(document).ready(function () {
         }
     });
 });
-
 
 
 // REGISTRAR CITA

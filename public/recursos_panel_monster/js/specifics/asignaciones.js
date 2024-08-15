@@ -26,7 +26,7 @@ const create_asignaciones_table = () => {
     ];
     return instantiateAjaxDatatable(
         "table-asignaciones",
-        "./obtener_asignaciones",
+        "./asignaciones/data",
         "GET",
         null,
         columns_elements,
@@ -97,7 +97,7 @@ $(document).on("click", ".editar-asignacion", function () {
     );
     loader.openLoader();
 
-    fetch("./obtener_asignacion/" + id)
+    fetch("./asignaciones/" + id)
         .then((res) => {
             if (!res.ok) {
                 throw new Error("Ocurrió un error");
@@ -171,7 +171,7 @@ document.getElementById('formulario-asignacion-editar').addEventListener('submit
         loader.setLoaderBody('Por favor espere en lo que se inserta la asignación...');
         loader.openLoader();
 
-        fetch('./editar_asignacion', {
+        fetch('./asignaciones/editar', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-asignacion-editar'))
         })

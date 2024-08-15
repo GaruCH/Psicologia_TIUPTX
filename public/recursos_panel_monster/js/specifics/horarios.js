@@ -33,7 +33,7 @@ const create_horarios_table = () => {
         {"data": "hora_entrada"},
         {"data": "hora_salida"}
     ];
-    return instantiateAjaxDatatable('table-horario','./obtener_horario','GET', null, columns_elements, columns_order);
+    return instantiateAjaxDatatable('table-horario','./horarios/data','GET', null, columns_elements, columns_order);
 }; //end create_horarios_table
 
 let table_horarios = create_horarios_table();
@@ -45,7 +45,7 @@ $(document).on('click', '.estatus-horario', function() {
 	let elemento = $(this).attr('id');
 	let id = elemento.split('_')[0];
     let estatus = elemento.split('_')[1];
-	let array = ['./estatus_horario', id, estatus, 'este horario', 'estará disponible'];
+	let array = ['./horarios/estatus', id, estatus, 'este horario', 'estará disponible'];
     cambiar_estatus_datatable(array, table_horarios);
 });//end onclick estatus-psicologos
 
@@ -125,7 +125,7 @@ document.getElementById('formulario-horario').addEventListener('submit', event =
         loader.setLoaderBody('Por favor espere en lo que se registra el horario...');
         loader.openLoader();
         
-        fetch('./registrar_horario', {
+        fetch('./horarios/registrar', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-horario'))
         })
@@ -216,7 +216,7 @@ $(document).on('click', '#save-changes', function() {
         loader.openLoader();
 
         // Enviar datos al servidor
-        fetch('./editar_horario', {
+        fetch('./horarios/editar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

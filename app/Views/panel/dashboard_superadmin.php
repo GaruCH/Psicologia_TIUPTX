@@ -4,7 +4,7 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section("contenido") ?>
-Dashboard General
+Dashboard Superadmin
 <?= $this->endSection(); ?>
 
 <?= $this->section("js") ?>

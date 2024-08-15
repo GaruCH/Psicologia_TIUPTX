@@ -12,11 +12,11 @@ class Usuarios extends BaseController
 	public function __construct()
 	{
 		$session = session();
-		if (!Permisos::is_rol_permitido(TAREA_USUARIOS, isset($session->rol_actual['clave']) ? $session->rol_actual['clave'] : -1)) {
+		if (!Permisos::is_rol_permitido(TAREA_SUPERADMIN_USUARIOS, isset($session->rol_actual['clave']) ? $session->rol_actual['clave'] : -1)) {
 			$this->permitido = false;
 		} //end if rol no permitido
 		else {
-			$session->tarea_actual = TAREA_USUARIOS;
+			$session->tarea_actual = TAREA_SUPERADMIN_USUARIOS;
 		} //end else rol permitido
 	} //end constructor
 

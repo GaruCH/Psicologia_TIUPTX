@@ -152,6 +152,28 @@ class Tabla_asignaciones extends Model
         return $resultado;
     }
 
+    public function obtener_psicologo_asignado($id_paciente = 0)
+    {
+        $resultado = $this
+            ->select(
+                '
+                usuarios.id_usuario AS id_psicologo,
+                usuarios.nombre_usuario AS nombre_psicologo,
+                usuarios.ap_paterno_usuario AS ap_paterno_psicologo,
+                usuarios.ap_materno_usuario AS ap_materno_psicologo,
+                usuarios.email_usuario AS email_psicologo,
+                usuarios.imagen_usuario AS imagen_psicologo
+                '
+            )
+            ->join('usuarios', 'usuarios.id_usuario = asignaciones.id_psicologo') // Obtenemos solo los datos del psicólogo
+            ->where('asignaciones.id_paciente', $id_paciente)
+            ->first();
+    
+        return $resultado;
+    }
+    
+
+
 
     public function datatable_historial_pacientes($id_psicologo = 0)
     {

@@ -57,7 +57,7 @@
             </div>
             <?php
             $parametros = array('id' => 'formulario-horario');
-            echo form_open('guardar_horario', $parametros);
+            echo form_open('editar_horario', $parametros);
             ?>
             <div class="modal-body">
                 <h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>

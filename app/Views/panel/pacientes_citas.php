@@ -28,8 +28,7 @@
                         <thead class="text-center">
                             <tr>
                                 <th class="special-cell">#</th>
-                                <th class="special-cell">Identificador</th>
-                                <th class="special-cell">Paciente</th>
+                                <th class="special-cell">Psicologo</th>
                                 <th class="special-cell">Descripcion</th>
                                 <th class="special-cell">Fecha</th>
                                 <th class="special-cell">Hora Inicio</th>
@@ -84,37 +83,14 @@
 
                     <div class="row">
 
-                        <!-- Paciente -->
+                        <!-- Psicólogo asignado -->
                         <div class="col-md-6 mb-3">
-                            <label class="form-control-label">Paciente: (<font color="red">*</font>)</label>
+                            <label class="form-control-label">Psicólogo asignado:</label>
                             <div class="form-floating mb-3">
-                                <?php
-                                $parametros = array(
-                                    'class' => 'form-control',
-                                    'id' => 'pacientes',
-                                    'name' => 'pacientes',
-                                    'placeholder' => 'Selecciona un paciente',
-                                );
-                                echo form_dropdown('pacientes', $pacientes, '', $parametros);
-                                ?>
-                                <div class="invalid-feedback"></div>
-                                <label for="pacientes"><i data-feather="user" class="feather-sm text-dark fill-white me-2"><!-- Campo oculto para almacenar el ID del psicólogo -->
-
-                                    </i>Pacientes</label>
+                                <input type="text" class="form-control" id="nombre_psicologo" name="nombre_psicologo" placeholder="Nombre del Psicólogo" value="<?= isset($nombre_psicologo) ? esc($nombre_psicologo) : '' ?>" readonly>
+                                <label for="nombre_psicologo"><i data-feather="user" class="feather-sm text-dark fill-white me-2"></i>Nombre del Psicólogo</label>
                             </div>
                         </div>
-
-
-                        <?php
-                        // Campo oculto para el ID del psicólogo
-                        $parametros_id_psicologo = array(
-                            'type'  => 'hidden',
-                            'id'    => 'id_psicologo',
-                            'name'  => 'id_psicologo',
-                            'value' => isset($id_psicologo) ? $id_psicologo : ''  // Asegúrate de que $id_psicologo esté definido
-                        );
-                        echo form_input($parametros_id_psicologo);
-                        ?>
 
                         <!-- Fecha de la cita -->
                         <div class="col-md-6 mb-3">
@@ -165,7 +141,27 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel-form-create-cita"><i class="fa fa-times"></i> Cancelar</button>
                 &nbsp;&nbsp;&nbsp;
-                <button class="btn btn-primary" type="submit" id="btn-guardar-cita"><i class="fa fa-lg fa-save"></i> Agendar cita</button>
+                <button class="btn btn-primary" type="submit" id="btn-guardar-cita"><i class="fa fa-lg fa-save">
+                        <?php
+                        // Campo oculto para el ID del psicólogo
+                        $parametros_id_psicologo = array(
+                            'type'  => 'hidden',
+                            'id'    => 'id_psicologo',
+                            'name'  => 'id_psicologo',
+                            'value' => isset($id_psicologo) ? $id_psicologo : '' 
+                        );
+                        echo form_input($parametros_id_psicologo);
+                        ?>
+                        <?php
+                        $parametros = array(
+                            'type' => 'hidden',
+                            'id' => 'id_paciente',
+                            'name' => 'id_paciente',
+                            'value' => isset($id_paciente) ? $id_paciente : ''
+                        );
+                        echo form_input($parametros);
+                        ?>
+                    </i> Agendar cita</button>
             </div>
             <?= form_close() ?>
         </div>
@@ -204,5 +200,5 @@
 <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/loader-generator.js") ?>"></script>
 
 <!-- JS específico -->
-<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/psicologo_citas.js") ?>"></script>
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/pacientes_citas.js") ?>"></script>
 <?= $this->endSection(); ?>

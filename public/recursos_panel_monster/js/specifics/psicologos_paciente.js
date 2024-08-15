@@ -26,7 +26,7 @@ const create_psicologo_pacientes_table = () => {
         { "data": "papel_paciente" },
         { "data": "acciones" }
     ];
-    return instantiateAjaxDatatable('table-psicologo-pacientes', './obtener_psicologo_pacientes', 'GET', null, columns_elements, columns_order);
+    return instantiateAjaxDatatable('table-psicologo-pacientes', './pacientes/data', 'GET', null, columns_elements, columns_order);
 }; //end create_psicologos_table
 
 let table_usuarios = create_psicologo_pacientes_table();
@@ -54,7 +54,7 @@ $(document).on('click', '.ver-paciente', function () {
     loader.setLoaderBody('Por favor espere en lo que se cargan los datos del paciente...');
     loader.openLoader();
 
-    fetch(`./obtener_psicologo_paciente/${id}`)
+    fetch(`./pacientes/${id}`)
         .then(res => {
             if (!res.ok) {
                 throw new Error('Ocurrió un error');

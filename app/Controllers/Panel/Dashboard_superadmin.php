@@ -2,24 +2,25 @@
 use App\Controllers\BaseController;
 use App\Libraries\Permisos;
 
-class Ejemplo extends BaseController{
+class Dashboard_superadmin extends BaseController{
 	private $permitido = true;
 
 	public function __construct(){
 		$session = session();
-		if(!Permisos::is_rol_permitido(TAREA_SUPERADMIN_EJEMPLO, isset($session->rol_actual['clave']) ? $session->rol_actual['clave'] : -1)) {
+		if(!Permisos::is_rol_permitido(TAREA_SUPERADMIN_DASHBOARD, isset($session->rol_actual['clave']) ? $session->rol_actual['clave'] : -1)) {
 			$this->permitido = false;
 		}//end if rol permitido
 		else{
-			$session->tarea_actual = TAREA_SUPERADMIN_EJEMPLO;
+			$session->tarea_actual = TAREA_SUPERADMIN_DASHBOARD;
 		}//end else rol permitido
 	}//end constructor
 
 	public function index(){
 		if($this->permitido){
-			return $this->crear_vista("panel/ejemplo", $this->cargar_datos());
+			return $this->crear_vista("panel/dashboard_superadmin", $this->cargar_datos());
 		}//end if rol permitido
 		else{
+			mensaje('No tienes permisos para acceder a esta sección.', DANGER_ALERT, '¡Acceso No Autorizado!');
 			return redirect()->to(route_to('login'));
 		}//end else rol no permitido
 	}//end index
@@ -39,14 +40,14 @@ class Ejemplo extends BaseController{
 		//======================================================================
 		//========================DATOS PROPIOS CONTROLLER======================
 		//======================================================================
-		$datos['nombre_pagina'] = 'Ejemplo';
+		$datos['nombre_pagina'] = 'Inicio';
 
 		//Breadcrumb
     	$datos['breadcrumb'] = '';
 
 		// Cargar notificaciones utilizando el helper
         $datos['notificaciones'] = cargar_notificaciones(); // Utiliza la función del helper
-
+		
 		return $datos;
 	}//end cargar_datos
 
@@ -55,4 +56,4 @@ class Ejemplo extends BaseController{
 		return view($nombre_vista, $contenido);
 	}//end crear_vista
 
-}//End Class Dashboard
+}//End Class Dashboard_Paciente

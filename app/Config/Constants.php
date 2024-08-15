@@ -247,22 +247,21 @@ define(
 //******************************************************************************
 //***************************** PERMISOS DE LOS ROLES **************************
 //******************************************************************************
-// TAREA DASHBOARD
-define("TAREA_DASHBOARD", "tarea_dashboard");
+
 
 //TAREAS PROPIAS DEL USUARIO
 define("TAREA_PERFIL", "tarea_perfil");
 define("TAREA_PASSWORD", "tarea_password");
 
-//TAREAS DE USUARIOS
-define("TAREA_USUARIOS", "tarea_usuarios");
-define("TAREA_USUARIO_NUEVO", "tarea_usuario_nuevo");
-define("TAREA_USUARIO_DETALLES", "tarea_usuario_detalles");
-define("TAREA_EJEMPLO", "tarea_ejemplo");
-
+//TAREAS PARA EL SUPERADMIN
+define("TAREA_SUPERADMIN_USUARIOS", "tarea_superadmin_usuarios");
+define("TAREA_SUPERADMIN_EJEMPLO", "tarea_superadmin_ejemplo");
+define("TAREA_SUPERADMIN_DASHBOARD", "tarea_superadmin_dashboard");
 
 //TAREAS PARA EL PACIENTE
 define("TAREA_PACIENTE_DASHBOARD", "tarea_paciente_dashboard");
+define("TAREA_PACIENTE_CITAS", "tarea_paciente_citas");
+define("TAREA_PACIENTE_CITAS_HISTORIAL", "tarea_paciente_citas_historial");
 //TAREAS PARA EL ADMIN
 define("TAREA_ADMIN_DASHBOARD", "tarea_admin_dashboard");
 define("TAREA_ADMIN_PSICOLOGOS", "tarea_admin_psicologos");
@@ -273,6 +272,7 @@ define("TAREA_PSICOLOGO_HORARIOS", "tarea_psicologo_horarios");
 define("TAREA_PSICOLOGO_PACIENTES", "tarea_psicologo_pacientes");
 define("TAREA_PSICOLOGO_HISTORIAL_PACIENTES", "tarea_psicologo_historial_pacientes");
 define("TAREA_PSICOLOGO_CITAS", "tarea_psicologo_citas");
+define("TAREA_PSICOLOGO_CITAS_HISTORIAL", "tarea_psicologo_citas_historial");
 
 //******************************************************************************
 //***************************** PERMISOS DE LOS ROLES **************************
@@ -281,13 +281,9 @@ define("TAREA_PSICOLOGO_CITAS", "tarea_psicologo_citas");
 define(
     "PERMISOS_SUPERADMIN",
     array(
-        TAREA_DASHBOARD,
-        TAREA_PERFIL,
-        TAREA_PASSWORD,
-        TAREA_USUARIOS,
-        TAREA_USUARIO_NUEVO,
-        TAREA_USUARIO_DETALLES,
-        TAREA_EJEMPLO,
+        TAREA_SUPERADMIN_DASHBOARD,
+        TAREA_SUPERADMIN_USUARIOS,
+        TAREA_SUPERADMIN_EJEMPLO,
         TAREA_ADMIN_PSICOLOGOS
     )
 );
@@ -295,7 +291,9 @@ define(
 define(
     "PERMISOS_PACIENTE",
     array(
-        TAREA_PACIENTE_DASHBOARD
+        TAREA_PACIENTE_DASHBOARD,
+        TAREA_PACIENTE_CITAS,
+        TAREA_PACIENTE_CITAS_HISTORIAL
     )
 );
 define(
@@ -305,13 +303,14 @@ define(
         TAREA_PSICOLOGO_HORARIOS,
         TAREA_PSICOLOGO_PACIENTES,
         TAREA_PSICOLOGO_HISTORIAL_PACIENTES,
-        TAREA_PSICOLOGO_CITAS
+        TAREA_PSICOLOGO_CITAS,
+        TAREA_PSICOLOGO_CITAS_HISTORIAL
     )
 );
 define(
     "PERMISOS_ADMIN",
     array(
-        TAREA_DASHBOARD,
+        TAREA_ADMIN_DASHBOARD,
         TAREA_ADMIN_PSICOLOGOS,
         TAREA_ADMIN_ASIGNACIONES
     )

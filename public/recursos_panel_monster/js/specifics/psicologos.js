@@ -25,7 +25,7 @@ const create_psicologos_table = () => {
         { "data": "correo_psicologo" },
         { "data": "acciones" }
     ];
-    return instantiateAjaxDatatable('table-psicologos', './obtener_psicologos', 'GET', null, columns_elements, columns_order);
+    return instantiateAjaxDatatable('table-psicologos', './psicologos/data', 'GET', null, columns_elements, columns_order);
 }; //end create_psicologos_table
 
 let table_psicologos = create_psicologos_table();
@@ -38,13 +38,13 @@ $(document).on('click', '.estatus-psicologo', function () {
     let elemento = $(this).attr('id');
     let id = elemento.split('_')[0];
     let estatus = elemento.split('_')[1];
-    let array = ['./estatus_psicologo', id, estatus, 'este psicologo', 'podrá ingresar al sistema.'];
+    let array = ['./psicologos/estatus', id, estatus, 'este psicologo', 'podrá ingresar al sistema.'];
     cambiar_estatus_datatable(array, table_psicologos);
 });//end onclick estatus-psicologos
 
 
 $(document).on('click', '.eliminar-psicologo', function () {
-    eliminar_datatable("./eliminar_psicologo", $(this).attr('id'), '¿Estás seguro de eliminar a este psicologo?', 'Esta acción es permanente', table_psicologos);
+    eliminar_datatable("./psicologos/eliminar", $(this).attr('id'), '¿Estás seguro de eliminar a este psicologo?', 'Esta acción es permanente', table_psicologos);
 });//end onclick eliminar-psicologo
 
 
@@ -53,7 +53,7 @@ $(document).on('click', '.recover-psicologo', function () {
     let texto = 'Al recuperar este psicólogo volverá a estar disponible en la base de datos del sistema y podrá ser visualizado en el panel. ¿Estás seguro de restaurar a este psicólogo?';
     let texto_confirmar = 'Sí, restaurar el psicólogo';
     let texto_cancelar = 'Cancelar';
-    let opciones_form = ['./restaurar_psicologo', 'POST'];
+    let opciones_form = ['./psicologos/restaurar', 'POST'];
     let data = new FormData();
     data.append('id', $(this).attr('id').split('_')[1]);
     mensaje_confirmacion_texto_propio(titulo, texto, texto_confirmar, texto_cancelar, opciones_form, data);
@@ -72,7 +72,7 @@ $(document).on('click', '.cambiar-password-psicologo', function () {
 
     // Obtener el ID del psicólogo desde el botón y asignarlo al campo oculto
     let psicologoId = $(this).attr('id').split('_')[1];
-    //console.log('ID del psicólogo:', psicologoId); // Agrega este log para depuración
+  
     document.getElementById('id_psicologo_pass').value = psicologoId;
 
     let modal_change_password = new bootstrap.Modal(document.getElementById('cambiar-password-psicologo'));
@@ -89,7 +89,7 @@ document.getElementById('formulario-cambiar-password-psicologo').addEventListene
         loader.setLoaderBody('Por favor espere en lo que se actualiza al psicólogo...');
         loader.openLoader();
 
-        fetch('./actualizar_password_psicologo', {
+        fetch('./psicologos/actualizar-password', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-cambiar-password-psicologo'))
         })
@@ -175,11 +175,12 @@ $("#formulario-cambiar-password-psicologo").validate({
 
 
 
-
-
 //================================================================
 //===================SECCIÓN PARA CREAR===========================
 //================================================================
+
+
+
 $.validator.addMethod("emailRegex", function (value, element) {
     return this.optional(element) || /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(value);
 }, "No corresponde a una ruta de email");
@@ -343,7 +344,7 @@ document.getElementById('formulario-psicologo-nuevo').addEventListener('submit',
         loader.setLoaderBody('Por favor espere en lo que se registra al psicólogo...');
         loader.openLoader();
 
-        fetch('./registrar_psicologo', {
+        fetch('./psicologos/registrar', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-psicologo-nuevo'))
         })
@@ -413,7 +414,7 @@ $(document).on('click', '.editar-psicologo', function () {
     loader.setLoaderBody('Por favor espere en lo que se cargan los datos del psicólogo...');
     loader.openLoader();
 
-    fetch('./obtener_psicologo/' + id)
+    fetch('./psicologos/' + id)
         .then(res => {
             if (!res.ok) {
                 throw new Error('Ocurrió un error');
@@ -658,7 +659,7 @@ document.getElementById('formulario-psicologo-editar').addEventListener('submit'
         loader.setLoaderBody('Por favor espere en lo que se actualiza al psicólogo...');
         loader.openLoader();
 
-        fetch('./editar_psicologo', {
+        fetch('./psicologos/editar', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-psicologo-editar'))
         })

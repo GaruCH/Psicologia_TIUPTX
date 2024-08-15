@@ -2,22 +2,22 @@
 use App\Controllers\BaseController;
 use App\Libraries\Permisos;
 
-class Dashboard extends BaseController{
+class Dashboard_admin extends BaseController{
 	private $permitido = true;
 
 	public function __construct(){
 		$session = session();
-		if(!Permisos::is_rol_permitido(TAREA_DASHBOARD, isset($session->rol_actual['clave']) ? $session->rol_actual['clave'] : -1)) {
+		if(!Permisos::is_rol_permitido(TAREA_ADMIN_DASHBOARD, isset($session->rol_actual['clave']) ? $session->rol_actual['clave'] : -1)) {
 			$this->permitido = false;
 		}//end if rol permitido
 		else{
-			$session->tarea_actual = TAREA_DASHBOARD;
+			$session->tarea_actual = TAREA_ADMIN_DASHBOARD;
 		}//end else rol permitido
 	}//end constructor
 
 	public function index(){
 		if($this->permitido){
-			return $this->crear_vista("panel/dashboard", $this->cargar_datos());
+			return $this->crear_vista("panel/dashboard_admin", $this->cargar_datos());
 		}//end if rol permitido
 		else{
 			mensaje('No tienes permisos para acceder a esta sección.', DANGER_ALERT, '¡Acceso No Autorizado!');
@@ -40,7 +40,7 @@ class Dashboard extends BaseController{
 		//======================================================================
 		//========================DATOS PROPIOS CONTROLLER======================
 		//======================================================================
-		$datos['nombre_pagina'] = 'Dashboard';
+		$datos['nombre_pagina'] = 'Inicio';
 
 		//Breadcrumb
     	$datos['breadcrumb'] = '';

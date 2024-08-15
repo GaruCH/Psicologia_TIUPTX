@@ -2,11 +2,13 @@
 
 namespace App\Controllers\Panel;
 
-use App\Controllers\BaseController;
-use App\Libraries\Permisos;
+
 use CodeIgniter\I18n\Time;
+use App\Libraries\Permisos;
 use App\Models\Tabla_citas;
+use App\Controllers\BaseController;
 use App\Models\Tabla_historial_citas;
+use App\Models\Tabla_psicologos;
 
 class Psicologo_citas extends BaseController
 {
@@ -81,7 +83,7 @@ class Psicologo_citas extends BaseController
         // Cargar el modelo de asignaciones
         $tabla_asignacion = new \App\Models\Tabla_asignaciones();
         $pacientes = $tabla_asignacion->datatable_pacientes_asignados($session->id_usuario);
-    
+
         // Transformar el resultado en un array adecuado para form_dropdown
         $pacientes_opciones = ['' => 'Seleccione un paciente...'];
         foreach ($pacientes as $paciente) {
@@ -90,7 +92,7 @@ class Psicologo_citas extends BaseController
         $contenido['id_psicologo'] = $session->id_usuario;
         // Pasar los pacientes a la vista
         $contenido['pacientes'] = $pacientes_opciones;
-    
+
         $contenido['menu'] = crear_menu_panel();
         return view($nombre_vista, $contenido);
     } //end crear_vista
@@ -141,9 +143,9 @@ class Psicologo_citas extends BaseController
                     $acciones .= '&nbsp;&nbsp;&nbsp;';
                 } elseif ($cita->estatus_cita == ESTATUS_CONFIRMADA) {
                     $sub_array['estado_cita'] = $imgestadoA;
-                     // Botón de Concluida
-                     $acciones .= '<button type="button" class="btn btn-outline-info btn-sm concluir-cita" id="' . $cita->id_cita . '_' . $cita->estatus_cita . '" data-toggle="tooltip" data-placement="top" title="Concluir">Concluir</button>';
-                     $acciones .= '&nbsp;&nbsp;&nbsp;';
+                    // Botón de Concluida
+                    $acciones .= '<button type="button" class="btn btn-outline-info btn-sm concluir-cita" id="' . $cita->id_cita . '_' . $cita->estatus_cita . '" data-toggle="tooltip" data-placement="top" title="Concluir">Concluir</button>';
+                    $acciones .= '&nbsp;&nbsp;&nbsp;';
                 } elseif ($cita->estatus_cita == ESTATUS_CANCELADA) {
                     $sub_array['estado_cita'] = $imgestadoC;
                 }
@@ -166,9 +168,10 @@ class Psicologo_citas extends BaseController
             // Instanciar modelos
             $citasModel = new Tabla_citas();
             $tabla_historial = new Tabla_historial_citas();
-
+            $tabla_psicologo = new Tabla_psicologos();
             // Obtener los datos de la cita original
             $cita = $citasModel->find($id_cita);
+            $psicologo = $tabla_psicologo->obtener_psicologo($cita->id_psicologo);
 
             if (!$cita) {
                 return $this->response->setJSON(['error' => 1, 'message' => 'Cita no encontrada.']);
@@ -184,6 +187,22 @@ class Psicologo_citas extends BaseController
             ];
 
             $tabla_historial->insert($historial_data_original);
+
+            // Crear notificación para la confirmación de la cita
+            // Datos de la notificación
+            $notificacionData = [
+                'id_usuario' => $cita->id_paciente,
+                'titulo_notificacion' => 'Cita confirmada', // Título de la notificación
+                'tipo_notificacion' => 'success', // Tipo de notificación
+                'mensaje' => 'El psicólogo ' .
+                    $psicologo->nombre_usuario . ' ' .
+                    $psicologo->ap_paterno_usuario . ' ' .
+                    $psicologo->ap_materno_usuario . ' ha confirmado su cita.',
+                'leida' => 0 // 0 indica que la notificación no ha sido leída
+            ];
+
+            // Llamar a la función para crear la notificación
+            crear_notificacion($notificacionData);
 
             // Actualizar el estatus en la tabla de citas
             $citasModel->update($id_cita, ['estatus_cita' => ESTATUS_CONFIRMADA]);
@@ -205,9 +224,11 @@ class Psicologo_citas extends BaseController
             // Instanciar modelos
             $citasModel = new Tabla_citas();
             $tabla_historial = new Tabla_historial_citas();
-
+            $tabla_psicologo = new Tabla_psicologos();
             // Obtener los datos de la cita original
             $cita = $citasModel->find($id_cita);
+            $psicologo = $tabla_psicologo->obtener_psicologo($cita->id_psicologo);
+
 
             if (!$cita) {
                 return $this->response->setJSON(['error' => 1, 'message' => 'Cita no encontrada.']);
@@ -224,6 +245,24 @@ class Psicologo_citas extends BaseController
 
             $tabla_historial->insert($historial_data_original);
 
+            $tabla_historial->insert($historial_data_original);
+
+            // Crear notificación para la confirmación de la cita
+            // Datos de la notificación
+            $notificacionData = [
+                'id_usuario' => $cita->id_paciente,
+                'titulo_notificacion' => 'Cita cancelada', // Título de la notificación
+                'tipo_notificacion' => 'danger', // Tipo de notificación
+                'mensaje' => 'El psicólogo ' .
+                    $psicologo->nombre_usuario . ' ' .
+                    $psicologo->ap_paterno_usuario . ' ' .
+                    $psicologo->ap_materno_usuario . ' ha cancelado su cita.',
+                'leida' => 0 // 0 indica que la notificación no ha sido leída
+            ];
+
+            // Llamar a la función para crear la notificación
+            crear_notificacion($notificacionData);
+
             // Actualizar el estatus en la tabla de citas
             $citasModel->update($id_cita, ['estatus_cita' => ESTATUS_CANCELADA]);
 
@@ -234,7 +273,6 @@ class Psicologo_citas extends BaseController
             return $this->response->setJSON(['error' => 1]);
         }
     }
-
 
     public function cambiar_estatus_cita_concluir()
     {
@@ -279,28 +317,28 @@ class Psicologo_citas extends BaseController
     {
         $tabla_horarios = new \App\Models\Tabla_horarios;
         $tabla_citas = new Tabla_citas();
-        
+
         // Obtener el horario del psicólogo para el día especificado
         $horario = $tabla_horarios->horarioExists($id_psicologo, $dia);
-    
+
         if ($horario) {
             // Obtener las horas ocupadas
             $citas = $tabla_citas->obtenerHorasOcupadas($id_psicologo, $fecha);
-            
+
             // Crear un array de horas ocupadas (convertidas al formato H:i)
-            $horas_ocupadas = array_map(function($cita) {
-                return date('H:i', strtotime($cita['hora_cita']));
+            $horas_ocupadas = array_map(function ($cita) {
+                return date('H:i', strtotime($cita->hora_cita)); // Acceso correcto como objeto
             }, $citas);
-    
+
             // Generar las horas disponibles
             $horas_disponibles = array();
             $hora_actual = strtotime($horario->turno_entrada);
             $hora_salida = strtotime($horario->turno_salida);
-    
+
             while ($hora_actual < $hora_salida) {
                 $hora_inicio = date('H:i', $hora_actual);
                 $hora_fin = date('H:i', strtotime('+1 hour', $hora_actual));
-    
+
                 // Si la hora actual no está ocupada
                 if (!in_array($hora_inicio, $horas_ocupadas)) {
                     // Formatear la hora como "8:00 - 9:00"
@@ -309,21 +347,23 @@ class Psicologo_citas extends BaseController
                         'text' => $hora_inicio . ' - ' . $hora_fin
                     ];
                 }
+
                 $hora_actual = strtotime('+1 hour', $hora_actual);
             }
-    
+
+            // Devolver la respuesta JSON
             return $this->response->setJSON(['horas_disponibles' => $horas_disponibles]);
         } else {
             return $this->response->setJSON(['error' => 'No se encontró horario disponible para el día seleccionado.']);
         }
     }
-    
-    
-    
-    public function verificar_fecha_valida($diaNumero, $id_psicologo) {
+
+
+    public function verificar_fecha_valida($diaNumero, $id_psicologo)
+    {
         // Lógica para verificar si la fecha es válida para el psicólogo
         $tabla_horarios = new \App\Models\Tabla_horarios;
-    
+
         $horario = $tabla_horarios->horarioExists($id_psicologo, $diaNumero);
         if ($horario) {
             return $this->response->setJSON(['fecha_valida' => true]);
@@ -331,7 +371,77 @@ class Psicologo_citas extends BaseController
             return $this->response->setJSON(['fecha_valida' => false]);
         }
     }
-    
+
+    public function registrar_cita()
+    {
+        if ($this->permitido) {
+            $mensaje = array();
+            $id_paciente = $this->request->getPost('pacientes'); // Obtener ID del paciente
+            $descripcion = $this->request->getPost('descripcion');
+            $fecha_cita = $this->request->getPost('fecha_cita');
+            $hora_cita = $this->request->getPost('hora_cita');
+            $id_psicologo = $this->request->getPost('id_psicologo');
+
+            // Validar que todos los datos necesarios estén presentes
+            if (!$id_paciente || !$descripcion || !$fecha_cita || (!$hora_cita && $hora_cita !== '')) {
+                $mensaje['mensaje'] = 'Todos los campos deben ser completados.';
+                $mensaje['titulo'] = '¡Error al registrar cita!';
+                $mensaje['error'] = 4;
+                $mensaje['tipo_mensaje'] = WARNING_ALERT;
+                $mensaje['timer_message'] = 3500;
+                return $this->response->setJSON($mensaje);
+            }
+
+            // Iniciar transacción
+            $db = \Config\Database::connect();
+            $db->transBegin();
+
+            try {
+                // Insertar la cita en la tabla de citas
+                $tabla_citas = new Tabla_citas();
+                $citaData = [
+                    'id_paciente' => $id_paciente,
+                    'descripcion_cita' => $descripcion,
+                    'fecha_cita' => $fecha_cita,
+                    'hora_cita' => $hora_cita,
+                    'id_psicologo' => $id_psicologo,
+                    'estatus_cita' => ESTATUS_PENDIENTE
+                ];
+
+                $insertedCitaId = $tabla_citas->insert($citaData);
+
+                if (!$insertedCitaId) {
+                    throw new \Exception('Error al insertar la cita.');
+                }
+
+                // Confirmar transacción
+                $db->transCommit();
+
+                // Mensaje de éxito
+                $mensaje['mensaje'] = 'La cita ha sido registrada exitosamente.';
+                $mensaje['titulo'] = '¡Registro exitoso!';
+                $mensaje['error'] = 0;
+                $mensaje['tipo_mensaje'] = SUCCESS_ALERT;
+                $mensaje['timer_message'] = 3500;
 
 
+                return $this->response->setJSON($mensaje);
+            } catch (\Exception $e) {
+                // Revertir transacción en caso de error
+                $db->transRollback();
+
+                $errorMessage = $e->getMessage();
+
+                // Mostrar el mensaje de error
+                $mensaje['mensaje'] = 'Error al registrar la cita.';
+                $mensaje['titulo'] = '¡Error al registrar!';
+                $mensaje['error'] = -1;
+                $mensaje['tipo_mensaje'] = DANGER_ALERT;
+                $mensaje['timer_message'] = 3500;
+                return $this->response->setJSON($mensaje);
+            }
+        } else {
+            return $this->response->setJSON(['error' => -1]);
+        }
+    }
 }

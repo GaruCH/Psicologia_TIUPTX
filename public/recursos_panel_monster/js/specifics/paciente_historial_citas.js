@@ -7,10 +7,10 @@ let loader = new Loader('loader');
 
 // DATATABLE
 //================================================================
-const create_historial_pacientes_table = () => {
+const create_citas_table = () => {
     columns_elements = [
         {
-            "targets": [0, 1, 2, 3, 4, 5],
+            "targets": [0, 1, 2, 3, 4,],
             "createdCell": function (td, cellData, rowData, row, col) {
                 $(td).addClass("special-cell text-center ");
             },
@@ -18,13 +18,12 @@ const create_historial_pacientes_table = () => {
     ];
     columns_order = [
         { "data": "total" },
-        { "data": "identificador" },
-        { "data": "nombre_usuario" },
-        { "data": "estado_asignacion" },
-        { "data": "fecha_historial" },
-        { "data": "descripcion_historial" }
+        { "data": "nombre_psicologo" },
+        { "data": "descripcion_cita" },
+        { "data": "fecha_cita" },
+        { "data": "estado_cita" },
     ];
-    return instantiateAjaxDatatable('table-historial-pacientes', './historial/data', 'GET', null, columns_elements, columns_order);
+    return instantiateAjaxDatatable('table-citas', './historial/data', 'GET', null, columns_elements, columns_order);
 }; //end create_psicologos_table
 
-let table_historiales = create_historial_pacientes_table();
+let table_citas = create_citas_table();

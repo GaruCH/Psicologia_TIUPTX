@@ -18,11 +18,11 @@ class Login extends BaseController
             // Redirigir según el rol del usuario
             switch ($rol_actual) {
                 case ROL_SUPERADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
+                    $session->set("tarea_actual", TAREA_SUPERADMIN_DASHBOARD);
+                    return redirect()->to(route_to('dashboard_superadmin'));
                 case ROL_ADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
+                    $session->set("tarea_actual", TAREA_ADMIN_DASHBOARD);
+                    return redirect()->to(route_to('dashboard_admin'));
                 case ROL_PSICOLOGO['clave']:
                     $session->set("tarea_actual", TAREA_PSICOLOGO_DASHBOARD);
                     return redirect()->to(route_to('dashboard_psicologo'));
@@ -30,8 +30,7 @@ class Login extends BaseController
                     $session->set("tarea_actual", TAREA_PACIENTE_DASHBOARD);
                     return redirect()->to(route_to('dashboard_paciente'));
                 default:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
+                    
             }
         } else {
             // Si no hay rol definido, mostrar la vista de login
@@ -49,7 +48,6 @@ class Login extends BaseController
         $email = $this->request->getPost("email");
         $password = $this->request->getPost("password");
         $tabla_usuarios = new \App\Models\Tabla_usuarios;
-        $tabla_psicologos = new \App\Models\Tabla_psicologos;
         $usuario = $tabla_usuarios->login($email, hash("sha256", $password));
 
         log_message('info', 'Iniciando proceso de login para el email: ' . $email);
@@ -76,13 +74,13 @@ class Login extends BaseController
             // Redirigir según el rol del usuario
             switch ($usuario->clave_rol) {
                 case ROL_SUPERADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
+                    $session->set("tarea_actual", TAREA_SUPERADMIN_DASHBOARD);
                     log_message('info', 'Redirigiendo a dashboard para el rol SUPERADMIN');
-                    return redirect()->to(route_to('dashboard'));
+                    return redirect()->to(route_to('dashboard_superadmin'));
                 case ROL_ADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
+                    $session->set("tarea_actual", TAREA_ADMIN_DASHBOARD);
                     log_message('info', 'Redirigiendo a dashboard para el rol ADMIN');
-                    return redirect()->to(route_to('dashboard'));
+                    return redirect()->to(route_to('dashboard_admin'));
                 case ROL_PSICOLOGO['clave']:
                     $session->set("tarea_actual", TAREA_PSICOLOGO_DASHBOARD);
                     log_message('info', 'Redirigiendo a dashboard_psicologo para el rol PSICOLOGO');
@@ -92,9 +90,8 @@ class Login extends BaseController
                     log_message('info', 'Redirigiendo a dashboard_paciente para el rol PACIENTE');
                     return redirect()->to(route_to('dashboard_paciente'));
                 default:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    log_message('info', 'Redirigiendo a dashboard por defecto');
-                    return redirect()->to(route_to('dashboard'));
+                    log_message('info', 'Redirigiendo al login');
+                    return redirect()->to(route_to('login'));
             }
 
             if ($usuario->sexo_usuario == SEXO_MASCULINO)

@@ -477,7 +477,7 @@
             </div>
             <?php
             $parametros = array('id' => 'formulario-cambiar-password-usuario');
-            echo form_open('actualizar_password_psicologo', $parametros);
+            echo form_open('actualizar_password_usuario', $parametros);
             ?>
             <div class="modal-body">
                 <h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>

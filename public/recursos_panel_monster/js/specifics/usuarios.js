@@ -23,7 +23,7 @@ const create_usuarios_table = () => {
         { "data": "rol_usuario" },
         { "data": "acciones" }
     ];
-    return instantiateAjaxDatatable('table-usuarios', './obtener_usuarios', 'GET', null, columns_elements, columns_order);
+    return instantiateAjaxDatatable('table-usuarios', './usuarios/data', 'GET', null, columns_elements, columns_order);
 }; //end create_psicologos_table
 
 let table_usuarios = create_usuarios_table();
@@ -34,12 +34,12 @@ $(document).on('click', '.estatus-usuario', function () {
     let elemento = $(this).attr('id');
     let id = elemento.split('_')[0];
     let estatus = elemento.split('_')[1];
-    let array = ['./estatus_usuario', id, estatus, 'este usuario', 'podrá ingresar al sistema.'];
+    let array = ['./usuarios/estatus', id, estatus, 'este usuario', 'podrá ingresar al sistema.'];
     cambiar_estatus_datatable(array, table_usuarios);
 });//end onclick estatus
 
 $(document).on('click', '.eliminar-usuario', function () {
-    eliminar_datatable("./eliminar_usuario", $(this).attr('id'), '¿Estás seguro de eliminar a este usuario?', 'Esta acción es permanente', table_usuarios);
+    eliminar_datatable("./usuarios/eliminar", $(this).attr('id'), '¿Estás seguro de eliminar a este usuario?', 'Esta acción es permanente', table_usuarios);
 });//end onclick eliminar-usuario
 
 $(document).on('click', '.recover-usuario', function () {
@@ -47,7 +47,7 @@ $(document).on('click', '.recover-usuario', function () {
     let texto = 'Al recuperar este usuario volverá a estar disponible en la base de datos del sistema y podrá ser visualizado en el panel. ¿Estás seguro de restaurar a este usuario?';
     let texto_confirmar = 'Sí, restaurar el usuario';
     let texto_cancelar = 'Cancelar';
-    let opciones_form = ['./restaurar_usuario', 'POST'];
+    let opciones_form = ['./usuarios/restaurar', 'POST'];
     let data = new FormData();
     data.append('id', $(this).attr('id').split('_')[1]);
     mensaje_confirmacion_texto_propio(titulo, texto, texto_confirmar, texto_cancelar, opciones_form, data);
@@ -83,7 +83,7 @@ document.getElementById('formulario-cambiar-password-usuario').addEventListener(
         loader.setLoaderBody('Por favor espere en lo que se actualiza al usuario...');
         loader.openLoader();
 
-        fetch('./actualizar_password_usuario', {
+        fetch('./usuarios/actualizar-password', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-cambiar-password-usuario'))
         })
@@ -362,7 +362,7 @@ document.getElementById('formulario-usuario-nuevo').addEventListener('submit', e
         loader.setLoaderBody('Por favor espere en lo que se registra al usuario...');
         loader.openLoader();
 
-        fetch('./registrar_usuario', {
+        fetch('./usuarios/registrar', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-usuario-nuevo'))
         })
@@ -451,7 +451,7 @@ $(document).on('click', '.editar-usuario', function () {
     loader.setLoaderBody('Por favor espere en lo que se cargan los datos del usuario...');
     loader.openLoader();
 
-    fetch('./obtener_usuario/' + id)
+    fetch('./usuarios/' + id)
         .then(res => {
             if (!res.ok) {
                 throw new Error('Ocurrió un error');
@@ -598,7 +598,7 @@ document.getElementById('formulario-usuario-editar').addEventListener('submit', 
         loader.setLoaderBody('Por favor espere en lo que se actualiza al usuario...');
         loader.openLoader();
 
-        fetch('./editar_usuario', {
+        fetch('./usuarios/editar', {
             method: 'POST',
             body: new FormData(document.getElementById('formulario-usuario-editar'))
         })

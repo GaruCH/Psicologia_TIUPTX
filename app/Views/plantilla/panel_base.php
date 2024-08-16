@@ -21,8 +21,10 @@
 	<!-- *********************************************** -->
 
 	<!-- Custom CSS -->
-	<link href="<?= base_url(RECURSOS_PANEL_CSS . '/font-awesome.min.css') ?>" rel="stylesheet">
 	<link href="<?= base_url(RECURSOS_PANEL_CSS . '/style.min.css') ?>" rel="stylesheet">
+	<link href="<?= base_url(RECURSOS_PANEL_CSS . '/font-awesom.all.min.css') ?>" rel="stylesheet">
+
+	
 
 
 	<!-- Notification css (Toastr) -->
@@ -207,7 +209,7 @@
 										<p class=" mb-0"><?= $email_usuario ?></p>
 									</div>
 								</div>
-								<a class="dropdown-item" href="<?= route_to('mi_perfil') ?>">
+								<a class="dropdown-item" href="<?= route_to('perfil') ?>">
 									<i data-feather="user" class="feather-sm text-info me-1 ms-1"></i> Mi perfil
 								</a>
 								<a class="dropdown-item" href="<?= route_to('cambiar_password') ?>">
@@ -247,11 +249,11 @@
 			<!-- End Sidebar scroll-->
 			<!-- Bottom points-->
 			<div class="sidebar-footer" style="background: #A7250D;">
-				<a href="<?= route_to('mi_perfil') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Mi perfil">
+				<a href="<?= route_to('perfil') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Mi perfil">
 					<i data-feather="user" class="feather"></i>
 				</a>
-				<a href="<?= route_to('cambiar_password') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Cambiar contraseña">
-					<i data-feather="lock" class="feather-sm"></i>
+				<a href="<?= route_to('About') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Información del gestor">
+					<i data-feather="info" class="feather"></i>
 				</a>
 				<a href="<?= route_to('logout') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Cerrar sesión">
 					<i data-feather="log-out" class="feather-sm"></i>

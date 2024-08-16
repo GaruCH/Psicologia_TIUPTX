@@ -19,10 +19,10 @@ class Tabla_programas_educativos extends Model
 
     public function obtener_programas_educativos()
     {
-            $resultado = $this
-                ->select('id_programa AS clave, nombre_programa AS nombre')
-                ->orderBy('nombre_programa', 'ASC')
-                ->findAll();
+        $resultado = $this
+            ->select('id_programa AS clave, nombre_programa AS nombre')
+            ->orderBy('nombre_programa', 'ASC')
+            ->findAll();
 
         $carreras = array();
         foreach ($resultado as $res) {
@@ -31,4 +31,13 @@ class Tabla_programas_educativos extends Model
         return $carreras;
     } //end obtener_roles
 
+    public function obtener_programa_educativo($id_programa = 0)
+    {
+        $resultado = $this
+            ->select('nombre_programa')
+            ->where('id_programa', $id_programa)
+            ->first();
+
+            return $resultado;
+    }
 }//End Model roles

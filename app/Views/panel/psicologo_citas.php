@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-12">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nueva-cita" style="margin-bottom: 15px;">
-            <i class="fas fa-lg fa-calendar-plus-o"></i> Agendar cita
+            <i class="fas fa-lg fa-calendar-check"></i> Agendar cita
         </button>
         <div class="card">
             <div class="border-bottom title-part-padding">

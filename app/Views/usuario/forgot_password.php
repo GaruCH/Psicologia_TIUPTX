@@ -73,7 +73,7 @@
 
                                 <h3 class="text-center">Recuperar contraseña</h3>
 
-                                <p class="text-muted fs-4 text-center">Ingresa tu correo electrónico para enviarte por correo las intrucciones para recuperar tu cuenta.</p>
+                                <p class="text-muted fs-4 text-center">Ingresa tu correo electrónico para enviarte las intrucciones de recuperación de tu cuenta.</p>
 
                                 <!-- Form -->
                                 <?= form_open('recuperar_contrasena', ['id' => 'formulario-recover-password', 'class' => 'form-horizontal mt-4 pt-4 needs-validation']) ?>

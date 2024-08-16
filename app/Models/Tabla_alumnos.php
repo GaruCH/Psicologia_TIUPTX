@@ -37,5 +37,15 @@ class Tabla_alumnos extends Model
         return $opcion;
     } //end existe_matricula
 
+    public function obtener_alumno($id_paciente = 0)
+    {
+        $resultado = $this
+            ->select('matricula, id_programa')
+            ->where('id_paciente', $id_paciente)
+            ->first();
+
+        return $resultado;
+    } //end existe_matricula
+    
 
 }//End Model Alumnos

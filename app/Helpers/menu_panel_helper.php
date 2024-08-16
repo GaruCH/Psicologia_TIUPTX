@@ -216,7 +216,7 @@ function configurar_menu_lateral_panel($rol_actual = NULL)
         //Sección Horario
         $menu_item['is_active'] = false;
         $menu_item['href'] = route_to('administrar_horarios_psicologo');
-        $menu_item['icon'] = 'fas fa-clock-o';
+        $menu_item['icon'] = 'fas fa-clock';
         $menu_item['text'] = ' Horario';
         $menu_item['submenu'] = array();
         $menu['horarios'] = $menu_item;

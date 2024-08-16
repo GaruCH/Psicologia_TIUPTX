@@ -64,7 +64,7 @@
                             <label class="form-control-label">Numero de trabajador:</label>
                             <div class="form-floating mb-3">
                                 <input type="number" class="form-control" id="numero_trabajador" name="numero_trabajador" placeholder="Numero de trabajador" readonly>
-                                <label><i data-feather="user" class="feather-sm text-dark fill-white me-2"></i>Numero de trabajador</label>
+                                <label><i data-feather="hash" class="feather-sm text-dark fill-white me-2"></i>Numero de trabajador</label>
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">

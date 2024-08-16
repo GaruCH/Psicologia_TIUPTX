@@ -17,12 +17,12 @@
     <div class="row mb-3">
         <div class="col">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevo-horario">
-                <i class="fas fa-lg fa-clock-o"></i> Nueva hora
+                <i class="fas fa-lg fa-clock"></i> Nueva hora
             </button>
         </div>
         <div class="col" style="text-align: right;">
             <button type="button" class="btn btn-primary ml-auto" id="save-changes">
-                <i class="fas fa-lg fa-floppy-o"></i> Guardar cambios
+                <i class="fas fa-lg fa-save"></i> Guardar cambios
             </button>
         </div>
     </div>

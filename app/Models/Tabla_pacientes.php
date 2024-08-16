@@ -61,12 +61,17 @@ class Tabla_pacientes extends Model
     {
         $resultado = $this
             ->select('
+            pacientes.id_tipo_referencia,
+            pacientes.id_tipo_atencion,
+            pacientes.observaciones,
+            pacientes.numero_expediente,
+            pacientes.id_subcate,
             u.id_usuario,
             u.nombre_usuario,
             u.ap_paterno_usuario,
             u.ap_materno_usuario
         ')
-            ->join('usuarios u', 'u.id_usuario = pacientes.id_paciente') // Asegúrate de usar un alias para la tabla
+            ->join('usuarios as u', 'u.id_usuario = pacientes.id_paciente') // Asegúrate de usar un alias para la tabla
             ->where('pacientes.id_paciente', $id_paciente)
             ->first();
 

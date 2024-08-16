@@ -8,7 +8,7 @@ $routes = Services::routes();
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
 if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
-	require SYSTEMPATH . 'Config/Routes.php';
+    require SYSTEMPATH . 'Config/Routes.php';
 }
 
 /*
@@ -53,7 +53,9 @@ $routes->post('/registrar_paciente_alumno', 'Usuario\Register::registrar_alumno'
 $routes->post('/registrar_paciente_administrativo', 'Usuario\Register::registrar_administrativo', ['as' => 'registrar_paciente_administrativo']);
 $routes->post('/registrar_paciente_invitado', 'Usuario\Register::registrar_invitado', ['as' => 'registrar_paciente_invitado']);
 //Propios del perfil
-$routes->get('/mi_perfil', 'Panel\Perfil::index', ['as' => 'mi_perfil']);
+//Pefil
+$routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil']);
+
 $routes->post('/editar_mi_perfil', 'Panel\Perfil::actualizar', ['as' => 'editar_mi_perfil']);
 $routes->get('/cambiar_password', 'Panel\Password::index', ['as' => 'cambiar_password']);
 $routes->post('/editar_password', 'Panel\Password::actualizar', ['as' => 'editar_password']);
@@ -81,8 +83,8 @@ $routes->group('/superadmin', function ($routes) {
 
     // Ejemplo
     $routes->get('ejemplo', 'Panel\Ejemplo::index', ['as' => 'ejemplo']);
-	//Notificaciones
-	$routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_superadmin']);
+    //Notificaciones
+    $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_superadmin']);
 });
 
 
@@ -115,8 +117,9 @@ $routes->group('/admin', function ($routes) {
     $routes->get('asignaciones/data', 'Panel\Asignaciones::generar_datatable_asignaciones', ['as' => 'obtener_asignaciones']);
     $routes->get('asignaciones/(:num)', 'Panel\Asignaciones::obtener_datos_asignacion/$1', ['as' => 'obtener_asignacion']);
     $routes->post('asignaciones/editar', 'Panel\Asignaciones::actualizar_asignacion', ['as' => 'editar_asignacion']);
-	//Notificaciones
-	$routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_admin']);
+    //Notificaciones
+    $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_admin']);
+    
 });
 
 
@@ -162,8 +165,9 @@ $routes->group('/psicologo', function ($routes) {
     $routes->get('pacientes/data', 'Panel\Psicologos_paciente::generar_datatable_psicologo_pacientes', ['as' => 'obtener_datos_pacientes']);
     $routes->get('pacientes/(:num)', 'Panel\Psicologos_paciente::obtener_datos_paciente/$1', ['as' => 'obtener_paciente']);
 
-	//Notificaciones
-	$routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_psicologo']);
+    //Notificaciones
+    $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_psicologo']);
+    //perfil
 });
 
 //******************************************************************************
@@ -187,8 +191,10 @@ $routes->group('/paciente', function ($routes) {
     // Historial de Citas del Paciente
     $routes->get('citas/historial', 'Panel\Historial_paciente_citas::index', ['as' => 'historial_citas_paciente']);
     $routes->get('citas/historial/data', 'Panel\Historial_paciente_citas::generar_datatable_historial_citas', ['as' => 'obtener_historial_citas_paciente']);
-	//Notificaciones
-	$routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_paciente']);
+    //Notificaciones
+    $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_paciente']);
+    //perfil
+    
 });
 
 /*
@@ -205,5 +211,5 @@ $routes->group('/paciente', function ($routes) {
  * needing to reload it.
  */
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
-	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

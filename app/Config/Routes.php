@@ -53,10 +53,9 @@ $routes->post('/registrar_paciente_alumno', 'Usuario\Register::registrar_alumno'
 $routes->post('/registrar_paciente_administrativo', 'Usuario\Register::registrar_administrativo', ['as' => 'registrar_paciente_administrativo']);
 $routes->post('/registrar_paciente_invitado', 'Usuario\Register::registrar_invitado', ['as' => 'registrar_paciente_invitado']);
 //Propios del perfil
-
-$routes->post('/editar_mi_perfil', 'Panel\Perfil::actualizar', ['as' => 'editar_mi_perfil']);
 $routes->get('/cambiar_password', 'Panel\Password::index', ['as' => 'cambiar_password']);
 $routes->post('/editar_password', 'Panel\Password::actualizar', ['as' => 'editar_password']);
+
 
 
 //******************************************************************************
@@ -86,7 +85,9 @@ $routes->group('/superadmin', function ($routes) {
 
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_superadmin']);
-
+    $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_superadmin']);
+    
+    $routes->get('about', 'Panel\About::index', ['as' => 'about_superadmin']);
 });
 
 
@@ -123,6 +124,9 @@ $routes->group('/admin', function ($routes) {
     $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_admin']);
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_admin']);
+    $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_admin']);
+
+    $routes->get('about', 'Panel\About::index', ['as' => 'about_admin']);
 });
 
 
@@ -172,6 +176,9 @@ $routes->group('/psicologo', function ($routes) {
     $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_psicologo']);
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_psicologo']);
+    $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_psicologo']);
+
+    $routes->get('about', 'Panel\About::index', ['as' => 'about_psicologo']);
 });
 
 //******************************************************************************
@@ -199,6 +206,9 @@ $routes->group('/paciente', function ($routes) {
     $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_paciente']);
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_paciente']);
+    $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_paciente']);
+
+    $routes->get('about', 'Panel\About::index', ['as' => 'about_paciente']);
 
 });
 

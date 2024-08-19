@@ -83,8 +83,8 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest auto
 //********************* CONSTANTES SISTEMA *******************************
 //************************************************************************
 //=================================SISTEMA======================================
-define("ACRONIMO_SISTEMA", 'SGTP');
-define("NOMBRE_SISTEMA", 'Sistema Gestor de Test Psicologicos');
+define("ACRONIMO_SISTEMA", 'GIPP');
+define("NOMBRE_SISTEMA", 'Gestor de Informacion y Pruebas Psicológicas');
 define("BACKGROUND_SISTEMA", 'fondo-uptx.jpg');
 define("FAV_ICON_SISTEMA", 'logo-psicologia.ico');
 define("LOGO_SISTEMA", 'logo-login-2.png');
@@ -252,6 +252,7 @@ define(
 //TAREAS PROPIAS DEL USUARIO
 define("TAREA_PERFIL", "tarea_perfil");
 define("TAREA_PASSWORD", "tarea_password");
+define("TAREA_ABOUT", "tarea_about");
 
 //TAREAS PARA EL SUPERADMIN
 define("TAREA_SUPERADMIN_USUARIOS", "tarea_superadmin_usuarios");
@@ -285,7 +286,9 @@ define(
         TAREA_SUPERADMIN_USUARIOS,
         TAREA_SUPERADMIN_EJEMPLO,
         TAREA_ADMIN_PSICOLOGOS,
-        TAREA_PERFIL
+        TAREA_PERFIL,
+        TAREA_ABOUT
+
     )
 );
 
@@ -295,7 +298,8 @@ define(
         TAREA_PACIENTE_DASHBOARD,
         TAREA_PACIENTE_CITAS,
         TAREA_PACIENTE_CITAS_HISTORIAL,
-        TAREA_PERFIL
+        TAREA_PERFIL,
+        TAREA_ABOUT
     )
 );
 define(
@@ -307,7 +311,8 @@ define(
         TAREA_PSICOLOGO_HISTORIAL_PACIENTES,
         TAREA_PSICOLOGO_CITAS,
         TAREA_PSICOLOGO_CITAS_HISTORIAL,
-        TAREA_PERFIL
+        TAREA_PERFIL,
+        TAREA_ABOUT
     )
 );
 define(
@@ -316,6 +321,7 @@ define(
         TAREA_ADMIN_DASHBOARD,
         TAREA_ADMIN_PSICOLOGOS,
         TAREA_ADMIN_ASIGNACIONES,
-        TAREA_PERFIL
+        TAREA_PERFIL,
+        TAREA_ABOUT
     )
 );

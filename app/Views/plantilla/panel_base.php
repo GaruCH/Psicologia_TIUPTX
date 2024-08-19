@@ -196,13 +196,13 @@
 						<!-- ============================================================== -->
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img src="<?= base_url(IMG_DIR_USUARIOS . '/' . $imagen_usuario) ?>" alt="Usuario" width="45" class="profile-pic rounded-circle" />
+								<img src="<?= base_url(IMG_DIR_USUARIOS . '/' . $imagen) ?>" alt="Usuario" width="45" class="profile-pic rounded-circle" />
 								<span class="ms-1 font-weight-medium d-none d-sm-inline-block"><?= $nombre_completo_usuario ?> <i data-feather="chevron-down" class="feather-sm"></i></span>
 							</a>
 							<div class="dropdown-menu dropdown-menu-end user-dd animated flipInY">
 								<div class="d-flex no-block align-items-center p-3 bg-primary text-white mb-2">
 									<div class="">
-										<img src="<?= base_url(IMG_DIR_USUARIOS . '/' . $imagen_usuario) ?>" alt="Usuario" class="rounded-circle" width="60">
+										<img src="<?= base_url(IMG_DIR_USUARIOS . '/' . $imagen) ?>" alt="Usuario" class="rounded-circle" width="60">
 									</div>
 									<div class="ms-2">
 										<h4 class="mb-0 text-white"><?= $nombre_completo_usuario ?></h4>
@@ -252,7 +252,7 @@
 				<a href="<?= route_to('perfil_' . $nombre_r) ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Mi perfil">
 					<i data-feather="user" class="feather"></i>
 				</a>
-				<a href="<?= route_to('About') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Información del gestor">
+				<a href="<?= route_to('about_' . $nombre_r) ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Información del gestor">
 					<i data-feather="info" class="feather"></i>
 				</a>
 				<a href="<?= route_to('logout') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Cerrar sesión">

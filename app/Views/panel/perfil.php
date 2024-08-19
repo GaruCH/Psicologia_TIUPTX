@@ -17,14 +17,14 @@
                     $imagen_default = ($sexo === SEXO_FEMENINO) ? 'no-image-f.png' : 'no-image-m.png';
 
                     // Verificar si la imagen del usuario está disponible
-                    $imagen_usuario = !empty($imagen) ? base_url(IMG_DIR_USUARIOS . '/' . $imagen) : base_url(IMG_DIR_USUARIOS . '/' . $imagen_default);
+                    $imagen_user = !empty($imagen) ? base_url(IMG_DIR_USUARIOS . '/' . $imagen) : base_url(IMG_DIR_USUARIOS . '/' . $imagen_default);
                     ?>
-                    <img src="<?= $imagen_usuario ?>" alt="imagen_usuario" class="avatar-img rounded-circle" width="150px" id="img_editar" style="margin-bottom: 15px;" data-default-src="<?= base_url(IMG_DIR_USUARIOS . '/' . $imagen_default); ?>">
+                    <img src="<?= $imagen_user ?>" alt="imagen_usuario" class="avatar-img rounded-circle" width="150px" id="img" style="margin-bottom: 15px;" data-default-src="<?= base_url(IMG_DIR_USUARIOS . '/' . $imagen_default); ?>">
                 </center>
 
                 <?php
-                $parametros = array('id' => 'formulario-usuario-nuevo');
-                echo form_open_multipart('registrar_usuario', $parametros);
+                $parametros = array('id' => 'formulario-imagen-nueva');
+                echo form_open_multipart('cambiar_imagen', $parametros);
                 ?>
                 <div class="row">
                     <div class="col-md-4 mb-3">
@@ -55,11 +55,11 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-control-label">Sexo:</label><br>
                         <div class="form-check form-check-inline mb-3">
-                            <input type="radio" id="masculino" name="sexo" class="form-check-input radio-item" value="masculino" <?= $sexo == SEXO_MASCULINO ? 'checked' : '' ?> readonly>
+                            <input type="radio" id="masculino" name="sexo" class="form-check-input radio-item" value="masculino" <?= $sexo == SEXO_MASCULINO ? 'checked' : '' ?> disabled>
                             <label class="form-check-label" for="masculino"><i class="fas fa-mars text-dark fill-white me-2"></i>Masculino</label>
                         </div>
                         <div class="form-check form-check-inline mb-3">
-                            <input type="radio" id="femenino" name="sexo" class="form-check-input radio-item" value="femenino" <?= $sexo == SEXO_FEMENINO ? 'checked' : '' ?> readonly>
+                            <input type="radio" id="femenino" name="sexo" class="form-check-input radio-item" value="femenino" <?= $sexo == SEXO_FEMENINO ? 'checked' : '' ?> disabled>
                             <label class="form-check-label" for="femenino"><i class="fas fa-venus text-dark fill-white me-2"></i>Femenino</label>
                         </div>
                     </div>
@@ -197,7 +197,18 @@
 
                             <div class="text-center">
                                 &nbsp;&nbsp;&nbsp;
-                                <button class="btn btn-primary" type="submit" id="btn-guardar"><i class="fa fa-lg fa-save"></i> Guardar cambios</button>
+                                <button class="btn btn-primary" type="submit" id="btn-guardar"><i class="fa fa-lg fa-save">
+
+                                        <?php
+                                        $parametros = array(
+                                            'type' => 'hidden',
+                                            'id' => 'id_usuario',
+                                            'name' => 'id_usuario',
+                                            'value' => $id_usuario
+                                        );
+                                        echo form_input($parametros);
+                                        ?>
+                                    </i> Guardar cambios</button>
                             </div>
                             <?= form_close() ?>
                         </div>
@@ -205,9 +216,29 @@
             </div>
         </div>
 
+        <!-- Modal loading -->
+        <div id="loader"></div>
 
         <?= $this->endSection(); ?>
 
         <?= $this->section("js") ?>
+
+        <!-- Preview Image -->
         <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/preview-image.js") ?>"></script>
+
+        <!-- SweetAlert 2 -->
+        <script src="<?php echo base_url(RECURSOS_PANEL_PLUGINS . "/sweetalert2/dist/sweetalert2.all.min.js") ?>"></script>
+        <script src="<?php echo base_url(RECURSOS_PANEL_PLUGINS . "/sweetalert2/dist/manager-sweetalert2.js") ?>"></script>
+
+        <!-- Message Notification -->
+        <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/message-notification.js") ?>"></script>
+
+        <!-- Loader Generator -->
+        <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/loader-generator.js") ?>"></script>
+
+
+        <!-- JS específico -->
+        <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/perfil.js") ?>"></script>
+
+
         <?= $this->endSection(); ?>

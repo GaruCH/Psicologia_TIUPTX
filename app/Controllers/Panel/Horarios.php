@@ -77,6 +77,12 @@ class Horarios extends BaseController
 
     private function crear_vista($nombre_vista, $contenido = array())
     {
+        $session = session();
+
+		$perfil = cargarPerfilUsuario($session);
+
+		// Combinar el contenido existente con el perfil de usuario
+		$contenido = array_merge($contenido, $perfil);
 
         // Cargar el modelo de subcategorías
         $tabla_dias = new \App\Models\Tabla_dias;

@@ -52,6 +52,14 @@ class Dashboard_admin extends BaseController{
 	}//end cargar_datos
 
 	private function crear_vista($nombre_vista, $contenido = array()){
+
+		$session = session();
+
+		$perfil = cargarPerfilUsuario($session);
+
+		// Combinar el contenido existente con el perfil de usuario
+		$contenido = array_merge($contenido, $perfil);
+
 		$contenido['menu'] = crear_menu_panel();
 		return view($nombre_vista, $contenido);
 	}//end crear_vista

@@ -24,7 +24,7 @@
 	<link href="<?= base_url(RECURSOS_PANEL_CSS . '/style.min.css') ?>" rel="stylesheet">
 	<link href="<?= base_url(RECURSOS_PANEL_CSS . '/font-awesom.all.min.css') ?>" rel="stylesheet">
 
-	
+
 
 
 	<!-- Notification css (Toastr) -->
@@ -160,7 +160,7 @@
 															break;
 													}
 													?>
-													<a href="#" class="message-item d-flex align-items-center border-bottom px-3 py-2" data-bs-toggle="modal" data-bs-target="#notificacionModal" data-id="<?= $notificacion['id_notificacion'] ?>" data-titulo="<?= $notificacion['titulo_notificacion'] ?>" data-mensaje="<?= $notificacion['mensaje'] ?>" data-estado="<?= $notificacion['leida'] ?>" data-tipo="<?= $notificacion['tipo_notificacion'] ?>">
+													<a href="#" class="message-item d-flex align-items-center border-bottom px-3 py-2" data-bs-toggle="modal" data-bs-target="#notificacionModal" data-id="<?= $notificacion['id_notificacion'] ?>" data-rol="<?= $notificacion['rol'] ?>" data-fecha="<?= $notificacion['fecha'] ?>" data-titulo="<?= $notificacion['titulo_notificacion'] ?>" data-mensaje="<?= $notificacion['mensaje'] ?>" data-estado="<?= $notificacion['leida'] ?>" data-tipo="<?= $notificacion['tipo_notificacion'] ?>">
 														<span class="btn <?= $btnClass ?> text-white btn-circle">
 															<i data-feather="<?= $icon ?>" class="feather-sm fill-white"></i>
 														</span>
@@ -209,7 +209,7 @@
 										<p class=" mb-0"><?= $email_usuario ?></p>
 									</div>
 								</div>
-								<a class="dropdown-item" href="<?= route_to('perfil') ?>">
+								<a class="dropdown-item" href="<?= route_to('perfil_' . $nombre_r) ?>">
 									<i data-feather="user" class="feather-sm text-info me-1 ms-1"></i> Mi perfil
 								</a>
 								<a class="dropdown-item" href="<?= route_to('cambiar_password') ?>">
@@ -249,7 +249,7 @@
 			<!-- End Sidebar scroll-->
 			<!-- Bottom points-->
 			<div class="sidebar-footer" style="background: #A7250D;">
-				<a href="<?= route_to('perfil') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Mi perfil">
+				<a href="<?= route_to('perfil_' . $nombre_r) ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Mi perfil">
 					<i data-feather="user" class="feather"></i>
 				</a>
 				<a href="<?= route_to('About') ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Información del gestor">
@@ -288,14 +288,14 @@
 			<!-- ============================================================== -->
 			<!-- Container fluid  -->
 			<!-- ============================================================== -->
-			 
+
 			<div class="container-fluid">
 				<!-- *********************************************** -->
 				<!-- ************* CONTENIDO PRINCIPAL ************* -->
 				<?= $this->renderSection("contenido") ?>
 
-				
-				
+
+
 
 				<!-- *********************************************** -->
 				<!-- *********************************************** -->
@@ -322,112 +322,90 @@
 	</div>
 
 	<!-- Modal para Notificación Individual -->
-	<div class="modal fade" id="notificacionModal" tabindex="-1" aria-labelledby="notificacionModalLabel" aria-hidden="true" <?php echo empty($notificaciones) ? 'style="display:none;"' : ''; ?>>
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="notificacionModalLabel">Notificación</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<!-- Contenido del modal dinámico -->
-								<?php if (!empty($notificaciones)) : ?>
-									<?php
-									// Usar el último elemento de notificaciones para mostrar en el modal
-									$notificacion = end($notificaciones);
-									$btnClass = 'btn-info'; // Default
-									$icon = 'info'; // Default icon
-
-									switch ($notificacion['tipo_notificacion']) {
-										case 'success':
-											$btnClass = 'btn-success';
-											$icon = 'check';
-											break;
-										case 'warning':
-											$btnClass = 'btn btn-warning';
-											$icon = 'alert-triangle';
-											break;
-										case 'danger':
-											$btnClass = 'btn-danger';
-											$icon = 'alert-octagon';
-											break;
-									}
-									?>
-									<div class="d-flex align-items-center mb-3">
-										<span class="btn <?= $btnClass ?> text-white btn-circle me-2">
-											<i data-feather="<?= $icon ?>" class="feather-sm fill-white"></i>
-										</span>
-										<div>
-											<h5 id="modalTitulo" class="mb-1"><?= htmlspecialchars($notificacion['titulo_notificacion'], ENT_QUOTES, 'UTF-8') ?></h5>
-											<p id="modalMensaje"><?= htmlspecialchars($notificacion['mensaje'], ENT_QUOTES, 'UTF-8') ?></p>
-											<small class="text-muted"><?= htmlspecialchars($notificacion['fecha'] ?? 'No hay fecha', ENT_QUOTES, 'UTF-8') ?></small>
-										</div>
-									</div>
-								<?php else : ?>
-									<div class="text-center text-muted">No hay notificaciones</div>
-								<?php endif; ?>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-primary" id="marcarComoLeido">Hecho</button>
-							</div>
+	<div class="modal fade" id="notificacionModal" tabindex="-1" aria-labelledby="notificacionModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="notificacionModalLabel">Notificación</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!-- Contenido dinámico del modal -->
+					<div class="d-flex align-items-center mb-3">
+						<span id="modalIcon" class="btn btn-info text-white btn-circle me-2">
+							<i id="modalIconFeather" data-feather="info" class="feather-sm fill-white"></i>
+						</span>
+						<div>
+							<h5 id="modalTitulo" class="mb-1">Título de la Notificación</h5>
+							<p id="modalMensaje">Mensaje de la notificación</p>
+							<small id="modalFecha" class="text-muted">No hay fecha</small>
 						</div>
 					</div>
+					<!-- Campo oculto para almacenar el rol -->
+					<input type="hidden" id="modalRol" value="" />
 				</div>
-
-
-
-				
-				<!-- Modal para Ver Todas las Notificaciones -->
-				<div class="modal fade" id="verTodasModal" tabindex="-1" aria-labelledby="verTodasModalLabel" aria-hidden="true" <?php echo empty($notificaciones) ? 'style="display:none;"' : ''; ?>>
-					<div class="modal-dialog modal-lg modal-dialog-scrollable">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="verTodasModalLabel">Todas las Notificaciones</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<?php if (!empty($notificaciones)) : ?>
-									<?php foreach ($notificaciones as $notificacion) : ?>
-										<div class="d-flex align-items-center border-bottom mb-2 p-2">
-											<?php
-											$btnClass = 'btn-light-info'; // Default
-											$icon = 'info'; // Default icon
-
-											switch ($notificacion['tipo_notificacion']) {
-												case 'success':
-													$btnClass = 'btn-light-success';
-													$icon = 'check';
-													break;
-												case 'warning':
-													$btnClass = 'btn-light-warning';
-													$icon = 'alert-triangle';
-													break;
-												case 'danger':
-													$btnClass = 'btn-light-danger';
-													$icon = 'alert-octagon';
-													break;
-											}
-											?>
-											<span class="btn <?= $btnClass ?> text-white btn-circle me-2">
-												<i data-feather="<?= $icon ?>" class="feather-sm fill-white"></i>
-											</span>
-											<div>
-												<h6 class="message-title mb-0"><?= htmlspecialchars($notificacion['titulo_notificacion'], ENT_QUOTES, 'UTF-8') ?></h6>
-												<p class="mb-0"><?= htmlspecialchars($notificacion['mensaje'], ENT_QUOTES, 'UTF-8') ?></p>
-												<small class="text-muted"><?= htmlspecialchars($notificacion['fecha'] ?? 'No hay fecha', ENT_QUOTES, 'UTF-8') ?></small>
-											</div>
-										</div>
-									<?php endforeach; ?>
-								<?php else : ?>
-									<div class="text-center text-muted">No hay notificaciones</div>
-								<?php endif; ?>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-							</div>
-						</div>
-					</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="marcarComoLeido">Hecho</button>
 				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- Modal para Ver Todas las Notificaciones -->
+	<div class="modal fade" id="verTodasModal" tabindex="-1" aria-labelledby="verTodasModalLabel" aria-hidden="true" <?php echo empty($notificaciones) ? 'style="display:none;"' : ''; ?>>
+		<div class="modal-dialog modal-lg modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="verTodasModalLabel">Todas las Notificaciones</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<?php if (!empty($notificaciones)) : ?>
+						<?php foreach ($notificaciones as $notificacion) : ?>
+							<div class="d-flex align-items-center border-bottom mb-2 p-2">
+								<?php
+								$btnClass = 'btn-info'; // Default
+								$icon = 'info'; // Default icon
+
+								switch ($notificacion['tipo_notificacion']) {
+									case 'success':
+										$btnClass = 'btn-success';
+										$icon = 'check';
+										break;
+									case 'warning':
+										$btnClass = 'btn-warning';
+										$icon = 'alert-triangle';
+										break;
+									case 'danger':
+										$btnClass = 'btn-danger';
+										$icon = 'alert-octagon';
+										break;
+								}
+								?>
+								<span class="btn <?= $btnClass ?> text-white btn-circle me-2">
+									<i data-feather="<?= $icon ?>" class="feather-sm fill-white"></i>
+								</span>
+								<div>
+									<h6 class="message-title mb-0"><?= htmlspecialchars($notificacion['titulo_notificacion'], ENT_QUOTES, 'UTF-8') ?></h6>
+									<p class="mb-0"><?= htmlspecialchars($notificacion['mensaje'], ENT_QUOTES, 'UTF-8') ?></p>
+									<small class="text-muted"><?= htmlspecialchars($notificacion['fecha'] ?? 'No hay fecha', ENT_QUOTES, 'UTF-8') ?></small>
+								</div>
+							</div>
+						<?php endforeach; ?>
+					<?php else : ?>
+						<div class="text-center text-muted">No hay notificaciones</div>
+					<?php endif; ?>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- ============================================================== -->
 	<!-- End Wrapper -->
 	<!-- ============================================================== -->

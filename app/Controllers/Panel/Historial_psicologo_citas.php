@@ -78,6 +78,14 @@ class Historial_psicologo_citas extends BaseController
 
     private function crear_vista($nombre_vista, $contenido = array())
     {
+
+        $session = session();
+
+		$perfil = cargarPerfilUsuario($session);
+
+		// Combinar el contenido existente con el perfil de usuario
+		$contenido = array_merge($contenido, $perfil);
+
         $contenido['menu'] = crear_menu_panel();
         return view($nombre_vista, $contenido);
     } //end crear_vista
@@ -99,7 +107,7 @@ class Historial_psicologo_citas extends BaseController
                 $imgestadoP .= '<img src="' . base_url(RECURSOS_PANEL_IMAGENES . '/Icono_Pendiente-Sistema_UPTX.svg') . '" alt="Cita pendiente">';
                 $imgestadoA .= '<img src="' . base_url(RECURSOS_PANEL_IMAGENES . '/Icono_Aceptado-Sistema_UPTX.svg') . '" alt="Cita aceptada">';
                 $imgestadoC .= '<img src="' . base_url(RECURSOS_PANEL_IMAGENES . '/Icono_Cancelado-Sistema_UPTX.svg') . '" alt="Cita cancelada">';
-                $imgestadoB .= '<img src="' . base_url(RECURSOS_PANEL_IMAGENES . '/Icono_Cancelado-Sistema_UPTX.svg') . '" alt="Cita cancelada">';
+                $imgestadoB .= '<img src="' . base_url(RECURSOS_PANEL_IMAGENES . '/Icono_Completado-Sistema_UPTX.svg') . '" alt="Cita cancelada">';
                 $sub_array['total'] = ++$count;
 
                 if ($cita->id_subcate == SUBCATEGORIA_ALUMNO['clave']) {

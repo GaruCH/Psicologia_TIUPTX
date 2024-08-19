@@ -74,6 +74,13 @@ class Asignaciones extends BaseController
     private function crear_vista($nombre_vista, $contenido = array())
     {
 
+        $session = session();
+
+        $perfil = cargarPerfilUsuario($session);
+
+        // Combinar el contenido existente con el perfil de usuario
+        $contenido = array_merge($contenido, $perfil);
+
         //Cargar el modelo de usuarios
         $tabla_usuarios = new \App\Models\Tabla_usuarios;
         $psicologos = $tabla_usuarios->obtener_psicologos_activos();
@@ -83,9 +90,6 @@ class Asignaciones extends BaseController
         foreach ($psicologos as $psicologo) {
             $psicologos_opciones[$psicologo->id_usuario . '|' . $psicologo->numero_trabajador_psicologo] = $psicologo->nombre_usuario . ' ' . $psicologo->ap_paterno_usuario . ' ' . $psicologo->ap_materno_usuario;
         }
-
-
-
         // Pasar las subcategorías a la vista
         $contenido['psicologos'] = $psicologos_opciones; // Aquí pasamos 'dias' al contenido
 
@@ -168,7 +172,6 @@ class Asignaciones extends BaseController
             $nuevo_psicologo_id = $this->request->getPost('psicologo');
             $id_paciente = $this->request->getPost('id_paciente');
 
-            // Verificar que el id_asignacion y nuevo_psicologo_id estén presentes
             if (!$id_asignacion || !$nuevo_psicologo_id || !$id_paciente) {
                 $mensaje['mensaje'] = 'Faltan datos necesarios para realizar la actualización.';
                 $mensaje['titulo'] = '¡Error en la solicitud!';
@@ -180,13 +183,11 @@ class Asignaciones extends BaseController
 
             $tabla_asignacion = new \App\Models\Tabla_asignaciones;
             $tabla_historial = new \App\Models\Tabla_historial_asignaciones;
-
-            // Iniciar transacción
             $db = \Config\Database::connect();
             $db->transBegin();
 
             try {
-                // Obtener la asignación original para verificar el psicólogo
+                // Obtener la asignación original
                 $asignacion_original = $tabla_asignacion->find($id_asignacion);
 
                 if (!$asignacion_original) {
@@ -195,81 +196,128 @@ class Asignaciones extends BaseController
 
                 // Verificar si el nuevo psicólogo es el mismo que el original
                 if ((int)$asignacion_original->id_psicologo === (int)$nuevo_psicologo_id) {
-                    $mensaje['mensaje'] = 'El psicólogo asignado es el mismo. No se realizaron cambios.';
+                    $mensaje['mensaje'] = 'La asignación ya está activa con el psicólogo actual.';
                     $mensaje['titulo'] = '¡Sin cambios!';
                     $mensaje['error'] = 0;
                     $mensaje['tipo_mensaje'] = INFO_ALERT;
                     $mensaje['timer_message'] = 3500;
+                    $db->transCommit(); // Confirmar transacción aquí
                     return $this->response->setJSON($mensaje);
                 }
 
-                // 1. Crear un registro en el historial para la asignación original
-                $historial_data_original = [
-                    'id_asignacion' => $id_asignacion,
-                    'estatus_anterior' => ESTATUS_ACTIVA,
-                    'nuevo_estatus' => ESTATUS_INACTIVA,
-                    'fecha_historial' => date('Y-m-d H:i:s'),
-                    'descripcion' => 'Asignación cambiada desde el sistema.',
-                ];
+                // Verificar si ya existe una asignación con el paciente y el nuevo psicólogo
+                $asignacion_existente = $tabla_asignacion->where('id_paciente', $id_paciente)
+                    ->where('id_psicologo', $nuevo_psicologo_id)
+                    ->first();
 
-                $tabla_historial->insert($historial_data_original);
+                if ($asignacion_existente) {
+                    // Si existe, solo actualizar el campo de estatus
+                    $tabla_asignacion->update($asignacion_existente->id_asignacion, [
+                        'estatus_asignacion' => ESTATUS_ACTIVA
+                    ]);
 
-                $tabla_pacientes = new \App\Models\Tabla_pacientes();
-                $paciente = $tabla_pacientes->obtener_paciente($id_paciente);
+                    // Después de activar la asignación existente
+                    $historial_data_existente = [
+                        'id_asignacion' => $asignacion_existente->id_asignacion,
+                        'estatus_anterior' => ESTATUS_INACTIVA,
+                        'nuevo_estatus' => ESTATUS_ACTIVA,
+                        'fecha_historial' => date('Y-m-d H:i:s'),
+                        'descripcion' => 'Asignación existente activada durante la actualización.',
+                    ];
+                    $tabla_historial->insert($historial_data_existente);
 
-                $notificacionOriginalData = [
-                    'id_usuario' => $asignacion_original->id_psicologo,
-                    'titulo_notificacion' => 'Paciente Desasignado',
-                    'tipo_notificacion' => 'warning',
-                    'mensaje' => 'Se te ha desasignado un paciente: ' .
-                        $paciente->nombre_usuario . ' ' .
-                        $paciente->ap_paterno_usuario . ' ' .
-                        $paciente->ap_materno_usuario,
-                    'leida' => 0
-                ];
+                    // Después de activar la asignación existente
+                    $notificacionData = [
+                        'id_usuario' => $asignacion_existente->id_psicologo,
+                        'titulo_notificacion' => 'Asignación Activada',
+                        'tipo_notificacion' => 'info',
+                        'mensaje' => 'Se ha activado una de tus asignaciones.',
+                        'leida' => 0
+                    ];
+                    crear_notificacion($notificacionData);
 
-                // Llamar a la función para crear la notificación
-                crear_notificacion($notificacionOriginalData);
+                    // Desactivar la asignación original
+                    $tabla_asignacion->update($id_asignacion, [
+                        'estatus_asignacion' => ESTATUS_INACTIVA
+                    ]);
 
-                // 2. Actualizar la asignación original con el nuevo psicólogo
-                $nueva_asignacion_data = [
-                    'id_psicologo' => $nuevo_psicologo_id,
-                ];
+                    // Después de desactivar la asignación original
+                    $historial_data_original = [
+                        'id_asignacion' => $id_asignacion,
+                        'estatus_anterior' => ESTATUS_ACTIVA,
+                        'nuevo_estatus' => ESTATUS_INACTIVA,
+                        'fecha_historial' => date('Y-m-d H:i:s'),
+                        'descripcion' => 'Asignación desactivada durante la actualización.',
+                    ];
+                    $tabla_historial->insert($historial_data_original);
 
-                $tabla_asignacion->update($id_asignacion, $nueva_asignacion_data);
+                    // Después de desactivar la asignación original
+                    $notificacionData = [
+                        'id_usuario' => $asignacion_original->id_psicologo,
+                        'titulo_notificacion' => 'Asignación Desactivada',
+                        'tipo_notificacion' => 'warning',
+                        'mensaje' => 'Se ha desactivado una de tus asignaciones.',
+                        'leida' => 0
+                    ];
+                    crear_notificacion($notificacionData);
+                } else {
+                    // Si no existe, insertar una nueva asignación con el nuevo psicólogo
+                    $nueva_asignacion_data = [
+                        'id_paciente' => $id_paciente,
+                        'id_psicologo' => $nuevo_psicologo_id,
+                        'descripcion' => 'Nueva asignación creada desde el sistema.',
+                        'estatus_asignacion' => ESTATUS_ACTIVA,
+                    ];
+                    $asignacionId = $tabla_asignacion->insert($nueva_asignacion_data);
 
-                // 1. Crear un registro en el historial para la nueva asignación 
-                $historial_data_nuevo = [
-                    'id_asignacion' => $id_asignacion,
-                    'estatus_anterior' => NULL,
-                    'nuevo_estatus' => ESTATUS_ACTIVA,
-                    'fecha_historial' => date('Y-m-d H:i:s'),
-                    'descripcion' => 'Asignación cambiada desde el sistema.',
-                ];
+                    // Después de insertar una nueva asignación
+                    $historial_data_nueva = [
+                        'id_asignacion' => $asignacionId,
+                        'estatus_anterior' => NULL,
+                        'nuevo_estatus' => ESTATUS_ACTIVA,
+                        'fecha_historial' => date('Y-m-d H:i:s'),
+                        'descripcion' => 'Nueva asignación creada durante la actualización.',
+                    ];
+                    $tabla_historial->insert($historial_data_nueva);
 
-                $tabla_historial->insert($historial_data_nuevo);
+                    // Después de insertar una nueva asignación
+                    $notificacionData = [
+                        'id_usuario' => $nuevo_psicologo_id,
+                        'titulo_notificacion' => 'Nueva Asignación',
+                        'tipo_notificacion' => 'info',
+                        'mensaje' => 'Tienes una nueva asignación.',
+                        'leida' => 0
+                    ];
+                    crear_notificacion($notificacionData);
 
-                // Crear notificación para el psicólogo asignado
-                // Datos de la notificación
-                $notificacionData = [
-                    'id_usuario' => $nuevo_psicologo_id,
-                    'titulo_notificacion' => 'Nuevo Paciente Asignado', // Título de la notificación
-                    'tipo_notificacion' => 'info', // Tipo de notificación
-                    'mensaje' => 'Se te ha asignado un nuevo paciente: ' .
-                        $paciente->nombre_usuario . ' ' .
-                        $paciente->ap_paterno_usuario . ' ' .
-                        $paciente->ap_materno_usuario,
-                    'leida' => 0 // 0 indica que la notificación no ha sido leída
-                ];
+                    // Desactivar la asignación original
+                    $tabla_asignacion->update($id_asignacion, [
+                        'estatus_asignacion' => ESTATUS_INACTIVA
+                    ]);
 
-                // Llamar a la función para crear la notificación
-                crear_notificacion($notificacionData);
+                    // Después de desactivar la asignación original
+                    $historial_data_original = [
+                        'id_asignacion' => $id_asignacion,
+                        'estatus_anterior' => ESTATUS_ACTIVA,
+                        'nuevo_estatus' => ESTATUS_INACTIVA,
+                        'fecha_historial' => date('Y-m-d H:i:s'),
+                        'descripcion' => 'Asignación desactivada durante la actualización.',
+                    ];
+                    $tabla_historial->insert($historial_data_original);
 
+                    // Después de desactivar la asignación original
+                    $notificacionData = [
+                        'id_usuario' => $asignacion_original->id_psicologo,
+                        'titulo_notificacion' => 'Asignación Desactivada',
+                        'tipo_notificacion' => 'warning',
+                        'mensaje' => 'Se ha desactivado una de tus asignaciones.',
+                        'leida' => 0
+                    ];
+                    crear_notificacion($notificacionData);
+                }
 
-                // Confirmar transacción
-                $db->transCommit();
+                $db->transCommit(); // Confirmar transacción aquí
 
-                // Mensaje de éxito
                 $mensaje['mensaje'] = 'La asignación ha sido actualizada exitosamente.';
                 $mensaje['titulo'] = '¡Actualización exitosa!';
                 $mensaje['error'] = 0;
@@ -277,13 +325,9 @@ class Asignaciones extends BaseController
                 $mensaje['timer_message'] = 3500;
                 return $this->response->setJSON($mensaje);
             } catch (\Exception $e) {
-                // Revertir transacción en caso de error
                 $db->transRollback();
 
-                $errorMessage = $e->getMessage();
-
-                // Mostrar el mensaje de error
-                $mensaje['mensaje'] = 'Error al actualizar la asignación.';
+                $mensaje['mensaje'] = 'Error al actualizar la asignación: ' . $e->getMessage();
                 $mensaje['titulo'] = '¡Error al actualizar!';
                 $mensaje['error'] = -1;
                 $mensaje['tipo_mensaje'] = DANGER_ALERT;

@@ -6,10 +6,10 @@ if (!function_exists('cargar_notificaciones')) {
     function cargar_notificaciones()
     {
         $session = session();
-        $userId = $session->get('id_usuario'); // Asegúrate de que 'user_id' está en la sesión
+       
 
         $notificacionesModel = new Tabla_notificaciones();
-        return $notificacionesModel->obtener_notificacion_usuario($userId);
+        return $notificacionesModel->obtener_notificacion_usuario($session->id_usuario);
     }
 }
 

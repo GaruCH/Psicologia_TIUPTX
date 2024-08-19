@@ -74,6 +74,13 @@ class Psicologos extends BaseController
 
     private function crear_vista($nombre_vista, $contenido = array())
     {
+        $session = session();
+
+		$perfil = cargarPerfilUsuario($session);
+
+		// Combinar el contenido existente con el perfil de usuario
+		$contenido = array_merge($contenido, $perfil);
+        
         $contenido['menu'] = crear_menu_panel();
         return view($nombre_vista, $contenido);
     } //end crear_vista
@@ -119,7 +126,7 @@ class Psicologos extends BaseController
                                                         <i data-feather="toggle-right" class="feather fill-white"></i>
                                                   </button>';
                     else
-                        $acciones .= '<button type="button" class="btn btn-secondary estatus-psicologo btn-circle" id="' . $psicologo->id_psicologo . '_' . $psicologo->estatus_usuario. '" data-bs-toggle="tooltip" data-bs-placement="top" title="Habilitar al psicólogo">
+                        $acciones .= '<button type="button" class="btn btn-secondary estatus-psicologo btn-circle" id="' . $psicologo->id_psicologo . '_' . $psicologo->estatus_usuario . '" data-bs-toggle="tooltip" data-bs-placement="top" title="Habilitar al psicólogo">
                                                         <i data-feather="toggle-left" class="feather fill-white"></i>
                                                   </button>';
                     $acciones .= '&nbsp;&nbsp;&nbsp;';
@@ -418,7 +425,7 @@ class Psicologos extends BaseController
 
             // Verificar si el correo ya existe
             $opcion = $tabla_usuarios->existe_email($usuario['email_usuario']);
-            
+
             if ($opcion == 2 || $opcion == -100) {
                 if ($opcion == 2) {
                     $mensaje['mensaje'] = 'El correo proporcionado ya está siendo usado por otro psicologo.';
@@ -432,8 +439,8 @@ class Psicologos extends BaseController
                 $mensaje['timer_message'] = 3500;
                 return $this->response->setJSON($mensaje);
             }
-            
-            
+
+
 
             if (!empty($this->request->getFile('imagen_perfil')) && $this->request->getFile('imagen_perfil')->getSize() > 0) {
                 helper('upload_files');
@@ -473,7 +480,7 @@ class Psicologos extends BaseController
                     $mensaje['timer_message'] = 3500;
                     return $this->response->setJSON($mensaje);
                 }
-                
+
                 // Insertar en la tabla paciente
                 $tabla_psicologos->insert($psicologoData);
 

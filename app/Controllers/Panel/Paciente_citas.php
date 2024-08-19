@@ -80,6 +80,12 @@ class Paciente_citas extends BaseController
     private function crear_vista($nombre_vista, $contenido = array())
     {
         $session = session();
+
+		$perfil = cargarPerfilUsuario($session);
+
+		// Combinar el contenido existente con el perfil de usuario
+		$contenido = array_merge($contenido, $perfil);
+        
         // Cargar el modelo de asignaciones
         $tabla_asignacion = new \App\Models\Tabla_asignaciones();
         $psicologo = $tabla_asignacion->obtener_psicologo_asignado($session->id_usuario);

@@ -153,8 +153,6 @@ $(document).ready(function () {
         if (fecha) {
             var date = new Date(fecha);
             var diaNumero = date.getDay() + 1; // 1 (Lunes) a 7 (Domingo)
-            var currentTime = new Date().getTime(); // Hora actual en milisegundos
-
             // Verificar si la fecha seleccionada es válida (habilitada)
             $.ajax({
                 url: './citas/verificar-fecha/' + diaNumero + '/' + psicologoId,
@@ -162,56 +160,35 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     if (response.fecha_valida) {
-                        // Verificar si la hora actual está dentro del rango permitido para la fecha seleccionada
+                        // Mostrar el campo de hora si la fecha es válida
+                        $('#hora_cita_container').show();
+                        
+                        // Solicitar horas disponibles al servidor
                         $.ajax({
-                            url: './citas/horas-rango/' + diaNumero + '/' + psicologoId + '/' + fecha,
+                            url: './citas/horas-disponibles/' + diaNumero + '/' + psicologoId + '/' + fecha,
                             method: 'GET',
                             dataType: 'json',
                             success: function (response) {
-                                var horaInicio = new Date(fecha + ' ' + response.hora_inicio).getTime();
-                                var horaFin = new Date(fecha + ' ' + response.hora_fin).getTime();
+                                if (response.horas_disponibles) {
+                                    var selectHora = $('#hora_cita');
+                                    selectHora.empty();
+                                    selectHora.append('<option value="">Selecciona una hora</option>');
 
-                                if (currentTime >= horaInicio && currentTime <= horaFin) {
-                                    // Mostrar el campo de hora si la fecha es válida y la hora está en el rango
-                                    $('#hora_cita_container').show();
-
-                                    // Solicitar horas disponibles al servidor
-                                    $.ajax({
-                                        url: './citas/horas-disponibles/' + diaNumero + '/' + psicologoId + '/' + fecha,
-                                        method: 'GET',
-                                        dataType: 'json',
-                                        success: function (response) {
-                                            if (response.horas_disponibles) {
-                                                var selectHora = $('#hora_cita');
-                                                selectHora.empty();
-                                                selectHora.append('<option value="">Selecciona una hora</option>');
-
-                                                $.each(response.horas_disponibles, function (index, hora) {
-                                                    selectHora.append('<option value="' + hora.value + '">' + hora.text + '</option>');
-                                                });
-                                            } else {
-                                                alert(response.error);
-                                            }
-                                        },
-                                        error: function (xhr, status, error) {
-                                            mensaje_notificacion('Hubo un error con nuestro servidor. Intente nuevamente, por favor.', 'danger', '¡Error al obtener las horas disponibles!', 4000);
-                                        }
+                                    $.each(response.horas_disponibles, function (index, hora) {
+                                        selectHora.append('<option value="' + hora.value + '">' + hora.text + '</option>');
                                     });
                                 } else {
-                                    // Ocultar el campo de hora si la hora actual no está dentro del rango
-                                    $('#hora_cita_container').hide();
-                                    mensaje_notificacion('No puedes seleccionar este día porque la hora actual ya no está dentro del rango permitido.', 'warning', '¡Advertencia!', 4000);
-                                    $(this).val(''); // Limpiar la selección de fecha
+                                    alert(response.error);
                                 }
                             },
                             error: function (xhr, status, error) {
-                                mensaje_notificacion('Hubo un error al verificar el rango de horas del psicólogo. Intente nuevamente, por favor.', 'danger', '¡Error!', 4000);
+                                mensaje_notificacion('Hubo un error con nuestro servidor. Intente nuevamente, por favor.', 'danger', '¡Error al obtener las horas disponibles!', 4000);
                             }
                         });
                     } else {
                         // Ocultar el campo de hora si la fecha no es válida
                         $('#hora_cita_container').hide();
-                        mensaje_notificacion('Horas no disponibles del psicólogo o psicóloga.', 'warning', '¡Advertencia!', 4000);
+                        mensaje_notificacion('Dia inhabil.', 'warning', '¡Advertencia!', 4000);
                     }
                 },
                 error: function (xhr, status, error) {

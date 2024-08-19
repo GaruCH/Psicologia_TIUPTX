@@ -17,7 +17,7 @@ class Tabla_invitados extends Model
     protected $updatedField  = 'actualizacion';
     protected $deletedField  = 'eliminacion';
 
-    
+
     public function existe_identificador($identificador = NULL)
     {
         $resultado = $this
@@ -38,5 +38,13 @@ class Tabla_invitados extends Model
         return $opcion;
     } //end existe_identificador
 
+    public function obtener_invitado($id_paciente = 0)
+    {
+        $resultado = $this
+            ->select('identificador')
+            ->where('id_paciente', $id_paciente)
+            ->first();
 
+        return $resultado;
+    }
 }//End Model dias

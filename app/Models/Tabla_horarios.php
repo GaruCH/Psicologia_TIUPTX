@@ -11,7 +11,13 @@ class Tabla_horarios extends Model
     protected $primaryKey = 'id_horario';
     protected $returnType = 'object';
     protected $allowedFields = [
-        'estatus_horario', 'id_horario', 'id_psicologo', 'id_dia', 'turno_entrada', 'turno_salida', 'eliminacion'
+        'estatus_horario',
+        'id_horario',
+        'id_psicologo',
+        'id_dia',
+        'turno_entrada',
+        'turno_salida',
+        'eliminacion'
     ];
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
@@ -26,7 +32,7 @@ class Tabla_horarios extends Model
         if ($rol_actual == ROL_PSICOLOGO['clave']) {
             $resultado = $this
                 ->select('estatus_horario,id_horario, id_psicologo, id_dia, turno_entrada, turno_salida')
-                ->where('id_psicologo', $id_usuario_actual) 
+                ->where('id_psicologo', $id_usuario_actual)
                 ->orderBy('id_dia', 'ASC')
                 ->findAll();
             return $resultado;
@@ -36,6 +42,16 @@ class Tabla_horarios extends Model
     public function horarioExists($id_psicologo, $id_dia)
     {
         $resultado = $this
+            ->where('id_psicologo', $id_psicologo)
+            ->where('id_dia', $id_dia)
+            ->first();
+        return $resultado;
+    }
+
+    public function obtenerHorarioPorFecha($id_dia, $id_psicologo)
+    {
+        $resultado = $this
+            ->select('turno_entrada, turno_salida')
             ->where('id_psicologo', $id_psicologo)
             ->where('id_dia', $id_dia)
             ->first();

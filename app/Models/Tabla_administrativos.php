@@ -39,4 +39,14 @@ class Tabla_administrativos extends Model
         return $opcion;
     } //end existe numero de trabajador
 
+    public function obtener_administrativo($id_paciente = 0)
+    {
+        $resultado = $this
+            ->select('numero_trabajador_administrativo, id_area')
+            ->where('id_paciente', $id_paciente)
+            ->first();
+
+            return $resultado;
+    }
+
 }//End Model dias

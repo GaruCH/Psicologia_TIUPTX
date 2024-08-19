@@ -53,8 +53,6 @@ $routes->post('/registrar_paciente_alumno', 'Usuario\Register::registrar_alumno'
 $routes->post('/registrar_paciente_administrativo', 'Usuario\Register::registrar_administrativo', ['as' => 'registrar_paciente_administrativo']);
 $routes->post('/registrar_paciente_invitado', 'Usuario\Register::registrar_invitado', ['as' => 'registrar_paciente_invitado']);
 //Propios del perfil
-//Pefil
-$routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil']);
 
 $routes->post('/editar_mi_perfil', 'Panel\Perfil::actualizar', ['as' => 'editar_mi_perfil']);
 $routes->get('/cambiar_password', 'Panel\Password::index', ['as' => 'cambiar_password']);
@@ -85,6 +83,10 @@ $routes->group('/superadmin', function ($routes) {
     $routes->get('ejemplo', 'Panel\Ejemplo::index', ['as' => 'ejemplo']);
     //Notificaciones
     $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_superadmin']);
+
+    //Pefil
+    $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_superadmin']);
+
 });
 
 
@@ -119,7 +121,8 @@ $routes->group('/admin', function ($routes) {
     $routes->post('asignaciones/editar', 'Panel\Asignaciones::actualizar_asignacion', ['as' => 'editar_asignacion']);
     //Notificaciones
     $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_admin']);
-    
+    //Pefil
+    $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_admin']);
 });
 
 
@@ -167,7 +170,8 @@ $routes->group('/psicologo', function ($routes) {
 
     //Notificaciones
     $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_psicologo']);
-    //perfil
+    //Pefil
+    $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_psicologo']);
 });
 
 //******************************************************************************
@@ -193,8 +197,9 @@ $routes->group('/paciente', function ($routes) {
     $routes->get('citas/historial/data', 'Panel\Historial_paciente_citas::generar_datatable_historial_citas', ['as' => 'obtener_historial_citas_paciente']);
     //Notificaciones
     $routes->post('confirmar_notificacion', 'Panel\Notificaciones_panel::marcar_como_leido', ['as' => 'confirmar_notificacion_paciente']);
-    //perfil
-    
+    //Pefil
+    $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_paciente']);
+
 });
 
 /*

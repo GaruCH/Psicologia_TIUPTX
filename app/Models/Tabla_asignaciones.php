@@ -9,7 +9,7 @@ class Tabla_asignaciones extends Model
     protected $table      = 'asignaciones';
     protected $primaryKey = 'id_asignacion';
     protected $returnType = 'object';
-    protected $allowedFields = ['id_asignacion', 'id_paciente', 'id_psicologo', 'fecha_asignacion', 'descripcion', ' estatus_asignacion', 'fecha_actualizacion'];
+    protected $allowedFields = ['id_asignacion', 'id_paciente', 'id_psicologo', 'fecha_asignacion', 'descripcion', 'estatus_asignacion', 'fecha_actualizacion'];
     protected $useTimestamps = false;
     protected $useSoftDeletes = false;
 
@@ -44,6 +44,7 @@ class Tabla_asignaciones extends Model
                 ->join('pacientes', 'pacientes.id_paciente = asignaciones.id_paciente')
                 ->join('usuarios as paciente', 'paciente.id_usuario = asignaciones.id_paciente')
                 ->join('usuarios as psicologo', 'psicologo.id_usuario = asignaciones.id_psicologo')
+                ->where('asignaciones.estatus_asignacion', ESTATUS_ACTIVA)
                 ->orderBy('paciente.nombre_usuario', 'ASC')
                 ->findAll();
 
@@ -107,12 +108,11 @@ class Tabla_asignaciones extends Model
             ->join('psicologos', 'psicologos.id_psicologo = asignaciones.id_psicologo')
             ->join('pacientes', 'pacientes.id_paciente = asignaciones.id_paciente')
             ->where('asignaciones.id_psicologo', $id_psicologo)
+            ->where('asignaciones.estatus_asignacion', ESTATUS_ACTIVA)
             ->orderBy('usuarios.nombre_usuario', 'ASC')
             ->findAll();
 
         return $resultado;
-
-        
     }
 
 
@@ -168,10 +168,10 @@ class Tabla_asignaciones extends Model
             ->join('usuarios', 'usuarios.id_usuario = asignaciones.id_psicologo') // Obtenemos solo los datos del psicólogo
             ->where('asignaciones.id_paciente', $id_paciente)
             ->first();
-    
+
         return $resultado;
     }
-    
+
 
 
 

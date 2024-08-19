@@ -80,6 +80,12 @@ class Psicologo_citas extends BaseController
     private function crear_vista($nombre_vista, $contenido = array())
     {
         $session = session();
+
+        $perfil = cargarPerfilUsuario($session);
+
+        // Combinar el contenido existente con el perfil de usuario
+        $contenido = array_merge($contenido, $perfil);
+
         // Cargar el modelo de asignaciones
         $tabla_asignacion = new \App\Models\Tabla_asignaciones();
         $pacientes = $tabla_asignacion->datatable_pacientes_asignados($session->id_usuario);
@@ -371,6 +377,7 @@ class Psicologo_citas extends BaseController
             return $this->response->setJSON(['fecha_valida' => false]);
         }
     }
+
 
     public function registrar_cita()
     {

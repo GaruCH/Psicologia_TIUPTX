@@ -31,4 +31,14 @@ class Tabla_areas extends Model
         return $areas;
     } //end obtener_dias
 
+    public function obtener_area($id_area = 0)
+    {
+        $resultado = $this
+            ->select('nombre_area')
+            ->where('id_area', $id_area)
+            ->first();
+
+            return $resultado;
+    }
+
 }//End Model dias

@@ -9,6 +9,9 @@ use App\Models\Tabla_pacientes;
 use App\Models\Tabla_psicologos;
 use App\Models\Tabla_alumnos;
 use App\Models\Tabla_programas_educativos;
+use App\Models\Tabla_areas;
+use App\Models\Tabla_administrativos;
+use App\Models\Tabla_invitados;
 
 class Perfil extends BaseController
 {
@@ -28,7 +31,7 @@ class Perfil extends BaseController
 	public function index()
 	{
 		if ($this->permitido) {
-			return $this->crear_vista("panel/perfil_superadmin", $this->cargar_datos());
+			return $this->crear_vista("panel/perfil", $this->cargar_datos());
 		} //end if rol permitido
 		else {
 			mensaje('No tienes permisos para acceder a esta sección.', DANGER_ALERT, '¡Acceso No Autorizado!');
@@ -83,81 +86,11 @@ class Perfil extends BaseController
 	private function crear_vista($nombre_vista, $contenido = array())
 	{
 		$session = session();
-		$tabla_usuarios = new Tabla_usuarios();
-		$tabla_pacientes = new Tabla_pacientes();
-		$tabla_psicologo = new Tabla_psicologos();
-		$tabla_alumnos = new Tabla_alumnos();
-		$tabla_programas = new Tabla_programas_educativos();
-		$usuario = $tabla_usuarios->obtener_usuario($session->id_usuario);
-		$contenido['nombre'] = $usuario->nombre_usuario;
-		$contenido['ap_paterno'] = $usuario->ap_paterno_usuario;
-		$contenido['ap_materno'] = $usuario->ap_materno_usuario;
-		$contenido['sexo'] = $usuario->sexo_usuario;
-		$contenido['email'] = $usuario->email_usuario;
-		$contenido['rol'] = $session->rol_actual['clave'];
-		$contenido['imagen'] = $usuario->imagen_usuario;
-		if ($session->rol_actual['clave'] == ROL_PSICOLOGO['clave']) {
-			$psicologo = $tabla_psicologo->obtener_psicologo($session->id_usuario);
-			$contenido['numero_trabajador_psicologo'] = $psicologo->numero_trabajador_psicologo;
-		} elseif ($session->rol_actual['clave'] == ROL_PACIENTE['clave']) {
-			$paciente = $tabla_pacientes->obtener_paciente($session->id_usuario);
-			$contenido['expediente'] = $paciente->numero_expediente;
-			$contenido['tipo_paciente'] = $paciente->id_subcate;		
-					switch ($paciente->id_tipo_referencia) {
-						case TIPO_REFERENCIA_OTRO['clave']:
-							$contenido['referencia'] = 'Otro';
-							break;
-							case TIPO_REFERENCIA_SERVICIO_MEDICO['clave']:
-								$contenido['referencia'] = 'Servicio Médico';
-								break;
-								case TIPO_REFERENCIA_DIRECTOR_CARRERA['clave']:
-									$contenido['referencia'] = 'Director de Carrera';
-									break;
-									case TIPO_REFERENCIA_TUTOR['clave']:
-										$contenido['referencia'] = 'Tutor';
-										break;
-						default:
-							# code...
-							break;
-					}
 
-					switch ($paciente->id_tipo_atencion) {
-						case TIPO_ATENCION_PRIMERA_VEZ['clave']:
-							$contenido['atencion'] = 'Primera Vez';
-							break;
+		$perfil = cargarPerfilUsuario($session);
 
-							case TIPO_ATENCION_SUBSUCUENTE['clave']:
-								$contenido['atencion'] = 'Subsecuente';
-								break;
-						
-						default:
-							# code...
-							break;
-					}
-
-
-			switch ($paciente->id_subcate) {
-				case SUBCATEGORIA_ALUMNO['clave']:
-					$alumno = $tabla_alumnos->obtener_alumno($session->id_usuario);
-					$programa = $tabla_programas->obtener_programa_educativo($alumno->id_programa);
-					
-
-					$contenido['matricula'] = $alumno->matricula;
-					$contenido['carrera'] = $programa->nombre_programa;
-
-					break;
-				case SUBCATEGORIA_EMPLEADO['clave']:
-					# code...
-					break;
-
-				case SUBCATEGORIA_INVITADO['clave']:
-					# code...
-					break;
-				default:
-					# code...
-					break;
-			}
-		}
+		// Combinar el contenido existente con el perfil de usuario
+		$contenido = array_merge($contenido, $perfil);
 
 		$contenido['menu'] = crear_menu_panel();
 		return view($nombre_vista, $contenido);

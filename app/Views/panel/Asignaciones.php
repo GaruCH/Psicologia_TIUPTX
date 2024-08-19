@@ -17,7 +17,7 @@
     <div class="col-12">
         <div class="card">
             <div class="border-bottom title-part-padding">
-                <h4 class="card-title mb-0 text-center">Lista de asignaciones</h4>
+                <h4 class="card-title mb-0 text-center">Lista de asignaciones activas</h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

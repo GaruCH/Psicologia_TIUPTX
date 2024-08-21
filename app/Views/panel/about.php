@@ -95,8 +95,21 @@
 <img src="<?= base_url(IMG_DIR_SISTEMA . '/UPTX.png') ?>" alt="Imagen izquierda" class="left-img">
 <img src="<?= base_url(IMG_DIR_SISTEMA . '/TIAMLab.svg') ?>" alt="Imagen derecha" class="right-img">
 
+<!-- Modal loading -->
+<div id="loader"></div>
+
 <?= $this->endSection(); ?>
 
 <?= $this->section("js") ?>
-<!-- Puedes agregar scripts personalizados aquí si los necesitas -->
+
+<!-- Form-options JS -->
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/form-options.js") ?>"></script>
+
+<!-- Loader Generator -->
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/loader-generator.js") ?>"></script>
+
+<!-- Message Notification -->
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/message-notification.js") ?>"></script>
+
+<script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/dashboards.js") ?>"></script>
 <?= $this->endSection(); ?>

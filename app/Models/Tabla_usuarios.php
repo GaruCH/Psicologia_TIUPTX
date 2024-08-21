@@ -195,4 +195,8 @@ class Tabla_usuarios extends Model
 
         return $resultado;
     }
+    public function getUserByToken($token)
+    {
+        return $this->where('reset_token', $token)->first();
+    }
 }//End Model usuarios

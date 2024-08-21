@@ -236,7 +236,9 @@
         <!-- Loader Generator -->
         <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/loader-generator.js") ?>"></script>
 
-
+        <!-- Form-options JS -->
+        <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/owns/form-options.js") ?>"></script>
+        
         <!-- JS específico -->
         <script src="<?php echo base_url(RECURSOS_PANEL_JS . "/specifics/perfil.js") ?>"></script>
 

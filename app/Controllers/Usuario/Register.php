@@ -26,11 +26,11 @@ class Register extends BaseController
             // Redirigir según el rol del usuario
             switch ($rol_actual) {
                 case ROL_SUPERADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
+                    $session->set("tarea_actual", TAREA_SUPERADMIN_DASHBOARD);
+                    return redirect()->to(route_to('dashboard_superadmin'));
                 case ROL_ADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
+                    $session->set("tarea_actual", TAREA_ADMIN_DASHBOARD);
+                    return redirect()->to(route_to('dashboard_admin'));
                 case ROL_PSICOLOGO['clave']:
                     $session->set("tarea_actual", TAREA_PSICOLOGO_DASHBOARD);
                     return redirect()->to(route_to('dashboard_psicologo'));
@@ -38,7 +38,6 @@ class Register extends BaseController
                     $session->set("tarea_actual", TAREA_PACIENTE_DASHBOARD);
                     return redirect()->to(route_to('dashboard_paciente'));
                 default:
-                    return redirect()->to(route_to('login'));
             }
         } else {
 

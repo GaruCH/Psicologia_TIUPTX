@@ -15,100 +15,121 @@ class Password extends BaseController{
 		}//end else rol permitido
 	}//end constructor
 
-	public function index(){
-		if($this->permitido){
-			return $this->crear_vista("panel/password", $this->cargar_datos());
-		}//end if rol permitido
-		else{
-			return redirect()->to(route_to('login'));
-		}//end else rol no permitido
-	}//end index
+	public function actualizar()
+	{
+		try {
+			if ($this->permitido) {
+				$tabla_usuarios = new \App\Models\Tabla_usuarios();
+				$id_usuario = $this->request->getPost('id_usuario_pass_panel');
 
-	private function cargar_datos(){
-		//======================================================================
-		//==========================DATOS FUNDAMENTALES=========================
-		//======================================================================
-		$datos = array();
-		$session = session();
-		$datos['nombre_completo_usuario'] = $session->nombre_completo_usuario;
-		$datos['email_usuario'] = $session->email_usuario;
-		$datos['imagen_usuario'] = ($session->imagen_usuario == NULL ?
-								   ($session->sexo_usuario == SEXO_MASCULINO ? 'no-image-m.png' : 'no-image-f.png') :
-									$session->imagen_usuario);
+				$usuario = [
+					'actualizacion' => fecha_actual(),
+					'password_usuario' => hash('sha256', $this->request->getPost('confirm_password_usuario_panel')),
+				];
 
-		//======================================================================
-		//========================DATOS PROPIOS CONTROLLER======================
-		//======================================================================
-		$datos['nombre_pagina'] = 'Cambiar Contraseña';
+				// Obtener la contraseña actual
+				$actual_password_obj = $tabla_usuarios->select('password_usuario')->find($id_usuario);
 
-		//Breadcrumb
-		$navegacion = array(
-							array(
-                          		'tarea' => 'Mi Perfil',
-                          		'href' => route_to('mi_perfil'),
-								'extra' => ''
-                        	),
-							array(
-                          		'tarea' => 'Cambiar Contraseña',
-                          		'href' => '#'
-                        	)
-                      );
-    	$datos['breadcrumb'] = breadcrumb_panel($navegacion, 'Cambiar Mi Contraseña');
+				// Acceder a la contraseña actual según el formato del resultado
+				if (is_array($actual_password_obj)) {
+					$actual_password = $actual_password_obj['password_usuario'];
+				} else {
+					$actual_password = $actual_password_obj->password_usuario;
+				}
 
-		// Cargar notificaciones utilizando el helper
-        $datos['notificaciones'] = cargar_notificaciones(); // Utiliza la función del helper
+				if ($usuario['password_usuario'] == $actual_password) {
+				$mensaje['mensaje'] = 'La nueva contraseña no puede ser igual a la antigua contraseña.';
+				$mensaje['titulo'] = '¡Error al actualizar la contraseña!';
+				$mensaje['error'] = 4;
+				$mensaje['tipo_mensaje'] = WARNING_ALERT;
+				$mensaje['timer_message'] = 3500;
+				return $this->response->setJSON($mensaje);
+				}
 
-		return $datos;
-	}//end cargar_datos
+				if ($tabla_usuarios->update($id_usuario, $usuario)) {
+					// Enviar correo de notificación
+					$usuarioConFecha = $tabla_usuarios->find($id_usuario);
 
-	private function crear_vista($nombre_vista,$contenido = array()){
-		$contenido['menu'] = crear_menu_panel();
-		return view($nombre_vista, $contenido);
-	}//end crear_vista
+					if (!$this->enviarCorreoActualizacionPassword($usuarioConFecha)) {
+						throw new \Exception('Error al enviar el correo de confirmación.');
+					}
 
-	private function enviar_editar_usuario($email = NULL, $usuario = array(), $password_usuario = NULL) {
-		$configuracion_correo = array();
-		$configuracion_correo['asunto'] = 'Actualización de Contraseña';
-		$configuracion_correo['background_header'] = '#542772;';
-		$configuracion_correo['logo'] = base_url(IMG_DIR_SISTEMA.'/'.LOGO_SISTEMA_CJM);
-		$configuracion_correo['usuario'] = $usuario;
-		$configuracion_correo['password'] = $password_usuario;
-		$configuracion_correo['rol_usuario'] = ROLES[$usuario["id_rol"]];
-		$configuracion_correo['header'] = 'Datos Generales del Usuario';
-		$configuracion_correo['descripcion'] = 'Te proporcionamos tus credenciales de acceso actualizadas para el SiAdCJM.';
-		$configuracion_correo['acronimo_sistema'] = ACRONIMO_SISTEMA;
-		$plantilla_email = view('plantilla/email_base', $configuracion_correo);
-		return enviar_correo_individual(CORREO_EMISOR_SISTEMA, ACRONIMO_SISTEMA , $email, $configuracion_correo['asunto'], $plantilla_email);
-	}//end enviar_editar_usuario
+					// Convertir a array asociativo si necesario
+					if (is_object($usuarioConFecha)) {
+						$usuarioConFecha = [
+							'nombre_usuario' => $usuarioConFecha->nombre_usuario,
+							'email_usuario' => $usuarioConFecha->email_usuario,
+							'fecha_cambio' => $usuarioConFecha->actualizacion
+						];
+					}
 
-	public function actualizar(){
-		if($this->permitido){
-			$tabla_usuarios = new \App\Models\Tabla_usuarios;
-			$id_usuario = session()->id_usuario;
-			$usuario = array();
-			$actual_password = hash('sha256', $this->request->getPost('actual_password'));
-			$data = $tabla_usuarios->select('nombre_usuario, ap_paterno_usuario, ap_materno_usuario, email_usuario, id_rol')->find($id_usuario);
-			if($actual_password == $tabla_usuarios->select('password_usuario')->find($id_usuario)->password_usuario){
-				$usuario['password_usuario'] = hash('sha256', $this->request->getPost('confirm_password'));
-				if($usuario['password_usuario'] == $actual_password){
-					mensaje("Tu nueva contraseña no puede ser igual a la antigua contraseña", WARNING_ALERT, "¡Contraseña No Cambiada!");
-					return redirect()->to(route_to('cambiar_password'));
-				}//end if password es la misma
-				else{
-					$tabla_usuarios->update($id_usuario, $usuario);
-					$this->enviar_editar_usuario($data->email_usuario, covert_stdlclass_to_array($data), $this->request->getPost('confirm_password'));
-					mensaje("Tu contraseña se ha actualizado exitosamente", SUCCESS_ALERT, "¡Contraseña Actualizada!");
-					return redirect()->to(route_to('cambiar_password'));
-				}//end else
-			}//end if el password coincide
-			else{
-				mensaje("La contraseña actual proporcionada es incorrecta", DANGER_ALERT, "¡Contraseña Actual Incorrecta!");
-				return redirect()->to(route_to('cambiar_password'));
-			}//end else el pass no coincide
-		}//end if es un usuario permitido
-		else{
-			return $this->index();
-		}//end else es un usuario permitido
-	}//end actualizar
+					$mensaje = [
+						'mensaje' => 'La contraseña del usuario se ha actualizado exitosamente.',
+						'titulo' => '¡Contraseña actualizada!',
+						'error' => 0,
+						'tipo_mensaje' => SUCCESS_ALERT,
+						'timer_message' => 3500
+					];
+				} else {
+					throw new \Exception('Hubo un error al actualizar la contraseña del usuario. Intente de nuevo, por favor.');
+				}
+
+				return $this->response->setJSON($mensaje);
+			} else {
+				throw new \Exception('Permiso denegado.');
+			}
+		} catch (\Exception $e) {
+			return $this->response->setJSON([
+				'mensaje' => 'Error al procesar la solicitud.',
+				'titulo' => '¡Error!',
+				'error' => -1,
+				'tipo_mensaje' => DANGER_ALERT,
+				'timer_message' => 3500
+			]);
+		}
+	} //end actualizar_password
+
+
+	private function enviarCorreoActualizacionPassword($data)
+	{
+		$email = \Config\Services::email();
+
+		if (empty($data['email_usuario'])) {
+			log_message('error', 'Datos del usuario incompletos para enviar el correo.');
+			return false;
+		}
+
+		// Registrar datos para depuración
+		log_message('debug', 'Datos para la vista de correo: ' . print_r($data, true));
+
+		// Validar que las variables dinámicas no estén vacías
+		foreach ($data as $key => $value) {
+			if (empty($value) && !is_array($value)) {
+				log_message('error', "La variable '$key' está vacía.");
+				return false;
+			}
+		}
+
+		// Carga la vista y reemplaza las variables
+		try {
+			$message = view('plantilla/email_change_password', $data);
+		} catch (\Exception $e) {
+			log_message('error', 'Error al generar la vista del correo: ' . $e->getMessage());
+			return false;
+		}
+
+		$email->setFrom('psicologiatiamlab@gmail.com', 'Área de Psicología');
+		$email->setTo($data['email_usuario']);
+		$email->setSubject('Notificación de Cambio de Contraseña');
+		$email->setMessage($message);
+
+		try {
+			$email->send();
+			return true;
+		} catch (\Exception $e) {
+			log_message('error', 'Error al enviar el correo: ' . $e->getMessage());
+			return false;
+		}
+	}
 
 }//End Class Password

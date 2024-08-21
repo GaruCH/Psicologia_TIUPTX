@@ -10,7 +10,7 @@ class Forgot extends BaseController
     public function index()
     {
         $session = session();
-        
+
         // Verificar si el rol está definido en la sesión
         if ($session->has('rol_actual')) {
             $rol_actual = $session->get('rol_actual')['clave'];
@@ -18,11 +18,11 @@ class Forgot extends BaseController
             // Redirigir según el rol del usuario
             switch ($rol_actual) {
                 case ROL_SUPERADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
+                    $session->set("tarea_actual", TAREA_SUPERADMIN_DASHBOARD);
+                    return redirect()->to(route_to('dashboard_superadmin'));
                 case ROL_ADMIN['clave']:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
+                    $session->set("tarea_actual", TAREA_ADMIN_DASHBOARD);
+                    return redirect()->to(route_to('dashboard_admin'));
                 case ROL_PSICOLOGO['clave']:
                     $session->set("tarea_actual", TAREA_PSICOLOGO_DASHBOARD);
                     return redirect()->to(route_to('dashboard_psicologo'));
@@ -30,8 +30,6 @@ class Forgot extends BaseController
                     $session->set("tarea_actual", TAREA_PACIENTE_DASHBOARD);
                     return redirect()->to(route_to('dashboard_paciente'));
                 default:
-                    $session->set("tarea_actual", TAREA_DASHBOARD);
-                    return redirect()->to(route_to('dashboard'));
             }
         } else {
             // Si no hay rol definido, mostrar la vista de login
@@ -44,7 +42,7 @@ class Forgot extends BaseController
         return view($nombre_vista);
     }
 
-    
+
     public function recuperarC()
     {
         helper(['form', 'url']);
@@ -149,11 +147,26 @@ class Forgot extends BaseController
 
         if ($this->request->getMethod() === 'post' && !empty($token) && !empty($password)) {
             $tabla_usuarios = new \App\Models\Tabla_usuarios();
-            if ($tabla_usuarios->resetPassword($token, $password)) {
-                mensaje('Tu contraseña ha sido restablecida exitosamente.', SUCCESS_ALERT, '¡Contraseña restablecida!', 3000);
-                return redirect()->to(route_to('login'));
+
+            // Obtener usuario por token
+            $usuario = $tabla_usuarios->getUserByToken($token);
+            if ($usuario) {
+                // Comparar nueva contraseña con la contraseña actual
+                if ($password === $usuario->password_usuario) {
+                    mensaje('La nueva contraseña no puede ser igual a la anterior.', WARNING_ALERT, '¡Advertencia!', 3000);
+                    return redirect()->back()->withInput();
+                }
+
+                // Restablecer la contraseña si no es la misma
+                if ($tabla_usuarios->resetPassword($token, $password)) {
+                    mensaje('Tu contraseña ha sido restablecida exitosamente.', SUCCESS_ALERT, '¡Contraseña restablecida!', 3000);
+                    return redirect()->to(route_to('login'));
+                } else {
+                    mensaje('Token inválido o expirado.', DANGER_ALERT, '¡Error!', 3000);
+                    return redirect()->to(route_to('login'));
+                }
             } else {
-                mensaje('Token inválido o expirado.', DANGER_ALERT, '¡Error!', 3000);
+                mensaje('Usuario no encontrado.', DANGER_ALERT, '¡Error!', 3000);
                 return redirect()->to(route_to('login'));
             }
         }

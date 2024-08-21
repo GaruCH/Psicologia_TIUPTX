@@ -86,11 +86,11 @@ $routes->group('/superadmin', function ($routes) {
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_superadmin']);
     $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_superadmin']);
-    
+    //About
     $routes->get('about', 'Panel\About::index', ['as' => 'about_superadmin']);
+    //General
+    $routes->post('cambiar-contraseña', 'Panel\Password::actualizar', ['as' => 'cambiar_password_superadmin']);
 });
-
-
 
 
 //******************************************************************************
@@ -125,8 +125,10 @@ $routes->group('/admin', function ($routes) {
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_admin']);
     $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_admin']);
-
+    //About
     $routes->get('about', 'Panel\About::index', ['as' => 'about_admin']);
+    //General
+    $routes->post('cambiar-contraseña', 'Panel\Password::actualizar', ['as' => 'cambiar_password_admin']);
 });
 
 
@@ -177,8 +179,10 @@ $routes->group('/psicologo', function ($routes) {
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_psicologo']);
     $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_psicologo']);
-
+    //About
     $routes->get('about', 'Panel\About::index', ['as' => 'about_psicologo']);
+    //General
+    $routes->post('cambiar-contraseña', 'Panel\Password::actualizar', ['as' => 'cambiar_password_psicologo']);
 });
 
 //******************************************************************************
@@ -207,9 +211,10 @@ $routes->group('/paciente', function ($routes) {
     //Pefil
     $routes->get('perfil', 'Panel\Perfil::index', ['as' => 'perfil_paciente']);
     $routes->post('perfil/actualizar-imagen', 'Panel\Perfil::cambiar_imagen', ['as' => 'cambiar_imagen_paciente']);
-
+    //About
     $routes->get('about', 'Panel\About::index', ['as' => 'about_paciente']);
-
+    //General
+    $routes->post('cambiar-contraseña', 'Panel\Password::actualizar', ['as' => 'cambiar_password_paciente']);
 });
 
 /*

@@ -1,0 +1,1 @@
+let loader = new Loader("loader");

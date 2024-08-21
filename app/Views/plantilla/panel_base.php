@@ -212,7 +212,7 @@
 								<a class="dropdown-item" href="<?= route_to('perfil_' . $nombre_r) ?>">
 									<i data-feather="user" class="feather-sm text-info me-1 ms-1"></i> Mi perfil
 								</a>
-								<a class="dropdown-item" href="<?= route_to('cambiar_password') ?>">
+								<a class="dropdown-item cambiar-password-usuario-panel" href="#" id="<?= 'pasw_' . $id_usuario ?>" data-bs-toggle="tooltip" data-bs-target="#cambiar-password-usuario-panel">
 									<i data-feather="lock" class="feather-sm text-info me-1 ms-1"></i> Cambiar contraseña
 								</a>
 								<div class="dropdown-divider"></div>
@@ -352,9 +352,6 @@
 	</div>
 
 
-
-
-
 	<!-- Modal para Ver Todas las Notificaciones -->
 	<div class="modal fade" id="verTodasModal" tabindex="-1" aria-labelledby="verTodasModalLabel" aria-hidden="true" <?php echo empty($notificaciones) ? 'style="display:none;"' : ''; ?>>
 		<div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -406,6 +403,84 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="cambiar-password-usuario-panel" tabindex="-1" aria-labelledby="cambiar-password-panel-title" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header d-flex align-items-center">
+					<h4 class="modal-title" id="cambiar-password-panel-title">Cambiar contraseña</h4>
+				</div>
+				<?php
+				$parametros = array('id' => 'formulario-cambiar-password-usuario-panel');
+				echo form_open('actualizar_password_usuario_panel', $parametros);
+				?>
+				<div class="modal-body">
+					<h5>Todos los campos marcados con (<font color="red">*</font>) son obligatorios</h5>
+					<br>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-control-label">Nueva contraseña (<font color="red">*</font>)</label>
+							<div class="form-floating mb-3">
+								<?php
+								$parametros = array(
+									'type' => 'password',
+									'class' => 'form-control',
+									'id' => 'password_usuario_panel',
+									'name' => 'password_usuario_panel',
+									'autocomplete' => 'new-password',
+									'placeholder' => '**********',
+									'value' => ''
+								);
+								echo form_input($parametros);
+								?>
+								<div class="invalid-feedback"></div>
+								<?php
+								$parametros = array(
+									'type' => 'hidden',
+									'id' => 'id_usuario_pass_panel',
+									'name' => 'id_usuario_pass_panel',
+									'value' => ''
+								);
+								echo form_input($parametros);
+								?>
+								<label><i data-feather="unlock" class="feather-sm text-dark fill-white me-2"></i>Nueva contraseña</label>
+							</div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-control-label">Confirmar contraseña (<font color="red">*</font>)</label>
+							<div class="form-floating mb-3">
+								<?php
+								$parametros = array(
+									'type' => 'password',
+									'class' => 'form-control',
+									'id' => 'confirm_password_usuario_panel',
+									'autocomplete' => 'new-password',
+									'name' => 'confirm_password_usuario_panel',
+									'placeholder' => '**********',
+									'value' => ''
+								);
+								echo form_input($parametros);
+								?>
+								<div class="invalid-feedback"></div>
+								<label><i data-feather="lock" class="feather-sm text-dark fill-white me-2">
+									</i>Confirmar contraseña</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel-form-change-password-usuario-panel"><i class="fa fa-times"></i> Cancelar</button>
+					&nbsp;&nbsp;&nbsp;
+					<button class="btn btn-primary" type="submit" id="btn-guardar-panel"><i class="fa fa-lg fa-save"></i> Actualizar contraseña</button>
+				</div>
+				<?= form_close() ?>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal loading -->
+	<div id="loader"></div>
+
 	<!-- ============================================================== -->
 	<!-- End Wrapper -->
 	<!-- ============================================================== -->
@@ -423,6 +498,8 @@
 	<!-- slimscrollbar scrollbar JavaScript -->
 	<script src="<?= base_url(RECURSOS_PANEL_PLUGINS . '/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') ?>"></script>
 	<script src="<?= base_url(RECURSOS_PANEL_PLUGINS . '/jquery-sparkline/jquery.sparkline.min.js') ?>"></script>
+	<!-- jquery-validation Js -->
+	<script src="<?= base_url(RECURSOS_PANEL_PLUGINS . "/jquery-validation/dist/jquery.validate.min.js") ?>"></script>
 	<!--Wave Effects -->
 	<script src="<?= base_url(RECURSOS_PANEL_JS . '/waves.js') ?>"></script>
 	<!--Menu sidebar -->
@@ -435,6 +512,8 @@
 	<!-- Notification Js (Toastr) -->
 	<script src="<?= base_url(RECURSOS_PANEL_PLUGINS . '/toastr/dist/build/toastr.min.js'); ?>"></script>
 	<script src="<?= base_url(RECURSOS_PANEL_JS . '/notificaciones.js'); ?>"></script>
+	<!-- Configuraciones Panel -->
+	<script src="<?= base_url(RECURSOS_PANEL_JS . '/config.js'); ?>"></script>
 	<!-- ============================================================== -->
 	<!-- End All Required JS -->
 	<!-- ============================================================== -->

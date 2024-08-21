@@ -253,6 +253,7 @@ define(
 define("TAREA_PERFIL", "tarea_perfil");
 define("TAREA_PASSWORD", "tarea_password");
 define("TAREA_ABOUT", "tarea_about");
+define("TAREA_NOTIFICACIONES", "tarea_notificaciones");
 
 //TAREAS PARA EL SUPERADMIN
 define("TAREA_SUPERADMIN_USUARIOS", "tarea_superadmin_usuarios");
@@ -287,7 +288,9 @@ define(
         TAREA_SUPERADMIN_EJEMPLO,
         TAREA_ADMIN_PSICOLOGOS,
         TAREA_PERFIL,
-        TAREA_ABOUT
+        TAREA_ABOUT,
+        TAREA_PASSWORD,
+        TAREA_NOTIFICACIONES
 
     )
 );
@@ -299,7 +302,9 @@ define(
         TAREA_PACIENTE_CITAS,
         TAREA_PACIENTE_CITAS_HISTORIAL,
         TAREA_PERFIL,
-        TAREA_ABOUT
+        TAREA_ABOUT,
+        TAREA_PASSWORD,
+        TAREA_NOTIFICACIONES
     )
 );
 define(
@@ -312,7 +317,9 @@ define(
         TAREA_PSICOLOGO_CITAS,
         TAREA_PSICOLOGO_CITAS_HISTORIAL,
         TAREA_PERFIL,
-        TAREA_ABOUT
+        TAREA_ABOUT,
+        TAREA_PASSWORD,
+        TAREA_NOTIFICACIONES
     )
 );
 define(
@@ -322,6 +329,8 @@ define(
         TAREA_ADMIN_PSICOLOGOS,
         TAREA_ADMIN_ASIGNACIONES,
         TAREA_PERFIL,
-        TAREA_ABOUT
+        TAREA_ABOUT,
+        TAREA_PASSWORD,
+        TAREA_NOTIFICACIONES
     )
 );

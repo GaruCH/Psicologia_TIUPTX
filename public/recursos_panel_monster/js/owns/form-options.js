@@ -24,7 +24,7 @@ const resetear_formulario = (id_form = '', fields_to_clean, has_select = false) 
                 element.value = fields_to_clean[index];
             }
         } else {
-            console.warn('Elemento no encontrado: ' + index);
+        
         }
     }
 };
